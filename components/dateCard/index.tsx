@@ -21,7 +21,7 @@ export default function DateCard({ date, dateType }: DateCardProps) {
 
   return (
     <div
-      className={`flex h-[51px] w-[51px] overflow-hidden  rounded-[5px] border-[1px] border-antiFlashWhite text-center ${dayOffClass}`}
+      className={`flex h-[51px] w-[51px] overflow-hidden rounded-[5px] border-[1px] border-antiFlashWhite text-center hover:shadow-md sm:h-14 sm:w-14 ${dayOffClass}`}
     >
       <div className="relative h-[21.75px] w-[21.75px]  border-t-[21.75px] border-r-[21.75px] border-t-aquamarine border-r-transparent ">
         <p className="absolute left-[2px] top-[2px] w-[0.5rem] translate-y-[-1.5rem] text-[8px]">

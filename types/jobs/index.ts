@@ -7,5 +7,5 @@ export type TJob = {
   startTime: string;
   endTime: string;
   tags: string[];
-  hourlyWage: string;
+  hourlyWage: number;
 };

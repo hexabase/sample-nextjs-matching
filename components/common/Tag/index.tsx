@@ -11,9 +11,9 @@ interface TagProps {
 export default function Tag({ tagName, className, closeTag }: TagProps) {
   return (
     <div
-      className={`flex w-fit flex-row items-center rounded-xl py-1 px-3.5 ${className}`}
+      className={`flex w-fit flex-row items-center whitespace-nowrap rounded-xl py-1 px-3.5 ${className}`}
     >
-      <div className="text-xs">{tagName}</div>
+      <p>{tagName}</p>
       {closeTag && (
         <button
           className="ml-2 h-3 w-3"

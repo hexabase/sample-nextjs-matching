@@ -6,6 +6,9 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    container: {
+      center: true,
+    },
     fontFamily: {
       sans: ['Noto Sans JP', 'sans-serif'],
     },

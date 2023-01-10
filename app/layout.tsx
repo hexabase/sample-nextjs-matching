@@ -26,10 +26,10 @@ export default function RootLayout({
       <head />
       <body>
         <header>
-          <div className="container-responesive pt-24 sm:pt-0">
+          <div className="container-responsive pt-24 sm:pt-0">
             <div className="flex items-center justify-between pt-24 sm:h-20 sm:pt-0">
               <Image
-                src="/images/HEXA-JOB-logo-mark-for-header.svg"
+                src="images/HEXA-JOB-logo-mark-for-header.svg"
                 alt="logo"
                 width={169}
                 height={40}
@@ -60,7 +60,7 @@ export default function RootLayout({
         </header>
 
         {showMenu ? (
-          <div className="container-responesive sm:hidden">
+          <div className="container-responsive sm:hidden">
             <SPMenus />
           </div>
         ) : (
@@ -72,11 +72,11 @@ export default function RootLayout({
               <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black sm:hidden">
                 <ChevronUpIcon aria-hidden="true" />
               </div>
-              <div className="container-responesive">
+              <div className="container-responsive">
                 <div className="sm:flex sm:justify-between">
                   <div className="flex items-center justify-center">
                     <Image
-                      src="/images/HEXA-JOB-logo-mark.svg"
+                      src="images/HEXA-JOB-logo-mark.svg"
                       alt="logo"
                       width={167}
                       height={38}

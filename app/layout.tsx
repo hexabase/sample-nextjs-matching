@@ -29,7 +29,7 @@ export default function RootLayout({
           <div className="container-responesive pt-24 sm:pt-0">
             <div className="flex items-center justify-between pt-24 sm:h-20 sm:pt-0">
               <Image
-                src="images/HEXA-JOB-logo-mark-for-header.svg"
+                src="/images/HEXA-JOB-logo-mark-for-header.svg"
                 alt="logo"
                 width={169}
                 height={40}
@@ -65,8 +65,8 @@ export default function RootLayout({
           </div>
         ) : (
           <>
-            <main>
-              <div className="container-responesive">{children}</div>
+            <main className='bg-antiFlashWhite '>
+              {children}
             </main>
             <footer className="relative bg-eerieBlack pt-16 pb-32 text-white sm:pb-1 sm:pt-12">
               <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black sm:hidden">
@@ -76,7 +76,7 @@ export default function RootLayout({
                 <div className="sm:flex sm:justify-between">
                   <div className="flex items-center justify-center">
                     <Image
-                      src="images/HEXA-JOB-logo-mark.svg"
+                      src="/images/HEXA-JOB-logo-mark.svg"
                       alt="logo"
                       width={167}
                       height={38}

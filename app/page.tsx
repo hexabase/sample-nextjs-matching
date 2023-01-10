@@ -1,3 +1,3 @@
 export default function Home() {
-  return <h1 className="text-3xl font-bold ">Serch jobs page</h1>;
+  return <div></div>
 }

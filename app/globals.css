@@ -4,9 +4,22 @@
 
 @layer components {
   .container-responsive {
-    @apply container mx-auto px-5 xl:px-4 2xl:px-36;
+    @apply container mx-auto px-4 xl:px-4 2xl:px-36;
   }
+
   .button-header {
     @apply h-8 rounded-[50px] border px-[20px] py-[5px] text-sm font-medium leading-5;
+  }
+
+  .flexCol {
+    @apply flex flex-col justify-between;
+  }
+
+  .flexCenter {
+    @apply flex items-center justify-between;
+  }
+
+  .flexItemsCenter {
+    @apply flex items-center;
   }
 }

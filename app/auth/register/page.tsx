@@ -14,7 +14,7 @@ export default function RegisterPage() {
     await console.log('aaa', data);
   };
   return (
-    <div className="rounded-3xl bg-white p-[1.375rem] text-center lg:px-[10rem] xl:px-[19.5rem]">
+    <div className="rounded-3xl bg-white p-[1.375rem] text-center lg:px-[10rem] 2xl:px-[19.5rem]">
       <Image
         src="/images/HEXA-JOB-logo-mark-for-header-en.svg"
         alt="logo"

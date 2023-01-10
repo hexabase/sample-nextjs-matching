@@ -4,7 +4,7 @@
 
 @layer components {
   .container-responsive {
-    @apply container mx-auto px-5 xl:px-4 2xl:px-36;
+    @apply container mx-auto px-4 xl:px-4 2xl:px-36;
   }
   
   .button-header {

@@ -6,11 +6,26 @@ import {
 } from '@heroicons/react/24/solid';
 import { MapPinIcon } from '@heroicons/react/24/outline';
 import DetailCard from '../../../components/jobDetails/detailCard';
+import dayjs from 'dayjs';
+
+export interface typeJobDetails {
+    date: dayjs.Dayjs;
+    price: number;
+    time_start: string;
+    time_end: string;
+}
+
+const jobDetails:typeJobDetails  = {
+  date: dayjs(),
+  price: 1250,
+  time_start: '9:00',
+  time_end: '18:00',
+};
 
 
 function JobDetails() {
   return (
-    <div className="container-responsive mt-4">
+    <div className="container-responsive">
       <div className="flexCenter mb-4 h-8 text-xs font-semibold md:mb-0 md:h-20 md:text-base">
         <div className="flexCenter">
           <ChevronLeftIcon className="h-4 w-4" />
@@ -26,11 +41,9 @@ function JobDetails() {
 
       <div className="hidden h-[1px] w-full bg-[#D9D9D9] md:block"></div>
 
-      <div className="flex flex-col-reverse justify-between pb-20 md:flex-row md:pb-28 md:pt-14">
-
-        <div className="md:w-3/5">
-
-          <div className="hidden h-20 md:flexCol md:h-36 ">
+      <div className="flex flex-col-reverse justify-between pb-20 md:flex-row md:gap-10 md:pb-11 md:pt-11">
+        <div className="pb-20 pt-2.5">
+          <div className="md:flexCol hidden h-20 md:h-[135px]">
             <p className="text-[10px] font-normal md:text-lg">
               BnA_WALLのアルバイト・パート情報
             </p>
@@ -39,14 +52,13 @@ function JobDetails() {
             </p>
           </div>
 
-          <div className="flexCol md:mt-14 md:h-[352px]">
-
+          <div className="flexCol md:mt-14 md:h-[345px]">
             <div className="mt-4 flex items-center">
               <BriefcaseIcon className="mr-2 h-4 w-4" />
               <p className="text-sm font-bold md:text-lg">作業内容</p>
             </div>
 
-            <p className="w-full pt-4 pb-7 text-xs text-justify font-normal md:text-lg">
+            <p className="w-full pt-4 pb-7 text-justify text-xs font-normal md:text-lg">
               【作業内容】宿泊のお客様対応、客室チェック、荷物管理業務、お出迎え、お見送り等をおこの求人に応募するします♪丁寧に研修を行いＯＪＴ形式で仕事を教えるので未経験も安心◎定着率高い職場♪あなたの英語力も活かせる♪
             </p>
 
@@ -61,24 +73,23 @@ function JobDetails() {
                 実際に未経験でフロントスタッフのお仕事を始めた方も活躍している職場です☆
               </p>
             </div>
-
           </div>
 
-          <div className="mt-12 font-bold">
-            <div className="flexItemsCenter mb-6 ">
+          <div className="mt-11 font-bold">
+            <div className="flexItemsCenter mb-4 ">
               <CurrencyYenIcon className="mr-2 h-4 w-4" />
               <p className="text-sm md:text-lg">時給</p>
             </div>
             <div className="flex items-end">
-              <p className="text-2xl md:text-3xl">1,250</p>
+              <p className="text-2xl md:text-3xl">{`${jobDetails.price.toLocaleString()}`}</p>
               <p className="mb-1 ml-1 text-xs font-normal md:text-base">円</p>
             </div>
           </div>
 
-          <div className="mt-7 hidden h-[1px] w-full bg-[#D9D9D9] md:block"></div>
+          <div className="mt-6 hidden h-[1px] w-full bg-[#D9D9D9] md:block"></div>
 
-          <div className="mt-8">
-            <div className="flexItemsCenter mb-4 mt-5 ">
+          <div className="mt-6">
+            <div className="flexItemsCenter mb-4">
               <MapPinIcon className="mr-2 h-4 w-4" />
               <p className="text-sm font-bold md:text-lg	">働く場所</p>
             </div>
@@ -87,20 +98,19 @@ function JobDetails() {
             </p>
           </div>
 
-          <div className="flexCenter flex-col h-36 pt-12 md:hidden">
+          <div className="flexCenter h-36 flex-col pt-12 md:hidden">
             <p className="mb-2 text-xs font-medium">
               \ 最短30秒!カンタン入力！/
             </p>
-            <p className="text-white rounded-[40px] bg-pastelRed py-4 px-16 text-lg font-bold">
+            <p className="rounded-[40px] bg-pastelRed py-4 px-16 text-lg font-bold text-white">
               この求人に応募する
             </p>
           </div>
         </div>
 
-        <div className ="md:w-[35%] md:z-10">
-          <DetailCard />
+        <div className="md:w-[25rem]">
+          <DetailCard  {...jobDetails}/>
         </div>
-
       </div>
     </div>
   );

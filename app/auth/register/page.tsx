@@ -1,4 +1,5 @@
 'use client';
+import { PlusIcon } from '@heroicons/react/24/solid';
 import { Formik } from 'formik';
 import Image from 'next/image';
 
@@ -76,7 +77,14 @@ export default function RegisterPage() {
             <div className="mb-8 p-[0.625rem] text-left text-xs text-red lg:mb-16">
               {errors.email}
             </div>
-            <DefaultButton />
+            <div className="w-full">
+              <DefaultButton
+                roundedFull
+                contentButton={
+                  '送信する'
+                }
+              />
+            </div>
           </form>
         )}
       </Formik>

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   ChevronLeftIcon,
   HomeIcon,
@@ -5,25 +7,13 @@ import {
   CurrencyYenIcon,
 } from '@heroicons/react/24/solid';
 import { MapPinIcon } from '@heroicons/react/24/outline';
-import DetailCard from '../../../components/jobDetails/detailCard';
-import dayjs from 'dayjs';
-
-export interface typeJobDetails {
-    date: dayjs.Dayjs;
-    price: number;
-    time_start: string;
-    time_end: string;
-}
-
-const jobDetails:typeJobDetails  = {
-  date: dayjs(),
-  price: 1250,
-  time_start: '9:00',
-  time_end: '18:00',
-};
-
+import DetailCard from '../../../components/jobDetail/detailCard';
+import { useState } from 'react';
+import { jobDetail } from '../../../constant/index';
+import { TJobDetail } from '../../../types/jobs/jobDetail';
 
 function JobDetails() {
+  const [job, setJob] = useState<TJobDetail>(jobDetail);
   return (
     <div className="container-responsive">
       <div className="flexCenter mb-4 h-8 text-xs font-semibold md:mb-0 md:h-20 md:text-base">
@@ -41,7 +31,7 @@ function JobDetails() {
 
       <div className="hidden h-[1px] w-full bg-[#D9D9D9] md:block"></div>
 
-      <div className="flex flex-col-reverse justify-between pb-20 md:flex-row md:gap-10 md:pb-11 md:pt-11">
+      <div className="flex flex-col-reverse justify-between pb-20 md:flex-row md:gap-10 md:px-11">
         <div className="pb-20 pt-2.5">
           <div className="md:flexCol hidden h-20 md:h-[135px]">
             <p className="text-[10px] font-normal md:text-lg">
@@ -81,7 +71,7 @@ function JobDetails() {
               <p className="text-sm md:text-lg">時給</p>
             </div>
             <div className="flex items-end">
-              <p className="text-2xl md:text-3xl">{`${jobDetails.price.toLocaleString()}`}</p>
+              <p className="text-2xl md:text-3xl">{`${job.price.toLocaleString()}`}</p>
               <p className="mb-1 ml-1 text-xs font-normal md:text-base">円</p>
             </div>
           </div>
@@ -91,7 +81,7 @@ function JobDetails() {
           <div className="mt-6">
             <div className="flexItemsCenter mb-4">
               <MapPinIcon className="mr-2 h-4 w-4" />
-              <p className="text-sm font-bold md:text-lg	">働く場所</p>
+              <p className="text-sm font-bold md:text-lg">働く場所</p>
             </div>
             <p className="text-xs font-normal md:text-base">
               〒103-0011 東京都中央区日本橋大伝馬町１−１
@@ -109,7 +99,7 @@ function JobDetails() {
         </div>
 
         <div className="md:w-[25rem]">
-          <DetailCard  {...jobDetails}/>
+          <DetailCard {...job} />
         </div>
       </div>
     </div>

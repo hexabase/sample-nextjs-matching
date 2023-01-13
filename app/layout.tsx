@@ -13,6 +13,11 @@ import {
 } from '@heroicons/react/20/solid';
 import SPMenus from '../components/layout/spMenus';
 import Search from '../components/layout/search';
+import 'dayjs/locale/ja';
+import dayjs from 'dayjs';
+
+dayjs.locale('ja');
+dayjs().locale('ja');
 
 export default function RootLayout({
   children,

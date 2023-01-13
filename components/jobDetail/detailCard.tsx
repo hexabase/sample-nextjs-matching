@@ -1,11 +1,18 @@
+'use client';
+
 import Image from 'next/image';
 import React from 'react';
 import { ClockIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
-import { typeJobDetails } from '../../app/jobs/[id]/page';
+import { TJobDetail } from '../../types/jobs/jobDetail';
+import { getDay } from '../../utils/getDay';
+import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
 
+dayjs.extend(localeData);
 
-function DetailCard({date , price , time_start , time_end}: typeJobDetails) {
+dayjs().localeData();
 
+function DetailCard({ date, price, time_start, time_end }: TJobDetail) {
   return (
     <div className="flexCol md:sticky md:top-20 md:h-[518px] md:rounded-[5px] md:bg-[#F4F4F4] md:shadow-2xl">
       <Image
@@ -39,7 +46,9 @@ function DetailCard({date , price , time_start , time_end}: typeJobDetails) {
             <div className="flexItemsCenter w-56">
               <ClockIcon className="mb-6 h-4 w-4" />
               <div className="ml-1.5 flex flex-row md:flex-col">
-                <p className="">{`${date?.format('YYYY/MM/DD')}`}(水)</p>
+                <p className="">{`${date.format('YYYY/MM/DD')}(${getDay(
+                  date
+                )})`}</p>
                 <p className="ml-1.5 font-normal">{`${time_start}~${time_end}`}</p>
               </div>
             </div>

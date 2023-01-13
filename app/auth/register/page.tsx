@@ -1,5 +1,5 @@
 'use client';
-import { PlusIcon } from '@heroicons/react/24/solid';
+
 import { Formik } from 'formik';
 import Image from 'next/image';
 
@@ -11,11 +11,8 @@ interface FormValues {
 }
 
 export default function RegisterPage() {
-  const handleSubmit = async (data: FormValues) => {
-    await console.log('aaa', data);
-  };
   return (
-    <div className="rounded-3xl bg-white p-[1.375rem] text-center lg:px-[10rem] 2xl:px-[19.5rem]">
+    <div className="rounded-3xl bg-white p-[1.375rem] text-center shadow-[0_10px_5px_0_rgba(0,0,0,0.1)] lg:px-[10rem] 2xl:px-[19.5rem]">
       <Image
         src="/images/HEXA-JOB-logo-mark-for-header-en.svg"
         alt="logo"
@@ -44,19 +41,11 @@ export default function RegisterPage() {
           email: '',
         }}
         validationSchema={SchemaEmail}
-        onSubmit={(data) => {
-          handleSubmit(data);
-          console.log('bbb');
+        onSubmit={(data: FormValues) => {
+          alert(`email: ${data.email}`);
         }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
+        {({ values, errors, handleBlur, handleChange, handleSubmit }) => (
           <form
             className="mx-auto flex flex-col px-[0.625rem] pb-7 pt-8"
             onSubmit={handleSubmit}
@@ -72,18 +61,13 @@ export default function RegisterPage() {
               onChange={handleChange}
               onBlur={handleBlur}
               placeholder="例：hexabase@hexabase.com"
-              className="solid  rounded-sm border border-argent p-[0.625rem] placeholder:text-sm placeholder:font-normal"
+              className="solid rounded-sm border border-argent p-[0.625rem] placeholder:text-sm placeholder:font-normal"
             ></input>
             <div className="mb-8 p-[0.625rem] text-left text-xs text-red lg:mb-16">
               {errors.email}
             </div>
             <div className="w-full">
-              <DefaultButton
-                roundedFull
-                contentButton={
-                  '送信する'
-                }
-              />
+              <DefaultButton roundedFull>送信する</DefaultButton>
             </div>
           </form>
         )}

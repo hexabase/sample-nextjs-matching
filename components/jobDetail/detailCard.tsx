@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import React from 'react';
 import { ClockIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
-import { TJobDetail } from '../../types/jobs/jobDetail';
+import { TDetailCardProps } from '../../types/jobs/jobDetail';
 import { getDay } from '../../utils/getDay';
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
@@ -12,7 +12,7 @@ dayjs.extend(localeData);
 
 dayjs().localeData();
 
-function DetailCard({ date, price, time_start, time_end }: TJobDetail) {
+function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
   return (
     <div className="flexCol md:sticky md:top-20 md:h-[518px] md:rounded-[5px] md:bg-[#F4F4F4] md:shadow-2xl">
       <Image
@@ -46,16 +46,16 @@ function DetailCard({ date, price, time_start, time_end }: TJobDetail) {
             <div className="flexItemsCenter w-56">
               <ClockIcon className="mb-6 h-4 w-4" />
               <div className="ml-1.5 flex flex-row md:flex-col">
-                <p className="">{`${date.format('YYYY/MM/DD')}(${getDay(
-                  date
+                <p className="">{`${job.date.format('YYYY/MM/DD')}(${getDay(
+                  job.date
                 )})`}</p>
-                <p className="ml-1.5 font-normal">{`${time_start}~${time_end}`}</p>
+                <p className="ml-1.5 font-normal">{`${job.time_start}~${job.time_end}`}</p>
               </div>
             </div>
 
             <div className="flexItemsCenter">
               <CurrencyDollarIcon className="h-4 w-4" />
-              <p className="ml-1.5">{`${price.toLocaleString()}円/1時間`}</p>
+              <p className="ml-1.5">{`${job.price}円/1時間`}</p>
             </div>
           </div>
         </div>
@@ -66,7 +66,10 @@ function DetailCard({ date, price, time_start, time_end }: TJobDetail) {
           <p className="mb-2 text-xs font-medium md:mb-3 md:text-base">
             \最短30秒! カンタン入力！/
           </p>
-          <button className="rounded-[40px] bg-pastelRed py-4 px-16 text-lg font-bold text-white">
+          <button
+            onClick={handleOpenModal}
+            className="rounded-[40px] bg-pastelRed py-4 px-16 text-lg font-bold text-white"
+          >
             この求人に応募する
           </button>
         </div>

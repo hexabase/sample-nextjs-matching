@@ -22,4 +22,16 @@
   .flexItemsCenter {
     @apply flex items-center;
   }
+
+  .inputModal {
+    @apply mt-1 w-full rounded border-[1px] border-solid border-[#CACACA] p-2.5 focus:outline-none;
+  }
+
+  .borderModal {
+    @apply border-y-[1px] border-solid border-[#D9D9D9]
+  }
+
+  .htmlHidden {
+    @apply overflow-hidden
+  }
 }

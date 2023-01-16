@@ -11,9 +11,24 @@ import DetailCard from '../../../components/jobDetail/detailCard';
 import { useState } from 'react';
 import { jobDetail } from '../../../constant/index';
 import { TJobDetail } from '../../../types/jobs/jobDetail';
+import JobModal from '../../../components/jobDetail/jobModal';
 
 function JobDetails() {
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [job, setJob] = useState<TJobDetail>(jobDetail);
+
+  const handleOpenModal: () => void = () => {
+    setOpenModal(true);
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.add('htmlHidden');
+  };
+
+  const handleCloseModal: () => void = () => {
+    setOpenModal(false);
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.remove('htmlHidden');
+  };
+
   return (
     <div className="container-responsive">
       <div className="flexCenter mb-4 h-8 text-xs font-semibold md:mb-0 md:h-20 md:text-base">
@@ -31,7 +46,7 @@ function JobDetails() {
 
       <div className="hidden h-[1px] w-full bg-[#D9D9D9] md:block"></div>
 
-      <div className="flex flex-col-reverse justify-between pb-20 md:flex-row md:gap-10 md:px-11">
+      <div className="flex flex-col-reverse justify-between pb-20 md:flex-row md:gap-10 md:py-11">
         <div className="pb-20 pt-2.5">
           <div className="md:flexCol hidden h-20 md:h-[135px]">
             <p className="text-[10px] font-normal md:text-lg">
@@ -71,7 +86,7 @@ function JobDetails() {
               <p className="text-sm md:text-lg">時給</p>
             </div>
             <div className="flex items-end">
-              <p className="text-2xl md:text-3xl">{`${job.price.toLocaleString()}`}</p>
+              <p className="text-2xl md:text-3xl">{`${job.price}`}</p>
               <p className="mb-1 ml-1 text-xs font-normal md:text-base">円</p>
             </div>
           </div>
@@ -99,9 +114,10 @@ function JobDetails() {
         </div>
 
         <div className="md:w-[25rem]">
-          <DetailCard {...job} />
+          <DetailCard handleOpenModal={handleOpenModal} job={job} />
         </div>
       </div>
+      {openModal && <JobModal handleCloseModal={handleCloseModal} job={job} />}
     </div>
   );
 }

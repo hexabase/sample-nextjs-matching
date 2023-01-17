@@ -23,3 +23,10 @@
     @apply flex items-center;
   }
 }
+
+@layer utilities {
+  .border-mask {
+    -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
+    mask-border: url(../public/images/subtract.svg) 30 repeat;
+  }
+}

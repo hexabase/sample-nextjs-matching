@@ -1,12 +1,9 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
-
-import DateCard from '../components/dateCard';
-import CardJob from '../components/serchJobs/cardJob';
-import { TJob } from '../types/jobs';
-import dayjs, { Dayjs } from 'dayjs';
-import Toggle from '../components/common/Toggle';
 import Tag from '../components/common/Tag';
+import Toggle from '../components/common/Toggle';
+import CalendarInline from '../components/serchJobs/calendarInline';
+import CardJob from '../components/serchJobs/cardJob';
 import FooterMobile from '../components/serchJobs/footerMobile';
+import { TJob } from '../types/jobs';
 
 export default function Home() {
   const jobs: TJob[] = [
@@ -100,29 +97,11 @@ export default function Home() {
     },
   ];
   const tags = ['12月21日(水)', '検品'];
-  const dateArr: Dayjs[] = [];
-
-  for (let index = 0; index < 5; index++) {
-    dateArr.push(dayjs(dayjs().add(index, 'day'), 'yyyy-mm-dd'));
-  }
 
   return (
     <>
       <div className="container-responsive h-[100px] py-[22px]">
-        <div className="flex items-center justify-between">
-          <button className="next-btn">
-            <ChevronLeftIcon />
-          </button>
-
-          <div className="grid grid-cols-5 grid-rows-1 gap-x-2.5">
-            {dateArr.map((date, index) => (
-              <DateCard key={index} date={date} dateType="normal" />
-            ))}
-          </div>
-          <button className="next-btn">
-            <ChevronRightIcon />
-          </button>
-        </div>
+        <CalendarInline />
       </div>
 
       <div className="bg-antiFlashWhite">

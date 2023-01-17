@@ -10,6 +10,21 @@
     @apply h-8 rounded-[50px] border px-[20px] py-[5px] text-sm font-medium leading-5;
   }
   .next-btn {
-    @apply flex h-14 w-6 items-center justify-center border border-white  hover:text-red-600;
+    @apply flex h-14 w-6 items-center justify-center border border-white;
+  }
+}
+
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
   }
 }

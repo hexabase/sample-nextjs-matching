@@ -1,18 +1,25 @@
 'use client';
 
+import 'dayjs/locale/ja';
 import './globals.css';
 
 import Image from 'next/image';
 import { useState } from 'react';
 
+import dayjs from 'dayjs';
+
 import {
   Bars3Icon,
   ChevronUpIcon,
-  XMarkIcon,
   QuestionMarkCircleIcon,
+  XMarkIcon,
 } from '@heroicons/react/20/solid';
-import SPMenus from '../components/layout/spMenus';
+
 import Search from '../components/layout/search';
+import SPMenus from '../components/layout/spMenus';
+
+dayjs.locale('ja');
+dayjs().locale('ja');
 
 export default function RootLayout({
   children,

@@ -1,36 +1,34 @@
-'use client';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
+
+import { TDateHoliday } from '../../types/common';
+
+dayjs.extend(localeData);
 
 interface DateCardProps {
-  date: Dayjs;
-  dateType: 'normal' | 'selected' | 'dayOff';
+  date: TDateHoliday;
 }
 
-export default function DateCard({ date, dateType }: DateCardProps) {
-  const dayOfWeeks = ['日', '月', '火', '水', '木', '金', '土'];
-  const dayOffClass =
-    dateType === 'dayOff'
+export default function DateCard({ date }: DateCardProps) {
+  const classNameOffDay =
+    date.dateType === 'holiday'
       ? 'bg-pastelRed'
-      : dateType === 'selected'
+      : date.dateType === 'weekend'
       ? 'bg-aquamarine'
       : null;
 
-  const month = dayjs(date, 'yyyy-mm-dd').get('month') + 1;
-  const day = dayjs(date, 'yyyy-mm-dd').get('D');
-  const dayOfWeek = dayjs(date, 'yyyy-mm-dd').day();
-
   return (
     <div
-      className={`flex h-[51px] w-[51px] overflow-hidden rounded-[5px] border-[1px] border-antiFlashWhite text-center hover:shadow-md sm:h-14 sm:w-14 ${dayOffClass}`}
+      className={`relative flex h-[51px] w-[51px] overflow-hidden rounded-[5px] border-[1px] border-antiFlashWhite text-center hover:shadow-md sm:h-14 sm:w-14 ${classNameOffDay}`}
     >
       <div className="relative h-[21.75px] w-[21.75px]  border-t-[21.75px] border-r-[21.75px] border-t-aquamarine border-r-transparent ">
         <p className="absolute left-[2px] top-[2px] w-[0.5rem] translate-y-[-1.5rem] text-[8px]">
-          {month}
+          {date.month}
         </p>
       </div>
       <div className="absolute  flex h-[3.25rem] w-[3rem] flex-col items-center justify-center">
-        <p className="text-[18px]">{day}</p>
-        <p className="text-[10px]">{dayOfWeeks[dayOfWeek]}</p>
+        <p className="text-[18px]">{date.day}</p>
+        <p className="text-[10px]">{date.dayOfWeek}</p>
       </div>
     </div>
   );

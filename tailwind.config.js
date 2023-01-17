@@ -24,6 +24,7 @@ module.exports = {
         spanishGray: '#9c9c9c',
         lightSilver: '#d9d9d9',
         argent: '#c1c1c1',
+        platinum: '#e3e3e3',
       },
     },
   },

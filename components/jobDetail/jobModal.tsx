@@ -25,15 +25,15 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
         ),
       ownPR: Yup.string().required('Required'),
     }),
-    onSubmit: (values: any) => {
+    onSubmit: (values: unknown) => {
       window.alert('Form submited');
       console.log('============= value', values);
     },
   });
 
   return (
-    <div className="fixed top-0 left-0 z-10 h-full w-full bg-[rgba(0,0,0,0.4)] p-4">
-      <div className="relative h-full bg-[#fefefe] px-8 pt-9 pb-14 md:m-auto md:max-w-[61rem] md:px-[6.56rem] ">
+    <div className="fixed top-0 left-0 z-10 h-full w-full bg-gray p-4">
+      <div className="relative h-full bg-antiFlashWhite px-8 pt-9 pb-14 md:m-auto md:max-w-[61rem] md:px-[6.56rem] ">
         <XMarkIcon
           onClick={handleCloseModal}
           className="absolute top-0 right-0 mt-3 mr-3 h-7 w-7"
@@ -64,7 +64,7 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
             <div className="flexCenter md: w-[7rem] md:w-[7.35rem]">
               <CurrencyYenIcon className="h-[1.125rem] w-[1.125rem] text-aquamarine" />
               <p className="text-xs font-normal ">
-                <span className="text-base font-bold md:text-base md:font-bold">{`${job.price}`}</span>
+                <span className="text-base font-bold md:text-base md:font-bold">{`${job.price.toLocaleString()}`}</span>
                 円/1時間
               </p>
             </div>

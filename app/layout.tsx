@@ -33,8 +33,8 @@ export default function RootLayout({
       <head />
       <body>
         <header>
-          <div className="container-responsive pt-24 sm:pt-0">
-            <div className="flex items-center justify-between pt-24 sm:h-20 sm:pt-0">
+          <div className="container-responsive">
+            <div className="flex items-center justify-between pt-24 pb-3 sm:h-20 sm:pt-0">
               <Image
                 src="/images/HEXA-JOB-logo-mark-for-header.svg"
                 alt="logo"

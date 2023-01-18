@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
 
-import { TDateHoliday } from '../../types/common';
+import { TDateHoliday, TDateType } from '../../types/common';
 
 dayjs.extend(localeData);
 
@@ -9,13 +9,19 @@ interface DateCardProps {
   date: TDateHoliday;
 }
 
+function getClassName(type: TDateType) {
+  switch (type) {
+    case 'holiday':
+      return 'bg-pastelRed';
+    case 'weekend':
+      return 'bg-aquamarine';
+    default:
+      return null;
+  }
+}
+
 export default function DateCard({ date }: DateCardProps) {
-  const classNameOffDay =
-    date.dateType === 'holiday'
-      ? 'bg-pastelRed'
-      : date.dateType === 'weekend'
-      ? 'bg-aquamarine'
-      : null;
+  const classNameOffDay = getClassName(date.dateType);
 
   return (
     <div

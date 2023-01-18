@@ -1,16 +1,25 @@
-import Image from 'next/image';
+import 'dayjs/locale/ja';
 
 import dayjs from 'dayjs';
+import Image from 'next/image';
 
 import { ClockIcon, MapPinIcon } from '@heroicons/react/24/outline';
+
 import { TJob } from '../../../types/jobs';
 import Tag from '../../common/Tag';
+import { getDayOfWeek } from '../../helpers';
+
+dayjs.locale('ja');
+dayjs().locale('ja');
 
 interface JobProps {
   job: TJob;
 }
 
 export default function CardJob({ job }: JobProps) {
+  const dayOfWeek = getDayOfWeek(job.date);
+  console.log('dayOfWeek', dayOfWeek);
+
   return (
     <div className="rounded-[5px] bg-white pb-3 hover:drop-shadow-md">
       <Image
@@ -33,7 +42,7 @@ export default function CardJob({ job }: JobProps) {
         <div className="mt-2 flex max-w-[162px] md:mt-6 ">
           <ClockIcon className="mt-0.5 h-3 w-3 text-aquamarine md:h-4 md:w-4" />
           <p className="ml-1.5 font-bold md:text-sm">
-            {`${dayjs(job.date).month() + 1}/${dayjs(job.date).day() + 1}`}(水)
+            {`${dayjs(job.date).format('MM/DD')} ${dayOfWeek}`}
           </p>
           <p className="ml-1.5 md:mt-0.5">{`${job.startTime}〜${job.endTime}`}</p>
         </div>

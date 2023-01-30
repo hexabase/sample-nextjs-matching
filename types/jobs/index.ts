@@ -10,4 +10,5 @@ export type TJobDetail = {
   des: string;
   jobDetail: string | ReactNode;
   jobContent: string;
+  workplace: string;
 };

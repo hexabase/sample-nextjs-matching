@@ -10,9 +10,9 @@ export default function BackToHome() {
   return (
     <button
       onClick={() => router.push('/')}
-      className="flexItemsCenter border-l border-black pl-3 md:w-48 md:justify-between"
+      className="flexItemsCenter h-5 border-l border-black pl-3 md:h-10"
     >
-      <HomeIcon className="h-4 w-4 md:h-7 md:w-6 " />
+      <HomeIcon className="h-4 w-4 md:h-8 md:w-8 " />
       <p>トップページ</p>
     </button>
   );

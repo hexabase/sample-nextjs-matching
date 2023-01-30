@@ -6,6 +6,9 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    container: {
+      center: true,
+    },
     fontFamily: {
       sans: ['Noto Sans JP', 'sans-serif'],
       segoe: ['Segoe Script'],
@@ -24,6 +27,7 @@ module.exports = {
         argent: '#c1c1c1',
         cultured: '#f7f7f7',
         culturedF4: '#f4f4f4',
+        platinum: '#e3e3e3',
       },
     },
   },

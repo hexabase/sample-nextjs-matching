@@ -38,7 +38,7 @@ function JobDetails() {
         </div>
       </div>
 
-      <div className="md:container-responsive md:flex md:flex-row-reverse md:gap-10 md:py-11">
+      <div className="md:container-responsive gap-4 md:flex md:flex-row-reverse md:gap-10 md:py-11">
         <div className="md:w-96 lg:w-[25rem]">
           <DetailCard job={job} />
         </div>

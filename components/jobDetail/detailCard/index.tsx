@@ -9,7 +9,10 @@ import { ClockIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
 
 import { TJobDetail } from '../../../types/jobs';
 import { getDay } from '../../../utils/getDay';
+import DateCard from '../../dateCard';
+import { checkHoliday } from '../../helpers';
 import Apply from '../apply';
+import DateCardDetail from '../../dateCardDetail';
 
 dayjs.extend(localeData);
 
@@ -22,8 +25,10 @@ interface DetailCardProps {
 export default function DetailCard({ job }: DetailCardProps) {
   const { date, start_time, end_time, price, title, des } = job;
 
+  const dateHoliday = checkHoliday(date);
+
   return (
-    <div className="flexCol top-20 w-full md:sticky md:block md:h-[581px] md:w-96 lg:w-[25rem] md:rounded-[5px] md:bg-culturedF4 md:shadow-2xl">
+    <div className="flexCol top-20 w-full md:sticky md:block md:h-[581px] md:w-96 md:rounded-[5px] md:bg-culturedF4 md:shadow-2xl lg:w-[25rem]">
       <div className="md-h-[18rem] relative h-[17.5rem] w-full">
         <Image src="/images/img1.png" alt="image1" fill />
       </div>
@@ -33,21 +38,15 @@ export default function DetailCard({ job }: DetailCardProps) {
           <p className="text-base">{des}</p>
         </div>
 
-        <div className="flex rounded-xl border-2 border-[aquamarine] bg-cultured px-4 py-3 md:mb-5 md:h-[7.25rem]">
-          <div className="md:text-md relative mr-5 h-14 w-14 rounded-md bg-antiFlashWhite px-3 py-3 md:h-20 md:w-20">
-            <div className="flex flex-col items-center font-normal ">
-              <p className="text-lg">21</p>
-              <p className="text-[10px]	">水</p>
-            </div>
-            <p className="md:text-md absolute top-0 left-0 h-5 w-5 bg-aquamarine p-1 text-[8px] md:h-6 md:w-6">
-              12
-            </p>
+        <div className="flex gap-x-4 rounded-xl border-2 border-[aquamarine] bg-cultured px-4 py-3 md:mb-5 md:h-[7.25rem]">
+          <div className="h-[51px] w-[51px] sm:h-20 sm:w-20">
+            <DateCardDetail date={dateHoliday} />
           </div>
 
           <div className="flexCol text-md font-bold md:text-lg">
-            <div className="flexItemsCenter gap-1.5">
-              <ClockIcon className="h-[18px] w-[18px] text-aquamarine" />
-              <div className="flex gap-1.5 md:flex-col">
+            <div className="flex items-stretch gap-1.5">
+              <ClockIcon className="h-[18px] w-[18px] text-aquamarine md:mt-1" />
+              <div className="flex md:block">
                 <p>{`${date.format('YYYY/MM/DD')}(${getDay(date)})`}</p>
                 <p className="font-normal">{`${start_time}~${end_time}`}</p>
               </div>

@@ -1,8 +1,12 @@
 'use client';
-import { Formik } from 'formik';
-import Image from 'next/image';
 
-import DefaultButton from '../../../components/button/defaultButton';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+import { Formik } from 'formik';
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
+
+import Button from '../../../components/button';
 import { SchemaEmail } from '../Schema';
 
 interface FormValues {
@@ -10,11 +14,14 @@ interface FormValues {
 }
 
 export default function RegisterPage() {
-  const handleSubmit = async (data: FormValues) => {
-    await console.log('aaa', data);
+  const router = useRouter();
+
+  const handleRouter = () => {
+    router.push('/auth/registerConfirm');
   };
+
   return (
-    <div className="rounded-3xl bg-white p-[1.375rem] text-center lg:px-[10rem] xl:px-[19.5rem]">
+    <div className="modal p-[1.375rem] lg:px-[10rem] xl:px-[19.5rem]">
       <Image
         src="/images/HEXA-JOB-logo-mark-for-header-en.svg"
         alt="logo"
@@ -43,15 +50,16 @@ export default function RegisterPage() {
           email: '',
         }}
         validationSchema={SchemaEmail}
-        onSubmit={(data) => {
-          handleSubmit(data);
-          console.log('bbb');
+        onSubmit={(data: FormValues) => {
+          handleRouter();
+          alert('email: ' + data.email);
         }}
       >
         {({
           values,
           errors,
           touched,
+          isValid,
           handleBlur,
           handleChange,
           handleSubmit,
@@ -60,23 +68,34 @@ export default function RegisterPage() {
             className="mx-auto flex flex-col px-[0.625rem] pb-7 pt-8"
             onSubmit={handleSubmit}
           >
-            <div className="text-left">
-              <label className="text-sm font-bold">メールアドレス</label>
-              <span className="text-xs font-bold text-red">（必須）</span>
+            <div className='grid gap-2'>
+              <div className="text-left">
+                <label className="text-sm font-bold">メールアドレス</label>
+                <span className="text-xs font-bold text-red">（必須）</span>
+              </div>
+              <div className="relative flex w-full flex-row">
+                <input
+                  type="email"
+                  name="email"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="例：hexabase@hexabase.com"
+                  className={`${touched.email && errors.email
+                      ? 'border-red'
+                      : 'border-argent hover:border-aquamarine'
+                    } input-field solid mb-11 lg:mb-16`}
+                />
+                {touched.email && errors.email && (
+                  <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
+                )}
+              </div>
             </div>
-            <input
-              type="email"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="例：hexabase@hexabase.com"
-              className="solid  rounded-sm border border-argent p-[0.625rem] placeholder:text-sm placeholder:font-normal"
-            ></input>
-            <div className="mb-8 p-[0.625rem] text-left text-xs text-red lg:mb-16">
-              {errors.email}
+            <div className="w-full">
+              <Button roundedFull disabled={!isValid}>
+                送信する
+              </Button>
             </div>
-            <DefaultButton />
           </form>
         )}
       </Formik>

@@ -1,18 +1,25 @@
 'use client';
 
+import 'dayjs/locale/ja';
 import './globals.css';
 
 import Image from 'next/image';
 import { useState } from 'react';
 
+import dayjs from 'dayjs';
+
 import {
   Bars3Icon,
   ChevronUpIcon,
-  XMarkIcon,
   QuestionMarkCircleIcon,
+  XMarkIcon,
 } from '@heroicons/react/20/solid';
-import SPMenus from '../components/layout/spMenus';
+
 import Search from '../components/layout/search';
+import SPMenus from '../components/layout/spMenus';
+
+dayjs.locale('ja');
+dayjs().locale('ja');
 
 export default function RootLayout({
   children,
@@ -26,10 +33,10 @@ export default function RootLayout({
       <head />
       <body>
         <header>
-          <div className="container-responsive pt-24 sm:pt-0">
-            <div className="flex items-center justify-between pt-24 sm:h-20 sm:pt-0">
+          <div className="container-responsive">
+            <div className="flex items-center justify-between pt-24 pb-3 sm:h-20 sm:pt-0">
               <Image
-                src="images/HEXA-JOB-logo-mark-for-header.svg"
+                src="/images/HEXA-JOB-logo-mark-for-header.svg"
                 alt="logo"
                 width={169}
                 height={40}
@@ -65,10 +72,8 @@ export default function RootLayout({
           </div>
         ) : (
           <>
-            <main>
-              <div className="container-responsive">{children}</div>
-            </main>
-            <footer className="relative bg-eerieBlack pt-16 pb-32 text-white sm:pb-1 sm:pt-12">
+            <main>{children}</main>
+            <footer className="relative z-10 bg-eerieBlack pt-16 pb-32 text-white sm:pb-1 sm:pt-12">
               <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black sm:hidden">
                 <ChevronUpIcon aria-hidden="true" />
               </div>
@@ -76,7 +81,7 @@ export default function RootLayout({
                 <div className="sm:flex sm:justify-between">
                   <div className="flex items-center justify-center">
                     <Image
-                      src="images/HEXA-JOB-logo-mark.svg"
+                      src="/images/HEXA-JOB-logo-mark.svg"
                       alt="logo"
                       width={167}
                       height={38}

@@ -4,9 +4,47 @@
 
 @layer components {
   .container-responsive {
-    @apply container mx-auto px-5 xl:px-4 2xl:px-36;
+    @apply container mx-auto px-4 2xl:px-36;
   }
+
   .button-header {
     @apply h-8 rounded-[50px] border px-[20px] py-[5px] text-sm font-medium leading-5;
+  }
+
+  .flexCol {
+    @apply flex flex-col justify-between;
+  }
+
+  .flexCenter {
+    @apply flex items-center justify-between;
+  }
+
+  .flexItemsCenter {
+    @apply flex items-center;
+  }
+}
+
+@layer utilities {
+  .border-mask {
+    -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
+    mask-border: url(../public/images/subtract.svg) 30 repeat;
+  }
+  .next-btn {
+    @apply flex h-14 w-6 items-center justify-center border border-white;
+  }
+}
+
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
   }
 }

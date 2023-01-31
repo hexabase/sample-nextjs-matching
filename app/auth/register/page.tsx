@@ -15,9 +15,8 @@ interface FormValues {
 
 export default function RegisterPage() {
   const router = useRouter();
-
   const handleRouter = () => {
-    router.push('/auth/registerConfirm');
+    router.push('/auth/register-confirm');
   };
 
   return (
@@ -82,8 +81,8 @@ export default function RegisterPage() {
                   onBlur={handleBlur}
                   placeholder="例：hexabase@hexabase.com"
                   className={`${touched.email && errors.email
-                      ? 'border-red'
-                      : 'border-argent hover:border-aquamarine'
+                    ? 'border-red'
+                    : 'border-argent hover:border-aquamarine'
                     } input-field solid mb-11 lg:mb-16`}
                 />
                 {touched.email && errors.email && (

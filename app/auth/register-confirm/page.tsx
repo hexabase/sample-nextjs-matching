@@ -20,7 +20,7 @@ export default function RegisterConfirm() {
   const router = useRouter();
 
   const handleRouter = () => {
-    router.push('/auth/registerSuccess');
+    router.push('/auth/register-success');
   };
 
   return (
@@ -43,7 +43,7 @@ export default function RegisterConfirm() {
         <h1 className="pb-10 font-bold lg:pb-6 lg:text-2xl">
           求人企業様会員登録フォーム
         </h1>
-
+        
         <Formik
           initialValues={{
             companyName: '',
@@ -106,7 +106,7 @@ export default function RegisterConfirm() {
                         } input-field solid`}
                     />
                     {touched.companyName && errors.companyName && (
-                      <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
+                      <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red"/>
                     )}
                   </div>
                 </div>

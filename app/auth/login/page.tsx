@@ -13,11 +13,11 @@ interface FormValues {
   email: string;
   password: string;
 }
+
 export default function Login() {
   const router = useRouter();
-
   const handleRouter = () => {
-    router.push('/auth/registerSuccess');
+    router.push('/auth/register-success');
   };
 
   return (

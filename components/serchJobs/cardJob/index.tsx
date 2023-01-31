@@ -1,7 +1,11 @@
+'use client';
+
 import 'dayjs/locale/ja';
 
-import dayjs from 'dayjs';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+import dayjs from 'dayjs';
 
 import { ClockIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
@@ -17,11 +21,19 @@ interface JobProps {
 }
 
 export default function CardJob({ job }: JobProps) {
+  const router = useRouter();
+
   const dayOfWeek = getDayOfWeek(job.date);
-  console.log('dayOfWeek', dayOfWeek);
+
+  const handleClickCard = () => {
+    router.push(`/jobs/${job.id}`);
+  };
 
   return (
-    <div className="rounded-[5px] bg-white pb-3 hover:drop-shadow-md">
+    <div
+      onClick={handleClickCard}
+      className="rounded-[5px] bg-white pb-3 hover:drop-shadow-md"
+    >
       <Image
         src={job.imgUrl === '' ? '/img1.png' : job.imgUrl}
         alt="image1"

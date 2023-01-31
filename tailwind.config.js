@@ -11,6 +11,7 @@ module.exports = {
     },
     fontFamily: {
       sans: ['Noto Sans JP', 'sans-serif'],
+      segoe: ['Segoe Script'],
     },
     extend: {
       colors: {
@@ -24,6 +25,8 @@ module.exports = {
         spanishGray: '#9c9c9c',
         lightSilver: '#d9d9d9',
         argent: '#c1c1c1',
+        cultured: '#f7f7f7',
+        culturedF4: '#f4f4f4',
         platinum: '#e3e3e3',
       },
     },

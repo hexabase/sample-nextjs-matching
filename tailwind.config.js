@@ -6,6 +6,9 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    container: {
+      center: true,
+    },
     fontFamily: {
       sans: ['Noto Sans JP', 'sans-serif'],
     },
@@ -23,6 +26,7 @@ module.exports = {
         lightSilver: '#d9d9d9',
         argent: '#c1c1c1',
         jellyBean: '#df5656',
+        platinum: '#e3e3e3',
       },
     },
   },

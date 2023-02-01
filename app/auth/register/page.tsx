@@ -1,9 +1,12 @@
 'use client';
 
-import { Formik } from 'formik';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
-import DefaultButton from '../../../components/button/defaultButton';
+import { Formik } from 'formik';
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
+
+import Button from '../../../components/button';
 import { SchemaEmail } from '../Schema';
 
 interface FormValues {
@@ -11,8 +14,14 @@ interface FormValues {
 }
 
 export default function RegisterPage() {
+  const router = useRouter();
+
+  const handleRouter = () => {
+    router.push('/auth/register-confirm');
+  };
+
   return (
-    <div className="rounded-3xl bg-white p-[1.375rem] text-center shadow-[0_10px_5px_0_rgba(0,0,0,0.1)] lg:px-[10rem] 2xl:px-[19.5rem]">
+    <div className="modal p-[1.375rem] lg:px-[10rem] xl:px-[19.5rem]">
       <Image
         src="/images/HEXA-JOB-logo-mark-for-header-en.svg"
         alt="logo"
@@ -42,32 +51,50 @@ export default function RegisterPage() {
         }}
         validationSchema={SchemaEmail}
         onSubmit={(data: FormValues) => {
-          alert(`email: ${data.email}`);
+          handleRouter();
+          alert('email: ' + data.email);
         }}
       >
-        {({ values, errors, handleBlur, handleChange, handleSubmit }) => (
+        {({
+          values,
+          errors,
+          touched,
+          isValid,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+        }) => (
           <form
             className="mx-auto flex flex-col px-[0.625rem] pb-7 pt-8"
             onSubmit={handleSubmit}
           >
-            <div className="text-left">
-              <label className="text-sm font-bold">メールアドレス</label>
-              <span className="text-xs font-bold text-red">（必須）</span>
-            </div>
-            <input
-              type="email"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder="例：hexabase@hexabase.com"
-              className="solid rounded-sm border border-argent p-[0.625rem] placeholder:text-sm placeholder:font-normal"
-            ></input>
-            <div className="mb-8 p-[0.625rem] text-left text-xs text-red lg:mb-16">
-              {errors.email}
+            <div className='grid gap-2'>
+              <div className="text-left">
+                <label className="text-sm font-bold">メールアドレス</label>
+                <span className="text-xs font-bold text-red">（必須）</span>
+              </div>
+              <div className="relative flex w-full flex-row">
+                <input
+                  type="email"
+                  name="email"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="例：hexabase@hexabase.com"
+                  className={`${touched.email && errors.email
+                    ? 'border-red'
+                    : 'border-argent hover:border-aquamarine'
+                    } input-field solid mb-11 lg:mb-16`}
+                />
+                {touched.email && errors.email && (
+                  <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
+                )}
+              </div>
             </div>
             <div className="w-full">
-              <DefaultButton roundedFull>送信する</DefaultButton>
+              <Button roundedFull disabled={!isValid}>
+                送信する
+              </Button>
             </div>
           </form>
         )}

@@ -1,28 +1,37 @@
+'use client';
+
 import React from 'react';
 
-interface ButtonStatus {
+interface ButtonProps {
   disabled?: boolean;
   roundedFull?: boolean;
   children: React.ReactNode;
+  onClick?: () => void
 }
 
-export default function DefaultButton({
+export default function Button({
   disabled,
   roundedFull,
   children,
-}: ButtonStatus) {
+  onClick
+}: ButtonProps) {
   const buttonStatus = disabled
     ? 'cursor-not-allowed bg-lightSilver hover:bg-argent'
     : 'bg-pastelRed hover:bg-jellyBean';
 
   const buttonType = roundedFull
     ? 'rounded-full p-4 sm:w-72 w-full'
-    : 'rounded px-7 py-4';
+    : 'rounded-sm';
+
+    const handleClick =() =>{
+      onClick && onClick()
+    }
   return (
     <div>
       <button
-        className={` text-lg text-white  lg:mx-auto  ${buttonStatus} ${buttonType}`}
+        className={`text-lg text-white  lg:mx-auto  ${buttonStatus} ${buttonType}`}
         type={!disabled ? 'submit' : 'button'}
+        onClick={handleClick}
       >
         {children}
       </button>

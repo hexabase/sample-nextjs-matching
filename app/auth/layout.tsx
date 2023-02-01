@@ -1,5 +1,7 @@
 'use client';
+
 import React from 'react';
+
 import { HomeIcon } from '@heroicons/react/20/solid';
 
 export default function AuthLayout({

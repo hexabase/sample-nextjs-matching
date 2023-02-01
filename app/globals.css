@@ -4,11 +4,19 @@
 
 @layer components {
   .container-responsive {
-    @apply container mx-auto px-4 2xl:px-36;
+    @apply container mx-auto px-4 xl:px-4 2xl:px-36;
   }
 
   .button-header {
     @apply h-8 rounded-[50px] border px-[20px] py-[5px] text-sm font-medium leading-5;
+  }
+
+  .input-field {
+    @apply w-full rounded-sm border bg-antiFlashWhite p-[0.625rem] placeholder:text-sm placeholder:font-normal focus:border-aquamarine focus:outline-none focus:placeholder:text-transparent;
+  }
+
+  .modal {
+    @apply rounded-3xl bg-white text-center shadow-lg;
   }
 
   .flexCol {
@@ -22,13 +30,7 @@
   .flexItemsCenter {
     @apply flex items-center;
   }
-}
 
-@layer utilities {
-  .border-mask {
-    -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
-    mask-border: url(../public/images/subtract.svg) 30 repeat;
-  }
   .next-btn {
     @apply flex h-14 w-6 items-center justify-center border border-white;
   }
@@ -46,5 +48,10 @@
       -ms-overflow-style: none; /* IE and Edge */
       scrollbar-width: none; /* Firefox */
     }
+  }
+
+  .border-mask {
+    -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
+    mask-border: url(../public/images/subtract.svg) 30 repeat;
   }
 }

@@ -29,7 +29,7 @@ export default function Button({
   return (
     <div>
       <button
-        className={` text-lg text-white  lg:mx-auto  ${buttonStatus} ${buttonType}`}
+        className={`text-lg text-white  lg:mx-auto  ${buttonStatus} ${buttonType}`}
         type={!disabled ? 'submit' : 'button'}
         onClick={handleClick}
       >

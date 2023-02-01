@@ -15,6 +15,7 @@ interface FormValues {
 
 export default function RegisterPage() {
   const router = useRouter();
+
   const handleRouter = () => {
     router.push('/auth/register-confirm');
   };

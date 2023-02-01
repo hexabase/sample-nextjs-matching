@@ -15,7 +15,43 @@
     @apply w-full rounded-sm border bg-antiFlashWhite p-[0.625rem] placeholder:text-sm placeholder:font-normal focus:border-aquamarine focus:outline-none focus:placeholder:text-transparent;
   }
 
-  .modal{
+  .modal {
     @apply rounded-3xl bg-white text-center shadow-lg;
+  }
+
+  .flexCol {
+    @apply flex flex-col justify-between;
+  }
+
+  .flexCenter {
+    @apply flex items-center justify-between;
+  }
+
+  .flexItemsCenter {
+    @apply flex items-center;
+  }
+
+  .next-btn {
+    @apply flex h-14 w-6 items-center justify-center border border-white;
+  }
+}
+
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+
+  .border-mask {
+    -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
+    mask-border: url(../public/images/subtract.svg) 30 repeat;
   }
 }

@@ -1,4 +1,3 @@
-
 interface ApplyProps {
   handleOpenModal : () => void;
 }

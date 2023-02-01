@@ -22,13 +22,7 @@
   .flexItemsCenter {
     @apply flex items-center;
   }
-}
 
-@layer utilities {
-  .border-mask {
-    -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
-    mask-border: url(../public/images/subtract.svg) 30 repeat;
-  }
   .next-btn {
     @apply flex h-14 w-6 items-center justify-center border border-white;
   }
@@ -46,5 +40,10 @@
       -ms-overflow-style: none; /* IE and Edge */
       scrollbar-width: none; /* Firefox */
     }
+  }
+
+  .border-mask {
+    -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
+    mask-border: url(../public/images/subtract.svg) 30 repeat;
   }
 }

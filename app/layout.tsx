@@ -26,7 +26,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [logged, setLogged] = useState(true);
+  const [logged, setLogged] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   return (

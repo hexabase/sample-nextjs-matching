@@ -1,4 +1,9 @@
-import { ClockIcon, MapPinIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import {
+  ClockIcon,
+  ExclamationCircleIcon,
+  MapPinIcon,
+  XMarkIcon,
+} from '@heroicons/react/20/solid';
 import { CurrencyYenIcon } from '@heroicons/react/24/solid';
 import { useFormik } from 'formik';
 import React from 'react';
@@ -52,6 +57,7 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
               アートホテルのフロントstaff♪→アートとオシャレが融合したホテルで、フロント業務全般をお願いします
             </p>
           </div>
+    
           <div className="flex h-[4.5rem] md:h-full md:pt-3">
             <div className="mr-2 flex h-[4.625rem] flex-col justify-between">
               <ClockIcon className="h-[1.125rem] w-[1.125rem] text-aquamarine" />
@@ -81,7 +87,7 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
           className="flexCol gap-16 md:gap-2 "
         >
           <div className="h-[19.75rem] pt-3 md:h-[21rem] md:px-10">
-            <div>
+            <div className="relative">
               <div className="text-xs font-bold">
                 <label htmlFor="name">お名前</label>
                 <span className="text-pastelRed">（必須）</span>
@@ -92,14 +98,19 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
                 type="text"
                 value={formik.values.name}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 placeholder="お名前を記入してください"
-                className={` ${
-                  formik.isValid ? 'border-[#CACACA]' : 'border-[red]'
-                } inputModal h-[2.5rem]`}
+                className={`${
+                  formik.touched.name && formik.errors.name
+                    ? 'border-red'
+                    : 'border-argent hover:border-aquamarine'
+                } input-field solid`}
               />
-              <h1></h1>
+              {formik.touched.name && formik.errors.name && (
+                <ExclamationCircleIcon className="absolute top-7 right-2 h-6 w-6 text-red" />
+              )}
             </div>
-            <div className="mt-4">
+            <div className="relative mt-4">
               <div className="text-xs font-bold">
                 <label htmlFor="email">メールアドレス</label>
                 <span className="text-pastelRed">（必須）</span>
@@ -110,11 +121,17 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
                 type="text"
                 value={formik.values.email}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 placeholder="メールアドレス"
-                className={` ${
-                  formik.isValid ? 'border-[#CACACA]' : 'border-[red]'
-                } inputModal h-[2.5rem]`}
+                className={`${
+                  formik.touched.email && formik.errors.email
+                    ? 'border-red'
+                    : 'border-argent hover:border-aquamarine'
+                } input-field solid`}
               />
+              {formik.touched.email && formik.errors.email && (
+                <ExclamationCircleIcon className="absolute top-7 right-2 h-6 w-6 text-red" />
+              )}
             </div>
             <div className="mt-4">
               <div className="text-xs font-bold">
@@ -126,11 +143,14 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
                 id="ownPR"
                 value={formik.values.ownPR}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 rows={5.5}
                 cols={20}
-                className={` ${
-                  formik.isValid ? 'border-[#CACACA]' : 'border-[red]'
-                } inputModal h-[7.7rem] `}
+                className={`${
+                  formik.touched.ownPR && formik.errors.ownPR
+                    ? 'border-red'
+                    : 'border-argent hover:border-aquamarine'
+                } input-field solid h-[7.7rem]`}
               />
             </div>
           </div>

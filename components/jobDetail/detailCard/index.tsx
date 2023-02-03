@@ -28,11 +28,11 @@ export default function DetailCard({ job }: DetailCardProps) {
   const dateHoliday = checkHoliday(date);
 
   return (
-    <div className="flexCol top-20 w-full md:sticky md:block md:h-[581px] md:w-96 md:rounded-[5px] md:bg-culturedF4 md:shadow-2xl lg:w-[25rem]">
+    <div className="flexCol top-20 w-full md:sticky md:block md:h-[581px] md:w-96 md:rounded-[5px] md:bg-culturedF4  lg:w-[25rem]">
       <div className="md-h-[18rem] relative h-[17.5rem] w-full">
-        <Image src="/images/img1.png" alt="image1" fill />
+        <Image src="/maskGroup.png" alt="image1" fill />
       </div>
-      <div className="container-responsive md:mx-0 md:mt-8 md:px-5">
+      {/* <div className="container-responsive md:mx-0 md:mt-8 md:px-5">
         <div className="gap-3 pt-5 pb-12 font-bold md:hidden">
           <p className="text-[10px]">{title}</p>
           <p className="text-base">{des}</p>
@@ -65,7 +65,7 @@ export default function DetailCard({ job }: DetailCardProps) {
         <div className="flexCenter fixed bottom-0 left-0 z-30 w-full flex-col bg-white py-7 sm:hidden md:static md:flex md:rounded-[5px] md:bg-culturedF4 md:pt-0">
           <Apply />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

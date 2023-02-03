@@ -30,6 +30,7 @@ module.exports = {
         cultured: '#f7f7f7',
         culturedF4: '#f4f4f4',
         platinum: '#e3e3e3',
+        lightred:'#FF6666'
       },
     },
   },

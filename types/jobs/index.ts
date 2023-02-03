@@ -22,4 +22,7 @@ export type TJob = {
   endTime: string;
   tags: string[];
   hourlyWage: number;
+  jobDetail: string;
+  place: string;
+
 };

@@ -12,7 +12,7 @@ export default function Home() {
       id: '1',
       imgUrl: '',
       jobName: 'CROSSROAD株式会社',
-      des: '無料の賄い付き！1日3時間〜料理とサービスにこだわった空間でお客様をおもてなししましょう！',
+      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
       date: '2023/01/09',
       startTime: '14:00',
       endTime: '21:00',
@@ -151,7 +151,7 @@ export default function Home() {
 
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:mt-3 sm:grid-cols-2 lg:grid-cols-2 lg:gap-x-10 lg:gap-y-8">
+          <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-2.5 sm:mt-3 lg:grid-cols-2 lg:gap-x-10 lg:gap-y-8">
             {jobs[0] &&
               jobs.map((job, jobIndex) => <CardJob key={jobIndex} job={job} />)}
           </div>

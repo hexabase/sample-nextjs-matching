@@ -31,27 +31,40 @@
     @apply flex items-center;
   }
 
+  .borderModal {
+    @apply border-y-[1px] border-solid border-[#D9D9D9]
+  }
+
+  .htmlHidden {
+    @apply overflow-hidden
+  }
+
   .next-btn {
     @apply flex h-14 w-6 items-center justify-center border border-white;
   }
-}
 
-@layer utilities {
-  @variants responsive {
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
+
+
+  @layer utilities {
+    @variants responsive {
+
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Hide scrollbar for IE, Edge and Firefox */
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
+      }
     }
 
-    /* Hide scrollbar for IE, Edge and Firefox */
-    .no-scrollbar {
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none; /* Firefox */
+    .border-mask {
+      -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
+      mask-border: url(../public/images/subtract.svg) 30 repeat;
     }
-  }
-
-  .border-mask {
-    -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
-    mask-border: url(../public/images/subtract.svg) 30 repeat;
   }
 }

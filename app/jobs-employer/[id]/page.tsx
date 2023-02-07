@@ -42,7 +42,6 @@ export default function JobDetails() {
           <ul className=" flex justify-around md:justify-start flex-wrap -mb-px">
             <li className="mr-2">
               <a href="#" className="inline-block p-2 md:px-16 border-b-2 border-[#FF6666] rounded-t-lg active hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-
                 <p>求人詳細</p>
               </a>
             </li>
@@ -65,10 +64,10 @@ export default function JobDetails() {
           </ul>
         </div>
       </div>
-      <div className="flex flex-col-reverse px-5 md:px-0 md:container-responsive gap-4 md:flex md:flex-row-reverse md:w-full md:justify-around md:py-11">
+      <div className="flex flex-col-reverse md:container-responsive gap-4 md:flex md:flex-row-reverse md:w-full md:justify-around md:py-11">
 
 
-        <div className='flex flex-col-reverse md:flex md:flex-row-reverse md:w-full md:justify-around md:py-11'>
+        <div className='flex flex-col-reverse py-11 md:flex md:flex-row-reverse md:w-full md:justify-around md:py-11'>
 
           <div className="container-responsive flex mb-[71px] md:mb-0  md:mx-0 md:px-0 md:w-1/2 ">
             <div className="pt-2.5 md:pt-0 lg:pr-16 md:pl-2">

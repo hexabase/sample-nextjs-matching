@@ -16,10 +16,7 @@ export default function JobDetails() {
       content:
         'ホールスタッフ、キッチンスタッフ',
       jobDetail: [
-
-
         '■ホールスタッフ 主な業務の流れはお客様のご案内、注文を伺う、商品の提供、お会計になります。 テイクアウトや電話での予約受付もお願いします！',
-
       ],
       workplace: '東京都日野市百草629-7',
       tag: '12/21(水)',
@@ -34,10 +31,7 @@ export default function JobDetails() {
       content:
         'ホールスタッフ、キッチンスタッフ',
       jobDetail: [
-
-
         '■ホールスタッフ 主な業務の流れはお客様のご案内、注文を伺う、商品の提供、お会計になります。 テイクアウトや電話での予約受付もお願いします！',
-
       ],
       workplace: '東京都日野市百草629-7',
       tag: '12/21(水)',
@@ -52,10 +46,7 @@ export default function JobDetails() {
       content:
         'ホールスタッフ、キッチンスタッフ',
       jobDetail: [
-
-
         '■ホールスタッフ 主な業務の流れはお客様のご案内、注文を伺う、商品の提供、お会計になります。 テイクアウトや電話での予約受付もお願いします！',
-
       ],
       workplace: '東京都日野市百草629-7',
       tag: '12/21(水)',
@@ -70,10 +61,7 @@ export default function JobDetails() {
       content:
         'ホールスタッフ、キッチンスタッフ',
       jobDetail: [
-
-
         '■ホールスタッフ 主な業務の流れはお客様のご案内、注文を伺う、商品の提供、お会計になります。 テイクアウトや電話での予約受付もお願いします！',
-
       ],
       workplace: '東京都日野市百草629-7',
       tag: '12/21(水)',
@@ -88,10 +76,7 @@ export default function JobDetails() {
       content:
         'ホールスタッフ、キッチンスタッフ',
       jobDetail: [
-
-
         '■ホールスタッフ 主な業務の流れはお客様のご案内、注文を伺う、商品の提供、お会計になります。 テイクアウトや電話での予約受付もお願いします！',
-
       ],
       workplace: '東京都日野市百草629-7',
       tag: '12/21(水)',
@@ -142,10 +127,7 @@ export default function JobDetails() {
       content:
         'ホールスタッフ、キッチンスタッフ',
       jobDetail: [
-
-
         '■ホールスタッフ 主な業務の流れはお客様のご案内、注文を伺う、商品の提供、お会計になります。 テイクアウトや電話での予約受付もお願いします！',
-
       ],
       workplace: '東京都日野市百草629-7',
       tag: '12/21(水)',
@@ -153,7 +135,6 @@ export default function JobDetails() {
   ];
   const tags = ['12月21日(水)', '検品'];
   return (
-
     <>
       <div className="bg-antiFlashWhite">
         <div className="container-responsive pb-16 pt-2.5 sm:pt-6 sm:pb-20 ">
@@ -183,7 +164,6 @@ export default function JobDetails() {
           </div>
         </div>
       </div>
-
       <div className="sm:hidden">
         <FooterMobile />
       </div>

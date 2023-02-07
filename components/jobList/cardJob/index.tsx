@@ -48,7 +48,7 @@ export default function CardJob({ job }: JobProps) {
       <div className="md:w-64 flex flex-col  pb-3 text-[9px] font-normal leading-[13px] md:text-xs w-1/2">
         <div>
 
-          <p className="h-8 md:h-20 text-[8px] font-bold leading-3 md:w-[248px] md:text-sm lg:text-lg">
+          <p className="h-8 overflow-hidden text-ellipsis inline-block  md:h-20 text-[8px] font-bold leading-3 md:w-[248px] md:text-sm lg:text-lg">
             {job.title}
           </p>
         </div>

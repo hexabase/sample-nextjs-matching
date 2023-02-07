@@ -2,6 +2,7 @@ import Pagination from "../../components/pagination";
 import CardJob from "../../components/jobList/cardJob";
 import FooterMobile from "../../components/serchJobs/footerMobile";
 import { LJobDetail } from "../../types/jobsList";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 
 export default function JobDetails() {
@@ -133,20 +134,27 @@ export default function JobDetails() {
       tag: '12/21(水)',
     },
   ];
-  const tags = ['12月21日(水)', '検品'];
+
   return (
     <>
       <div className="bg-antiFlashWhite">
-        <div className="container-responsive pb-16 pt-2.5 sm:pt-6 sm:pb-20 ">
+        <div className="container-responsive pb-16 pt-2.5 mt-8 md:mt-0 sm:pt-6 sm:pb-20 ">
           <div className='flex justify-end mb-10 md:mb-14'>
             <button type="button" className="bg-[#FF6666] text-white
           focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 
           py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 
-          focus:outline-none dark:focus:ring-blue-800">+ 新規求人登録</button>
+          focus:outline-none dark:focus:ring-blue-800">
+              <div className="flex">
+                <PlusIcon width={22} height={22} />
+                <p>新規求人登録</p>
+
+              </div>
+
+            </button>
 
           </div>
-          <div className="mb-16 sm:flex sm:items-center sm:gap-2.5">
-            <div className="w-full flex flex-col md:flex-row md:justify-between md:items-center	 gap-x-2.5 text-xs font-normal leading-[17px]">
+          <div className="mb-10 md:mb-16 sm:flex sm:items-center sm:gap-2.5">
+            <div className="w-full flex flex-col justify-center align-center md:flex-row md:justify-between md:items-center	 gap-x-2.5 text-xs font-normal leading-[17px]">
               <p className="text-sm "><span className="text-lg font-bold">４</span> 件の求人が登録されています</p>
               <Pagination />
             </div>
@@ -158,7 +166,7 @@ export default function JobDetails() {
           </div>
 
           <div className="sm:flex sm:items-center sm:gap-2.5 md:mt-[48px]">
-            <div className="w-full flex justify-end gap-x-2.5 text-xs font-normal leading-[17px]">
+            <div className="w-full flex justify-center md:justify-end gap-x-2.5 text-xs font-normal leading-[17px]">
               <Pagination />
             </div>
           </div>

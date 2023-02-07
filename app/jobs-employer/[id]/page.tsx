@@ -9,7 +9,6 @@ import BackToJobsList from '../../../components/common/backtoJobsList';
 import { LJobDetail } from '../../../types/jobsList';
 
 const jobDetailMock: LJobDetail = {
-
   price: 1250,
   startTime: '14:00',
   endTime: '21:00',
@@ -18,10 +17,7 @@ const jobDetailMock: LJobDetail = {
   content:
     'ホールスタッフ、キッチンスタッフ',
   jobDetail: [
-
-
     '■ホールスタッフ 主な業務の流れはお客様のご案内、注文を伺う、商品の提供、お会計になります。 テイクアウトや電話での予約受付もお願いします！',
-
   ],
   workplace: '東京都日野市百草629-7',
   tag: '12/21(水)',
@@ -29,7 +25,6 @@ const jobDetailMock: LJobDetail = {
 
 export default function JobDetails() {
   const [job, setJob] = useState<LJobDetail>(jobDetailMock);
-
   return (
     <>
       <div className="container-responsive ">
@@ -53,37 +48,27 @@ export default function JobDetails() {
                     <p className='text-[14px] leading-4'>
                       46
                     </p>
-
                   </div>
                 </p>
-
-
               </a>
             </li>
-
           </ul>
         </div>
       </div>
       <div className="flex flex-col-reverse md:container-responsive gap-4 md:flex md:flex-row-reverse md:w-full md:justify-around md:py-11">
-
-
         <div className='flex flex-col-reverse py-11 md:flex md:flex-row-reverse md:w-full md:justify-around md:py-11'>
-
           <div className="container-responsive flex mb-[71px] md:mb-0  md:mx-0 md:px-0 md:w-1/2 ">
             <div className="pt-2.5 md:pt-0 lg:pr-16 md:pl-2">
               <div className="pt-1 md:flexCol h-20 ">
-
                 <p className="h-12 text-base font-bold md:h-20 md:text-xl xl:text-2xl">
                   {job.title}
                 </p>
               </div>
               <div className='md:pl-3 md:pr-4 lg:mt-4 xl:mt-0'>
-
                 <div className='md:mt-8 lg:mt-0'>
                   <p className='font-normal text-base'>{job.des}</p>
                 </div>
                 <div className="mt-4">
-
                   <div className="flexItemsCenter mb-4">
                     <ClockIcon className="mr-2 h-[30px] w-[27px] text-aquamarine" />
                     <p className='font-bold pr-2.5'>{job.tag}</p>
@@ -104,17 +89,14 @@ export default function JobDetails() {
                   <div className="flex items-center gap-2">
                     <p className="text-md font-bold md:text-base">作業内容</p>
                   </div>
-
                   <p className="w-full mt-2 pb-1.5 text-justify text-xs font-normal md:text-base">
                     {job.content}
                   </p>
-
 
                   <div className="flex items-center gap-2 mt-4 ">
                     <p className="text-md font-bold md:text-base">作業内容詳細</p>
                   </div>
                   <div className='h-[auto] max-w-[532px] md:h-[621px] w-full'>
-
                     <p className="text-xs font-normal md:text-base">
                       ■ホールスタッフ <br />
                       <br />
@@ -125,12 +107,9 @@ export default function JobDetails() {
                       仕込み、調理、盛り付け、洗い物が主な業務内容です。 初めはホールからスタートして、次第にメニューを覚えてきたら簡単なものから始めましょう！
                       <br />
                       <br />
-
                       マニュアルもご用意しているので、ゆっくりできることを増やしていきましょう！
                     </p>
                   </div>
-
-
                 </div>
               </div>
             </div>

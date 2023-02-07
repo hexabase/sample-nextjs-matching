@@ -31,13 +31,10 @@ export default function CardJob({ job }: JobProps) {
           className="w-[170px] md:w-full rounded-t-md md:h-52 h-[122px] object-fit"
         />
         <div className='w-full flex flex-col md:flex-row md:gap-[30px]'>
-
           <p className='mt-[23px] md:mt-0 text-[14px] font-bold'>求職者数</p>
           <div className='flex'>
             <p className='text-[20px]'><span className='text-[50px] ml-[60px] md:ml-0 md:text-[80px] text-[#FF6666]'>3</span> 人</p>
-
           </div>
-
         </div>
       </div>
 
@@ -48,18 +45,19 @@ export default function CardJob({ job }: JobProps) {
           </p>
         </div>
 
-        <div className='h-22 mt-[10px] md:h-24 flex flex-col gap-3 md:gap-1 md:pr-8 md:mt-[30px]'>
+        <div className='h-22 mt-[10px] md:h-24 flex flex-col gap-3 md:gap-2 md:pr-8 md:mt-[30px]'>
           <div className="flex items-center">
             <ClockIcon className="h-3 w-3 text-aquamarine md:h-4 md:w-4" />
-            <p className="ml-1.5 font-bold md:text-base">
+            <p className="ml-1.5 font-bold md:text-sm">
+              {job.tag}
             </p>
-            <p className="ml-1.5 text-[10px] md:mt-0.5 md:text-base">{`${job.startTime}〜${job.endTime}`}</p>
+            <p className="ml-1.5 text-[10px] md:mt-0.5 md:text-sm">{`${job.startTime}〜${job.endTime}`}</p>
           </div>
 
           <div className=" flex  items-center">
             <MapPinIcon className="mr-3 h-3 w-3 text-aquamarine md:h-3 md:w-3 md:text-base" />
             <div className="w-full">
-              <p className='w-full text-[10px] leading-3 md:text-base'>
+              <p className='w-full text-[10px] leading-3 md:text-sm'>
                 {job.workplace}
               </p>
             </div>
@@ -70,10 +68,10 @@ export default function CardJob({ job }: JobProps) {
               <CurrencyYenIcon className="h-3 w-3 text-aquamarine md:h-3 md:w-3 md:text-base" />
             </p>
             <div className='flex items-center gap-1'>
-              <p className="text-[10px] md:text-[14px] font-bold md:text-base">
+              <p className="text-[10px] md:text-[14px] font-bold md:text-sm">
                 {job.price.toLocaleString()}
               </p>
-              <span className='text-[10px] md:text-base'>
+              <span className='text-[10px] md:text-sm'>
                 円/1時給
               </span>
             </div>

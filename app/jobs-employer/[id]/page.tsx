@@ -56,8 +56,8 @@ export default function JobDetails() {
         </div>
       </div>
       <div className="flex flex-col-reverse md:container-responsive gap-4 md:flex md:flex-row-reverse md:w-full md:justify-around md:py-11">
-        <div className='flex flex-col-reverse py-11 md:flex md:flex-row-reverse md:w-full md:justify-around md:py-11'>
-          <div className="container-responsive flex mb-[71px] md:mb-0  md:mx-0 md:px-0 md:w-1/2 ">
+        <div className='flex flex-col-reverse px-4 md:px-0 py-11 md:flex md:flex-row-reverse md:w-full md:justify-around md:py-11'>
+          <div className="container-responsive mt-[10px] md:mt-0 flex mb-[71px] md:mb-0  md:mx-0 md:px-0 md:w-1/2 ">
             <div className="pt-2.5 md:pt-0 lg:pr-16 md:pl-2">
               <div className="pt-1 md:flexCol h-20 ">
                 <p className="h-12 text-base font-bold md:h-20 md:text-xl xl:text-2xl">
@@ -65,10 +65,10 @@ export default function JobDetails() {
                 </p>
               </div>
               <div className='md:pl-3 md:pr-4 lg:mt-4 xl:mt-0'>
-                <div className='md:mt-8 lg:mt-0'>
+                <div className='mt-[10px] md:mt-8 lg:mt-0'>
                   <p className='font-normal text-base'>{job.des}</p>
                 </div>
-                <div className="mt-4">
+                <div className="mt-7 md:mt-4">
                   <div className="flexItemsCenter mb-4">
                     <ClockIcon className="mr-2 h-[30px] w-[27px] text-aquamarine" />
                     <p className='font-bold pr-2.5'>{job.tag}</p>

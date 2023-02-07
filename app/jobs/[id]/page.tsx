@@ -8,9 +8,10 @@ import { CurrencyYenIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
 import BackToHome from '../../../components/common/backToHome';
 import BackToJobs from '../../../components/common/backToJobs';
-import Apply from '../../../components/jobDetail/apply';
 import DetailCard from '../../../components/jobDetail/detailCard';
+import JobModal from '../../../components/jobDetail/jobModal';
 import { TJobDetail } from '../../../types/jobs';
+import Apply from '../../../components/jobDetail/apply';
 
 const jobDetailMock: TJobDetail = {
   date: dayjs(),
@@ -28,6 +29,19 @@ const jobDetailMock: TJobDetail = {
 
 function JobDetails() {
   const [job, setJob] = useState<TJobDetail>(jobDetailMock);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const handleOpenModal: () => void = () => {
+    setOpenModal(true);
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.add('htmlHidden');
+  };
+
+  const handleCloseModal: () => void = () => {
+    setOpenModal(false);
+    const html = document.getElementsByTagName('html')[0];
+    html.classList.remove('htmlHidden');
+  };
 
   return (
     <>
@@ -38,12 +52,8 @@ function JobDetails() {
         </div>
       </div>
 
-      <div className="md:container-responsive gap-4 md:flex md:flex-row-reverse md:gap-10 md:py-11">
-        <div className="md:w-96 lg:w-[25rem]">
-          <DetailCard job={job} />
-        </div>
-
-        <div className="container-responsive flex flex-col-reverse justify-between pb-20 md:mx-0 md:px-0">
+      <div className="md:container-responsive md:flex md:flex-row-reverse md:py-11">
+        <div className="container-responsive flex flex-col-reverse justify-between pb-20 md:mx-0 md:flex-row md:gap-10 md:px-0">
           <div className="pt-2.5">
             <div className="md:flexCol hidden h-20 md:h-[135px]">
               <p className="text-[10px] font-normal md:text-lg">{job.title}</p>
@@ -51,19 +61,17 @@ function JobDetails() {
                 {job.des}
               </p>
             </div>
-
             <div className="mt-4 md:mt-14">
               <div className="flex items-center  gap-2">
                 <BriefcaseIcon className="h-[18px] w-[18px]" />
                 <p className="text-md font-bold md:text-lg">作業内容</p>
               </div>
-
               <p className="w-full pt-3 pb-7 text-justify text-xs font-normal md:text-lg">
                 【作業内容】 {job.jobContent}
               </p>
 
               <div className="relative mt-4 w-full">
-                <p className="absolute top-[-15px] left-[-7px] z-20 rotate-[-9deg] font-segoe text-2xl font-bold text-aquamarine md:top-0 md:left-3">
+                <p className="absolute top-[-15px] left-[-7px] z-10 rotate-[-9deg] font-segoe text-2xl font-bold text-aquamarine md:top-0 md:left-3">
                   Enjoy work
                 </p>
                 <div className="border-mask z-10 w-full bg-antiFlashWhite px-6 pb-7 pt-14">
@@ -84,7 +92,6 @@ function JobDetails() {
                 <p className="text-xs font-normal md:text-base">円</p>
               </div>
             </div>
-
             <div className="mt-8">
               <div className="flexItemsCenter mb-4">
                 <MapPinIcon className="mr-2 h-[18px] w-[18px]" />
@@ -94,12 +101,19 @@ function JobDetails() {
                 〒{job.workplace}
               </p>
             </div>
-
-            <div className="flexCenter flex-col pt-12 md:hidden">
-              <Apply />
+            <h1></h1>
+            <div className="py-[1.875rem] text-center md:hidden">
+              <Apply handleOpenModal={handleOpenModal} />
             </div>
           </div>
+
+          <div className="md:w-[25rem]">
+            <DetailCard handleOpenModal={handleOpenModal} job={job} />
+          </div>
         </div>
+        {openModal && (
+          <JobModal handleCloseModal={handleCloseModal} job={job} />
+        )}
       </div>
     </>
   );

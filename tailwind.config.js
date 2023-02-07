@@ -15,7 +15,9 @@ module.exports = {
     },
     extend: {
       colors: {
+        blackRgba: 'rgba(0, 0, 0, 0.6)',
         antiFlashWhite: '#f2f2f2',
+        white: '#ffffff',
         aquamarine: '#66ffcc',
         red: '#ff0000',
         pastelRed: '#ff6666',

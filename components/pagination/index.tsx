@@ -1,7 +1,7 @@
 const Pagination = () => {
   return (
     <>
-      <div className="mt-[22px] md:mt-0 flex justify-center md:justify-end bg-white md:px-3 md:py-3 sm:px-6">
+      <div className="mt-[22px] md:mt-0 flex justify-center md:justify-end bg-[f2f2f2] md:px-3 md:py-3 sm:px-6">
         <div className=" sm:flex sm:flex-1 sm:items-center sm:justify-between">
           <div>
             <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm gap-2" aria-label="Pagination">

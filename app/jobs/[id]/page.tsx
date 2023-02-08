@@ -101,7 +101,7 @@ function JobDetails() {
                 〒{job.workplace}
               </p>
             </div>
-            <h1></h1>
+      
             <div className="py-[1.875rem] text-center md:hidden">
               <Apply handleOpenModal={handleOpenModal} />
             </div>

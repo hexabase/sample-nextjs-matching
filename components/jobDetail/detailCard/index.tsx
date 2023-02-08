@@ -11,18 +11,19 @@ import { TJobDetail } from '../../../types/jobs';
 import { getDay } from '../../../utils/getDay';
 import DateCard from '../../dateCard';
 import { checkHoliday } from '../../helpers';
-import Apply from '../apply';
 import DateCardDetail from '../../dateCardDetail';
+import Apply from '../apply';
 
 dayjs.extend(localeData);
 
 dayjs().localeData();
 
-interface DetailCardProps {
+type TDetailCardProps = {
+  handleOpenModal: () => void;
   job: TJobDetail;
-}
+};
 
-export default function DetailCard({ job }: DetailCardProps) {
+export default function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
   const { date, start_time, end_time, price, title, des } = job;
 
   const dateHoliday = checkHoliday(date);
@@ -42,7 +43,6 @@ export default function DetailCard({ job }: DetailCardProps) {
           <div className="h-[51px] w-[51px] sm:h-20 sm:w-20">
             <DateCardDetail date={dateHoliday} />
           </div>
-
           <div className="flexCol text-md font-bold md:text-lg">
             <div className="flex items-stretch gap-1.5">
               <ClockIcon className="h-[18px] w-[18px] text-aquamarine md:mt-1" />
@@ -63,7 +63,7 @@ export default function DetailCard({ job }: DetailCardProps) {
         </div>
 
         <div className="flexCenter fixed bottom-0 left-0 z-30 w-full flex-col bg-white py-7 sm:hidden md:static md:flex md:rounded-[5px] md:bg-culturedF4 md:pt-0">
-          <Apply />
+          <Apply handleOpenModal={handleOpenModal} />
         </div>
       </div>
     </div>

@@ -37,13 +37,13 @@ export default function JobDetails() {
 
         <div className="container-responsive mb-[40px]  md:h-[48px] md:pt-3" >
           <div className="text-sm font-medium text-center text-gray-500 border-b border-b-lightSilver ">
-            <ul className=" flex justify-around md:justify-start flex-wrap -mb-px">
+            <ul className=" flex md:justify-start -mb-px">
               <li className="mr-2 border-b-2 border-[#FF6666] w-1/2 md:w-auto">
                 <a href="#" className="inline-block p-2 md:px-16 rounded-t-lg active hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
                   <p>求人詳細</p>
                 </a>
               </li>
-              <li className="mr-2">
+              <li className="mr-2  w-1/2 md:w-auto">
                 <a href="#" className="inline-block p-2 md:px-16 border-b-2 border-transparent rounded-t-lg  dark:text-blue-500 dark:border-blue-500" aria-current="page">
                   <p className='relative'>
                     求職者一覧

@@ -7,7 +7,8 @@ import { ExclamationCircleIcon, } from '@heroicons/react/20/solid';
 import { MapPinIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Button from '../../../components/button';
 import BackToJobsList from '../../../components/common/backtoJobsList';
-// import { SchemaEmail } from '../Schema';
+import camera from '../../../public/camera.svg';
+
 
 interface FormValues {
   email: string;
@@ -39,8 +40,7 @@ export default function RegisterPage() {
       </div>
 
       <div className=' flex  justify-center p-[1.0625rem] opacity-100'>
-
-        <div className='relative h-auto rounded-[1.875rem] bg-white px-8 pt-9 pb-10 md:w-[975px] md:mt-[75px] mb-[75px] md:mb-[85px]'>
+        <div className='relative h-auto rounded-[1.875rem] bg-white px-8 pt-9 pb-10 md:w-[975px] md:mt-[75px] mb-[75px] md:mb-[85px] shadow-[0_10px_5px_rgba(0,0,0,0.1)]'>
           <Formik
             initialValues={{
               email: '',
@@ -99,7 +99,6 @@ export default function RegisterPage() {
                         <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                       )}
                     </div>
-
                   </div>
 
                   <div >
@@ -123,7 +122,6 @@ export default function RegisterPage() {
                         <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                       )}
                     </div>
-
                   </div>
 
                   <div className='grid gap-2 mb-11  lg:mb-9'>
@@ -133,20 +131,13 @@ export default function RegisterPage() {
                     </div>
                     <div className=" flex w-full flex-row md:w-[772px] h-[206px]">
                       <div className="flex w-full items-center justify-center bg-[#F9F9F9]">
-                        <label className="w-64 flex flex-col items-center px-4 py-6 bg-white text-[#808080] rounded-lg shadow-lg tracking-wide uppercase border-blue cursor-pointer ">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="36" fill="currentColor" className="bi bi-camera" viewBox="0 0 16 16">
-                            <path
-                              d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z" />
-                            <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" /> </svg>
+                        <label className="w-64 flex flex-col items-center px-4 bg-[#F9F9F9] py-6 text-[#808080] rounded-lg tracking-wide uppercase border-blue cursor-pointer ">
+                          <Image alt='camera' src={camera} width={40} height={36} />
                           <span className="mt-2 text-base leading-normal text-[#808080]">メインの写真を載せる</span>
-                          <button className='text-[10px] px-[15px] py-1.5 text-[#808080] bg-[#FFFFFF]'>画像をアップロード</button>
-
+                          <button className='text-[10px] px-[15px] py-1.5 text-[#808080] bg-[#FFFFFF] border border-[#808080] border-solid rounded-[4px]'>画像をアップロード</button>
                         </label>
                       </div>
-
-
                     </div>
-
                   </div>
 
                   <div >
@@ -227,7 +218,6 @@ export default function RegisterPage() {
                         <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                       )}
                     </div>
-
                   </div>
 
                   <div >
@@ -256,7 +246,6 @@ export default function RegisterPage() {
                         <option value="タイトルを記入してください">都道府県を選んでください</option>
                       </select>
                     </div>
-
                   </div>
 
                   <div >
@@ -280,7 +269,6 @@ export default function RegisterPage() {
                         <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                       )}
                     </div>
-
                   </div>
 
                   <div >
@@ -304,10 +292,8 @@ export default function RegisterPage() {
                         <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                       )}
                     </div>
-
                   </div>
 
-                  {/* <hr className='mb-[35px]' /> */}
                   <div>
                     <div >
                       <div className="text-left">
@@ -316,7 +302,6 @@ export default function RegisterPage() {
                       </div>
                       <div className="relative flex w-full flex-row md:w-[772px]">
                         <textarea
-
                           name="workContent"
                           value={values.workContent}
                           onChange={handleChange}
@@ -331,7 +316,6 @@ export default function RegisterPage() {
                           <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                         )}
                       </div>
-
                     </div>
 
                     <div >
@@ -341,7 +325,6 @@ export default function RegisterPage() {
                       </div>
                       <div className="relative flex w-full flex-row md:w-[772px]">
                         <textarea
-
                           name="workDetail"
                           value={values.workDetail}
                           onChange={handleChange}
@@ -356,7 +339,6 @@ export default function RegisterPage() {
                           <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                         )}
                       </div>
-
                     </div>
 
                     <div >
@@ -391,20 +373,15 @@ export default function RegisterPage() {
                 </div>
                 <div className="w-full flex justify-center gap-[20px]">
                   <div className='hidden md:flex md:items-center md:justify-center '>
-
                     <button className=' bg-lightSilver hover:bg-argent rounded-full p-4 sm:w-72 w-full' >
                       <div className='flex text-[#000000] items-center'>
-
                         <XMarkIcon width={20} height={20} />
                         <p className='ml-[62px] text-lg'>キャンセル</p>
                       </div>
-
                     </button>
                   </div>
                   <div className='w-full md:w-auto'>
-
                     <Button roundedFull disabled={!isValid}>
-
                       <p className='text-lg'>登録する</p>
                     </Button>
                   </div>
@@ -412,7 +389,6 @@ export default function RegisterPage() {
               </form>
             )}
           </Formik>
-
         </div>
       </div>
     </div>

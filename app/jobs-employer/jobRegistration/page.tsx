@@ -29,7 +29,7 @@ export default function RegisterPage() {
   const router = useRouter();
 
   const handleRouter = () => {
-    router.push('/auth/register-confirm');
+    router.push('/jobs-employer');
   };
 
   return (
@@ -47,7 +47,7 @@ export default function RegisterPage() {
               title: '',
               subtitle: '',
               picture: '',
-              workStartTime: '日時を選んでください',
+              workStartTime: '',
               workEndTime: '',
               postCode: '',
               prefectures: '',
@@ -77,8 +77,7 @@ export default function RegisterPage() {
                 onSubmit={handleSubmit}
               >
                 <div className='md:mt-[32px]'>
-                  <div className='font-bold text-lg mb-2.5 text-center md:text-left'>新規求人登録</div>
-                  <hr className='hidden md:block md:mb-[50px]' />
+                  <div className='font-bold text-lg mb-12 pb-1.5 text-center md:text-left md:border-b md:border-b-lightSilver'>新規求人登録</div>
                   <div>
                     <div className="text-left">
                       <label className="text-sm font-bold">タイトル</label>
@@ -91,7 +90,7 @@ export default function RegisterPage() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         placeholder="タイトルを記入してください"
-                        className={`${touched.email && errors.email
+                        className={`${touched.title && errors.title
                           ? 'border-red'
                           : 'border-argent hover:border-aquamarine'
                           } input-field solid mb-11  lg:mb-9 bg-[#F9F9F9] resize-none	h-[124px]`}
@@ -115,7 +114,7 @@ export default function RegisterPage() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         placeholder="サブタイトルを記入してください"
-                        className={`${touched.email && errors.email
+                        className={`${touched.subtitle && errors.subtitle
                           ? 'border-red'
                           : 'border-argent hover:border-aquamarine'
                           } input-field solid mb-11  lg:mb-9 bg-[#F9F9F9] resize-none h-[124px]`}
@@ -163,7 +162,7 @@ export default function RegisterPage() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         placeholder="日時を選んでください"
-                        className={`${touched.email && errors.email
+                        className={`${touched.workStartTime && errors.workStartTime
                           ? 'border-red'
                           : 'border-argent hover:border-aquamarine'
                           } input-field text-[#C1C1C1] solid mb-11  lg:mb-9 bg-[#F9F9F9]`}
@@ -193,7 +192,7 @@ export default function RegisterPage() {
                           : 'border-argent hover:border-aquamarine'
                           } input-field text-[#C1C1C1] solid mb-11  lg:mb-9 bg-[#F9F9F9]`}
                       />
-                      {touched.email && errors.email && (
+                      {touched.workEndTime && errors.workEndTime && (
                         <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                       )}
                     </div>
@@ -202,12 +201,11 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <div className='flex items-center mb-2.5'>
+                  <div className='flex items-center mb-5 pb-2.5 border-b border-b-lightSilver'>
                     <MapPinIcon width={15} height={15} />
                     <p className='font-bold text-sm'>働く場所</p>
                   </div>
 
-                  <hr className='mb-7' />
                   <div >
                     <div className="text-left">
                       <label className="text-sm font-bold">郵便番号</label>
@@ -225,7 +223,7 @@ export default function RegisterPage() {
                           : 'border-argent hover:border-aquamarine'
                           } input-field solid mb-11  lg:mb-9 bg-[#F9F9F9]`}
                       />
-                      {touched.email && errors.email && (
+                      {touched.postCode && errors.postCode && (
                         <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                       )}
                     </div>
@@ -244,7 +242,7 @@ export default function RegisterPage() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         placeholder="タイトルを記入してください"
-                        className={`${touched.email && errors.email
+                        className={`${touched.prefectures && errors.prefectures
                           ? 'border-red'
                           : 'border-argent hover:border-aquamarine'
                           } input-field text-[#C1C1C1] solid mb-11  lg:mb-9 bg-[#F9F9F9]`}
@@ -273,7 +271,7 @@ export default function RegisterPage() {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         placeholder="タイトルを記入してください"
-                        className={`${touched.email && errors.email
+                        className={`${touched.municipalities && errors.municipalities
                           ? 'border-red'
                           : 'border-argent hover:border-aquamarine'
                           } input-field solid mb-11  lg:mb-9 bg-[#F9F9F9]`}
@@ -290,14 +288,14 @@ export default function RegisterPage() {
                       <label className="text-sm font-bold">番地・それ以降の住所</label>
                       <span className="text-xs font-bold text-red">（必須）</span>
                     </div>
-                    <div className="relative flex w-full flex-row md:w-[744px]">
+                    <div className="relative flex w-full flex-row md:w-[744px] border-b border-b-lightSilver mb-[35px]">
                       <input
                         name="streetNumber"
                         value={values.streetNumber}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         placeholder="タイトルを記入してください"
-                        className={`${touched.email && errors.email
+                        className={`${touched.streetNumber && errors.streetNumber
                           ? 'border-red'
                           : 'border-argent hover:border-aquamarine'
                           } input-field solid mb-11  lg:mb-9 bg-[#F9F9F9]`}
@@ -309,7 +307,7 @@ export default function RegisterPage() {
 
                   </div>
 
-                  <hr className='mb-[35px]' />
+                  {/* <hr className='mb-[35px]' /> */}
                   <div>
                     <div >
                       <div className="text-left">
@@ -329,7 +327,7 @@ export default function RegisterPage() {
                             : 'border-argent hover:border-aquamarine'
                             } input-field solid mb-11  lg:mb-9 bg-[#F9F9F9] resize-none h-[124px]`}
                         />
-                        {touched.email && errors.email && (
+                        {touched.workContent && errors.workContent && (
                           <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                         )}
                       </div>
@@ -349,7 +347,7 @@ export default function RegisterPage() {
                           onChange={handleChange}
                           onBlur={handleBlur}
                           placeholder="詳細な作業内容を記入してください"
-                          className={`${touched.email && errors.email
+                          className={`${touched.workDetail && errors.workDetail
                             ? 'border-red'
                             : 'border-argent hover:border-aquamarine'
                             } input-field solid mb-11  lg:mb-9 bg-[#F9F9F9] resize-none h-[124px]`}
@@ -374,7 +372,7 @@ export default function RegisterPage() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             placeholder="金額を記入してください"
-                            className={`${touched.email && errors.email
+                            className={`${touched.hourlyWage && errors.hourlyWage
                               ? 'border-red'
                               : 'border-argent hover:border-aquamarine'
                               } mt-[11px] md:mt-0 input-field solid mb-11  lg:mb-9 bg-[#F9F9F9]`}

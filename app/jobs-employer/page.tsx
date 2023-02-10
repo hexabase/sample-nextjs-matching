@@ -1,12 +1,11 @@
 'use client'
+
 import Pagination from "../../components/pagination";
 import CardJob from "../../components/jobList/cardJob";
 import FooterMobile from "../../components/serchJobs/footerMobile";
 import { LJobDetail } from "../../types/jobsList";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
-
-
 
 export default function JobDetails() {
   const router = useRouter();
@@ -154,9 +153,7 @@ export default function JobDetails() {
               <div className="flex">
                 <PlusIcon width={22} height={22} />
                 <p>新規求人登録</p>
-
               </div>
-
             </button>
 
           </div>

@@ -6,8 +6,8 @@ import { Formik } from 'formik';
 import { ExclamationCircleIcon, } from '@heroicons/react/20/solid';
 import { MapPinIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Button from '../../../components/button';
-import BackToJobsList from '../../../components/common/backtoJobsList';
 import camera from '../../../public/camera.svg';
+import BackToJobsList from '../../../components/common/backToJobsList';
 
 
 interface FormValues {

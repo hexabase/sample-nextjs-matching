@@ -12,3 +12,10 @@ export type LJobDetail = {
   imgUrl?: string;
 
 }
+
+export type LJobSeekers = {
+  id?: string;
+  name: string;
+  mail: string;
+
+}

@@ -24,11 +24,11 @@ export default function CardJob({ job }: JobProps) {
       onClick={handleClickCard}
       className="h-auto p-4 md:gap-6 flex justify-between md:rounded-[5px] bg-white md:p-5 pb-3 hover:drop-shadow-md"
     >
-      <div className='flex  flex-col md:gap-6 md:w-1/2'>
+      <div className='flex  flex-col md:gap-6 w-1/2'>
         <img
           src='/maskGroup.png'
           alt="image1"
-          className="w-[170px] md:w-full rounded-t-md md:h-52 h-[122px] object-fit"
+          className="w-auto rounded-t-md md:h-52 h-[122px] object-cover"
         />
         <div className='w-full '>
           <div className='mt-[23px] md:mt-0 text-[12px] md:text-[14px] font-bold'>求職者数</div>

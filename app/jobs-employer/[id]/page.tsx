@@ -115,9 +115,9 @@ export default function JobDetails() {
 
   return (
     <>
-      <div className='bg-antiFlashWhite flex flex-col items-center'>
+      <div className='bg-antiFlashWhite relative flex flex-col items-center'>
 
-        <div className="container-responsive">
+        <div className="container-responsive ">
           <div className="flexCenter text-xs font-normal border-b border-b-[#E1E1E1] md:border-b-lightSilver md:text-base">
             <BackToJobsList />
           </div>

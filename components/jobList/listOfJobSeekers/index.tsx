@@ -85,7 +85,7 @@ const ListOfJobSeekers = ({ LJobSeekersMock, handleRouter }: IListOfJobSeekers) 
             <Pagination />
           </div>
         </div>
-        {showDrawer && <Drawer setShowDrawer={setShowDrawer} drawerContent={drawerContent} showDrawer={showDrawer} />}
+        {showDrawer && drawerContent && <Drawer setShowDrawer={setShowDrawer} drawerContent={drawerContent} showDrawer={showDrawer} />}
 
       </div>
 

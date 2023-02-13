@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 export default function JobDetails() {
   const router = useRouter();
   const handleRouter = () => {
-    router.push('/jobs-employer/jobRegistration');
+    router.push('/jobs-employer/job-registration');
   };
   const jobs: LJobDetail[] = [
     {

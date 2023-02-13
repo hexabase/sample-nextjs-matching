@@ -43,7 +43,11 @@
     @apply flex h-14 w-6 items-center justify-center border border-white;
   }
 
-
+  .text-overflow-multiline-ellipsis {
+    @apply text-overflow-multiline;
+  }
+  
+  
 
   @layer utilities {
     @variants responsive {
@@ -66,5 +70,14 @@
       -webkit-mask-box-image: url(../public/images/subtract.svg) 30 repeat;
       mask-border: url(../public/images/subtract.svg) 30 repeat;
     }
+
+    
+    .text-overflow-multiline {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    
   }
 }

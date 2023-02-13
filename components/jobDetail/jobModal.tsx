@@ -4,7 +4,7 @@ import {
   MapPinIcon,
   XMarkIcon,
 } from '@heroicons/react/20/solid';
-import { CurrencyYenIcon } from '@heroicons/react/24/solid';
+import { CurrencyYenIcon } from '@heroicons/react/20/solid';
 import { useFormik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
@@ -57,7 +57,7 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
               アートホテルのフロントstaff♪→アートとオシャレが融合したホテルで、フロント業務全般をお願いします
             </p>
           </div>
-    
+
           <div className="flex h-[4.5rem] md:h-full md:pt-3">
             <div className="mr-2 flex h-[4.625rem] flex-col justify-between">
               <ClockIcon className="h-[1.125rem] w-[1.125rem] text-aquamarine" />
@@ -100,11 +100,10 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder="お名前を記入してください"
-                className={`${
-                  formik.touched.name && formik.errors.name
+                className={`${formik.touched.name && formik.errors.name
                     ? 'border-red'
                     : 'border-argent hover:border-aquamarine'
-                } input-field solid`}
+                  } input-field solid`}
               />
               {formik.touched.name && formik.errors.name && (
                 <ExclamationCircleIcon className="absolute top-7 right-2 h-6 w-6 text-red" />
@@ -123,11 +122,10 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder="メールアドレス"
-                className={`${
-                  formik.touched.email && formik.errors.email
+                className={`${formik.touched.email && formik.errors.email
                     ? 'border-red'
                     : 'border-argent hover:border-aquamarine'
-                } input-field solid`}
+                  } input-field solid`}
               />
               {formik.touched.email && formik.errors.email && (
                 <ExclamationCircleIcon className="absolute top-7 right-2 h-6 w-6 text-red" />
@@ -146,11 +144,10 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
                 onBlur={formik.handleBlur}
                 rows={5.5}
                 cols={20}
-                className={`${
-                  formik.touched.ownPR && formik.errors.ownPR
+                className={`${formik.touched.ownPR && formik.errors.ownPR
                     ? 'border-red'
                     : 'border-argent hover:border-aquamarine'
-                } input-field solid h-[7.7rem]`}
+                  } input-field solid h-[7.7rem]`}
               />
             </div>
           </div>
@@ -162,9 +159,8 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
             <div className="md:flex md:h-14 md:gap-10 md:px-10">
               <button
                 disabled={!formik.isValid}
-                className={`${
-                  formik.isValid ? 'bg-pastelRed' : 'bg-spanishGray'
-                } mb-4 h-14 w-full rounded-[40px] text-lg	font-bold text-antiFlashWhite`}
+                className={`${formik.isValid ? 'bg-pastelRed' : 'bg-spanishGray'
+                  } mb-4 h-14 w-full rounded-[40px] text-lg	font-bold text-antiFlashWhite`}
                 type="submit"
               >
                 応募する

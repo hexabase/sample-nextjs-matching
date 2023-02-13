@@ -2,12 +2,10 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-
 import Button from '../../../components/button';
 
 export default function RegisterSuccess() {
   const router = useRouter();
-
   return (
     <div className="modal py-12 px-5 xl:py-28">
       <Image

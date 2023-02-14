@@ -1,15 +1,18 @@
+import React from 'react';
+
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
 import {
   ClockIcon,
+  CurrencyYenIcon,
   ExclamationCircleIcon,
   MapPinIcon,
   XMarkIcon,
-  CurrencyYenIcon,
 } from '@heroicons/react/24/outline';
-import { useFormik } from 'formik';
-import React from 'react';
-import * as Yup from 'yup';
-import { getDay } from '../../utils/getDay';
+
 import { TJobDetail } from '../../types/jobs';
+import { getDay } from '../../utils/getDay';
 
 type TJobModalProps = {
   handleCloseModal: () => void;
@@ -167,7 +170,7 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
               <button
                 disabled={!formik.isValid}
                 className={`${
-                  formik.isValid ? 'bg-pastelRed' : 'bg-lightSilver'
+                  formik.isValid ? 'bg-pastelRed' : 'bg-spanishGray'
                 } mb-4 h-14 w-full rounded-[40px] text-lg font-bold text-antiFlashWhite transition-all duration-500 ${
                   formik.isValid
                     ? 'hover:bg-jellyBean'

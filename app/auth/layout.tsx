@@ -21,7 +21,7 @@ export default function AuthLayout({
             onClick={handleSubmit}
           >
             <HomeIcon className="h-full" />
-            <p className="text-xs">トップページ</p>
+            <p className="text-xs font-normal">トップページ</p>
           </div>
         </div>
         {children}

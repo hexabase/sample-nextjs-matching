@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs';
 
 const dateTypes = ['holiday', 'weekend', 'normal'] as const;
-export type TDateType = typeof dateTypes[number];
+export type TDateType = (typeof dateTypes)[number];
 
 export type TDateHoliday = {
   date: Dayjs;
@@ -23,3 +23,22 @@ export type TJob = {
   tags: string[];
   hourlyWage: number;
 };
+
+export type TProfilePic = {
+  mediaLink: string;
+};
+
+export type TAddUser = {
+  added: boolean;
+  exists: boolean;
+  profile_pics?: TProfilePic[];
+  u_id?: string;
+  username?: string;
+};
+
+export type TUserInviteStatus = {
+  email: string;
+  stats: number;
+};
+
+export type TUserInvite = TUserInviteStatus[] | null;

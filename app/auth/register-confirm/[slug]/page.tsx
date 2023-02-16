@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { Formik } from 'formik';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
-import Button from '../../../components/button';
-import { SchemaRegisterCompany } from '../Schema';
+import Button from '../../../../components/button';
+import { SchemaRegisterCompany } from '../../Schema';
 
 interface FormValues {
   companyName: string;

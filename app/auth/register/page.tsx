@@ -1,12 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import { Formik } from 'formik';
+
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
 import Button from '../../../components/button';
+import { addUser, userInvite } from '../../../utils/apis';
 import { SchemaEmail } from '../Schema';
 
 interface FormValues {
@@ -14,10 +16,28 @@ interface FormValues {
 }
 
 export default function RegisterPage() {
-  const router = useRouter();
+  const [userInvited, setUserInvited] = useState<boolean>(false);
+  const addUserHandler = async (data: FormValues) => {
+    try {
+      const res = await addUser(data.email);
 
-  const handleRouter = () => {
-    router.push('/auth/register-confirm');
+      console.log('res', res);
+      if (res.status === 200 && res.data.exists) {
+        userInviteHandler(data);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const userInviteHandler = async (data: FormValues) => {
+    try {
+      const res = await userInvite(data.email);
+
+      (res.status = 200) && setUserInvited(true);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   return (
@@ -51,8 +71,9 @@ export default function RegisterPage() {
         }}
         validationSchema={SchemaEmail}
         onSubmit={(data: FormValues) => {
-          handleRouter();
-          alert('email: ' + data.email);
+          // registerHandler(data);
+          addUserHandler(data);
+          // handleRouter();
         }}
       >
         {({
@@ -94,6 +115,7 @@ export default function RegisterPage() {
                 )}
               </div>
             </div>
+            <div className="w-full"></div>
             <div className="w-full">
               <Button roundedFull disabled={!isValid}>
                 送信する

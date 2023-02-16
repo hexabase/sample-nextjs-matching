@@ -12,14 +12,3 @@ export type TJobDetail = {
   jobContent: string;
   workplace: string;
 };
-export type TJob = {
-  id: string;
-  imgUrl: string;
-  jobName: string;
-  des: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  tags: string[];
-  hourlyWage: number;
-};

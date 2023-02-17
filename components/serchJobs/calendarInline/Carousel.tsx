@@ -68,7 +68,7 @@ const ForwardedCarousel = ({
     >
       {dateArr.map((date, index) => (
         <div key={index} className="snap-start">
-          <div className="relative h-[51px] w-[51px] sm:h-14 sm:w-14">
+          <div className="relative h-[51px] w-[51px] sm:h-14 sm:w-14 cursor-pointer">
             <DateCard date={date} />
           </div>
         </div>

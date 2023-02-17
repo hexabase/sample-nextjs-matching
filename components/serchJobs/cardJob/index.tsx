@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 
 import { ClockIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
-import { TJob } from '../../../types/jobs';
+import { TJob } from '../../../types';
 import Tag from '../../common/Tag';
 import { getDayOfWeek } from '../../helpers';
 

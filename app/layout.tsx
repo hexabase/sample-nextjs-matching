@@ -4,6 +4,7 @@ import './globals.css';
 import 'dayjs/locale/ja';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -60,7 +61,7 @@ export default function RootLayout({
         ) : (
           <header>
             <div className="container-responsive">
-              <div className="flex items-center justify-between pt-24 sm:h-20 sm:pt-0">
+              <div className="flex items-center justify-between pt-5 sm:h-20 sm:pt-0">
                 <Image
                   onClick={() => router.push('/')}
                   className="cursor-pointer"
@@ -119,9 +120,10 @@ export default function RootLayout({
                   : 'relative bg-eerieBlack pt-16 pb-32 text-white sm:pb-1 sm:pt-12'
               }
             >
-              <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black sm:hidden">
-                <ChevronUpIcon aria-hidden="true" />
-              </div>
+                <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black sm:hidden">
+                  <ChevronUpIcon aria-hidden="true" />
+                </div>
+
               <div className="container-responsive">
                 <div
                   className={
@@ -146,24 +148,30 @@ export default function RootLayout({
                     }
                   >
                     <div>
-                      <p className="text-spanishGray">お仕事を探している人</p>
-                      <p>求人一覧ページ</p>
-                      <p>ご利用方法・注意事項</p>
+                      <p className="text-spanishGray mb-2">お仕事を探している人</p>
+                      <p className="mb-1">
+                        <Link href="/">求人一覧ページ</ Link></p>
                     </div>
                     <div>
-                      <p className="text-spanishGray">お仕事をして欲しい会社</p>
-                      <p>ログイン / 求人を出す企業様</p>
-                      <p>求人企業に登録する</p>
+                      <p className="text-spanishGray mb-2">お仕事をして欲しい会社</p>
+                      <p className="mb-1"><Link href="/auth/login">ログイン / 求人を出す企業様</ Link></p>
+                      <p><Link href="/auth/register">求人企業に登録する</ Link></p>
                     </div>
                     <div>
-                      <p className="text-spanishGray">カンパニー</p>
-                      <p>運営会社</p>
-                      <p>プライバシーポリシー</p>
-                      <p>お問合せ</p>
+                    <p className="text-spanishGray mb-2">カンパニー</p>
+                      <p className="mb-1">
+                        <a href="https://www.hexabase.com/" target="_blank" rel="noreferrer">運営会社</a>
+                      </p>
+                      <p className="mb-1">
+                        <a href="https://www.hexabase.com/privacy-policy/" target="_blank" rel="noreferrer">プライバシーポリシー</a>
+                      </p>
+                      <p>
+                      <a href="https://www.hexabase.com/contact-us/" target="_blank" rel="noreferrer">お問合せ</a>
+                      </p>
                     </div>
                   </div>
                 </div>
-                <p className="text-center text-xs font-normal sm:text-left">
+                <p className="py-2 text-center text-xs font-normal sm:text-left">
                   ©️2022 Hexabase
                 </p>
               </div>

@@ -8,6 +8,8 @@ import { Formik } from 'formik';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
 import Button from '../../../components/button';
+import AlertsError from '../../../components/common/alertsError';
+import { TAlertTypes } from '../../../types';
 import { addUser, userInvite } from '../../../utils/apis';
 import { SchemaEmail } from '../Schema';
 
@@ -16,16 +18,33 @@ interface FormValues {
 }
 
 export default function RegisterPage() {
-  const [userInvited, setUserInvited] = useState<boolean>(false);
+  const [open, setOpen] = useState<{
+    open: boolean;
+    type?: TAlertTypes;
+    message?: string;
+  }>({
+    open: false,
+  });
+
+  const setOpenAlert = () => {
+    setOpen({ open: false });
+  };
+
   const addUserHandler = async (data: FormValues) => {
     try {
       const res = await addUser(data.email);
-
-      console.log('res', res);
       if (res.status === 200 && res.data.exists) {
+        setOpen({
+          open: true,
+          type: 'success',
+          message: 'ユーザーの成功を追加',
+        });
         userInviteHandler(data);
+      } else {
+        setOpen({ open: true, type: 'error', message: 'ユーザーの追加エラー' });
       }
     } catch (error) {
+      setOpen({ open: true, type: 'error', message: 'ユーザー' });
       console.log('error', error);
     }
   };
@@ -34,12 +53,11 @@ export default function RegisterPage() {
     try {
       const res = await userInvite(data.email);
 
-      (res.status = 200) && setUserInvited(true);
+      res.status = 200;
     } catch (error) {
       console.log('error', error);
     }
   };
-
   return (
     <div className="modal p-[1.375rem] lg:px-[10rem] xl:px-[19.5rem]">
       <Image
@@ -71,9 +89,7 @@ export default function RegisterPage() {
         }}
         validationSchema={SchemaEmail}
         onSubmit={(data: FormValues) => {
-          // registerHandler(data);
           addUserHandler(data);
-          // handleRouter();
         }}
       >
         {({
@@ -124,6 +140,13 @@ export default function RegisterPage() {
           </form>
         )}
       </Formik>
+
+      <AlertsError
+        open={open.open}
+        type={open.type || 'Success'}
+        message={open.message || ''}
+        setOpen={setOpenAlert}
+      />
     </div>
   );
 }

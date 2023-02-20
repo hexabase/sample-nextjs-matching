@@ -42,3 +42,6 @@ export type TUserInviteStatus = {
 };
 
 export type TUserInvite = TUserInviteStatus[] | null;
+
+const alertTypes = ['success', 'error', 'warning'] as const;
+export type TAlertTypes = (typeof alertTypes)[number];

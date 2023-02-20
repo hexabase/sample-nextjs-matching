@@ -2,26 +2,106 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Formik } from 'formik';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
+import { setCookie } from 'cookies-next';
 
 import Button from '../../../../components/button';
+import { PageProps, TUserConfirm } from '../../../../types';
+import {
+  confirmRegistration,
+  createItem,
+  getUserInfo,
+  registerUser,
+} from '../../../../utils/apis';
 import { SchemaRegisterCompany } from '../../Schema';
 
-interface FormValues {
-  companyName: string;
-  email: string;
+interface FormValuesProps {
+  company_name: string;
+  company_address: string;
   password: string;
-  businessDetail: string;
-  companyUrl: string;
+  business: string;
+  url: string;
 }
-export default function RegisterConfirm() {
-  const router = useRouter();
 
-  const handleRouter = () => {
-    router.push('/auth/register-success');
-  };
+export default function RegisterConfirm({ params: { id } }: PageProps) {
+  const router = useRouter();
+  const [dataConfirm, setDataConfirm] = useState<TUserConfirm>();
+
+  const dataCreateItem = useCallback(
+    async (formValues: FormValuesProps, user_id: string) => {
+      try {
+        const { company_name, company_address, business, url } = formValues;
+        const res = await createItem({
+          user_id,
+          company_name,
+          company_address,
+          business,
+          url,
+        });
+
+        res.data && console.log(res.data);
+      } catch (error) {
+        console.log('error', error);
+      }
+    },
+    []
+  );
+
+  const dataGetUserInfo = useCallback(async (formValues: FormValuesProps) => {
+    try {
+      const res = await getUserInfo();
+
+      res.data.u_id && dataCreateItem(formValues, res.data.u_id);
+    } catch (error) {
+      console.log('error', error);
+    }
+  }, []);
+
+  const dataRegisterUser = useCallback(
+    async (formValues: FormValuesProps) => {
+      const { password } = formValues;
+      const email = dataConfirm?.email || '';
+      const workspace = dataConfirm?.workspace.id || '';
+      const confirmation_id = dataConfirm?.confirmation_id || '';
+      const username = dataConfirm?.email.split('@')[0] || '';
+
+      try {
+        const res = await registerUser({
+          email,
+          password,
+          username,
+          workspace,
+          confirmation_id,
+        });
+
+        if (res.data.token) {
+          setCookie('token', res.data.token);
+          dataGetUserInfo(formValues);
+        }
+
+        res.data.token && console.log('res.data.token', res.data.token);
+      } catch (error) {
+        console.log('error', error);
+      }
+    },
+    [dataConfirm, dataGetUserInfo]
+  );
+
+  useEffect(() => {
+    (async function dataConfirmRegistration() {
+      try {
+        const res = await confirmRegistration(id);
+
+        res.data.user && setDataConfirm(res.data.user);
+      } catch (error) {
+        console.log('error', error);
+        // router.push('/auth/login');
+      }
+    })();
+  }, [id]);
 
   return (
     <div className="grid gap-9">
@@ -46,31 +126,15 @@ export default function RegisterConfirm() {
 
         <Formik
           initialValues={{
-            companyName: '',
-            email: '',
+            company_name: '',
+            company_address: '',
             password: '',
-            businessDetail: '',
-            companyUrl: '',
+            business: '',
+            url: '',
           }}
           validationSchema={SchemaRegisterCompany}
-          onSubmit={(data: FormValues) => {
-            handleRouter();
-            alert(
-              'name: ' +
-                data.companyName +
-                '\n' +
-                'email: ' +
-                data.email +
-                '\n' +
-                'password: ' +
-                data.password +
-                '\n' +
-                'businessDetail: ' +
-                data.businessDetail +
-                '\n' +
-                'companyUrl: ' +
-                data.companyUrl
-            );
+          onSubmit={(data: FormValuesProps) => {
+            dataRegisterUser(data);
           }}
         >
           {({
@@ -97,18 +161,18 @@ export default function RegisterConfirm() {
                   <div className="relative flex w-full flex-row">
                     <input
                       type="text"
-                      name="companyName"
-                      value={values.companyName}
+                      name="company_name"
+                      value={values.company_name}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="会社名を記入してください"
                       className={`${
-                        touched.companyName && errors.companyName
+                        touched.company_name && errors.company_name
                           ? 'border-red'
                           : 'border-argent hover:border-aquamarine'
                       } input-field solid`}
                     />
-                    {touched.companyName && errors.companyName && (
+                    {touched.company_name && errors.company_name && (
                       <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                     )}
                   </div>
@@ -117,25 +181,25 @@ export default function RegisterConfirm() {
                 <div>
                   <div className="text-left">
                     <label className="text-xs font-bold md:text-base">
-                      メールアドレス
+                      会社住所
                     </label>
                     <span className="text-xs font-bold text-red">（必須）</span>
                   </div>
                   <div className="relative flex w-full flex-row">
                     <input
-                      type="email"
-                      name="email"
-                      value={values.email}
+                      type="company_address"
+                      name="company_address"
+                      value={values.company_address}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="例：hexabase@hexabase.com"
+                      placeholder="例：東京都中央区秋葉原 1-1-1 HEXAビル 2階"
                       className={`${
-                        touched.email && errors.email
+                        touched.company_address && errors.company_address
                           ? 'border-red'
                           : 'border-argent hover:border-aquamarine'
                       } input-field solid`}
                     />
-                    {touched.email && errors.email && (
+                    {touched.company_address && errors.company_address && (
                       <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
                     )}
                   </div>
@@ -177,17 +241,17 @@ export default function RegisterConfirm() {
                   </div>
                   <div className="relative flex w-full flex-row">
                     <textarea
-                      name="businessDetail"
-                      value={values.businessDetail}
+                      name="business"
+                      value={values.business}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       className={`${
-                        touched.businessDetail && errors.businessDetail
+                        touched.business && errors.business
                           ? 'border-red'
                           : 'border-argent  hover:border-aquamarine  '
                       } input-field solid h-44 resize-none lg:h-32`}
                     />
-                    {touched.businessDetail && errors.businessDetail && (
+                    {touched.business && errors.business && (
                       <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-20 text-red lg:translate-y-12" />
                     )}
                   </div>
@@ -202,8 +266,8 @@ export default function RegisterConfirm() {
                   <div className="relative flex w-full flex-row">
                     <input
                       type="url"
-                      name="companyUrl"
-                      value={values.companyUrl}
+                      name="url"
+                      value={values.url}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="https://hexabase.com"

@@ -7,16 +7,17 @@ export const SchemaEmail = Yup.object().shape({
 });
 
 export const SchemaRegisterCompany = Yup.object().shape({
-  companyName: Yup.string().required('会社名を入力してください'),
-  email: Yup.string()
-    .email('無効なメールアドレスがありま')
-    .required('メールアドレスを入力してください'),
+  company_name: Yup.string().required('会社名を入力してください'),
+  company_address: Yup.string().required(
+    '例：東京都中央区秋葉原 1-1-1 HEXAビル 2階'
+  ),
   password: Yup.string()
     .min(8, 'パスワードが短すぎます')
     .required('パスワードを入力してください'),
-  businessDetail: Yup.string().required('事業内容を入力してください。'),
-  companyUrl: Yup.string()
+  business: Yup.string().required('事業内容を入力してください。'),
+  url: Yup.string(),
 });
+
 export const SchemaLogin = Yup.object().shape({
   email: Yup.string()
     .email('無効なメールアドレスがありま')
@@ -25,4 +26,3 @@ export const SchemaLogin = Yup.object().shape({
     .min(8, 'パスワードが短すぎます')
     .required('パスワードを入力してください'),
 });
-

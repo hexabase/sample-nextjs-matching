@@ -42,9 +42,10 @@ export default function RegisterConfirm({ params: { id } }: PageProps) {
           url,
         });
 
-        res.data && console.log(res.data);
+        res.data && router.push('/auth/register-success');
       } catch (error) {
         console.log('error', error);
+        router.push('/auth/register-success');
       }
     },
     []
@@ -81,8 +82,6 @@ export default function RegisterConfirm({ params: { id } }: PageProps) {
           setCookie('token', res.data.token);
           dataGetUserInfo(formValues);
         }
-
-        res.data.token && console.log('res.data.token', res.data.token);
       } catch (error) {
         console.log('error', error);
       }
@@ -98,7 +97,7 @@ export default function RegisterConfirm({ params: { id } }: PageProps) {
         res.data.user && setDataConfirm(res.data.user);
       } catch (error) {
         console.log('error', error);
-        // router.push('/auth/login');
+        router.push('/auth/login');
       }
     })();
   }, [id]);

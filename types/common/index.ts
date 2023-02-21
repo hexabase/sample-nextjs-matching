@@ -119,3 +119,6 @@ export type TInputCreateItem = {
   business: string;
   url: string;
 };
+
+const alertTypes = ['success', 'error', 'warning'] as const;
+export type TAlertTypes = (typeof alertTypes)[number];

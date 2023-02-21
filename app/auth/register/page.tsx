@@ -35,7 +35,7 @@ export default function RegisterPage() {
   const addUserHandler = async (data: FormValues) => {
     try {
       const res = await addUser(data.email);
-      if (res.status === 200 && res.data.exists) {
+      if (res.status === 200 && !res.data.added) {
         userInviteHandler(data);
       } else {
         setOpen({ open: true, type: 'error', message: '予期せぬエラーが発生しました' });

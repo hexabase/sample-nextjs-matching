@@ -1,26 +1,27 @@
 'use client';
-import { useEffect } from 'react';
 
+import { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
+
+import classNames from 'classnames';
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
-  XMarkIcon
+  XMarkIcon,
 } from '@heroicons/react/24/solid';
-import classNames from 'classnames';
 
-interface AlertsError {
-  type: string;
-  message: string;
-  open: boolean;
-  setOpen: () => void;
+import { TNotification } from '../../../types';
+
+interface NotificationProps {
+  notification: TNotification;
+  setNotification: Dispatch<SetStateAction<TNotification>>;
 }
 
-export default function AlertsError({
-  type,
-  message,
-  open,
-  setOpen,
-}: AlertsError) {
+export default function Notification({
+  notification,
+  setNotification,
+}: NotificationProps) {
+  const { type, open, message } = notification;
+
   const notificationClass = classNames({
     'bg-aquamarine': type === 'success',
     'bg-yellow-400': type === 'warning',
@@ -36,16 +37,18 @@ export default function AlertsError({
     'py-3': true,
     'shadow-md': true,
   });
+
+  const handleClose = useCallback(() => {
+    setNotification({ open: false });
+  }, [setNotification]);
+
   useEffect(() => {
     open &&
       setTimeout(() => {
         handleClose();
-      }, 5000);
-  }, [open]);
+      }, 3000);
+  }, [handleClose, open]);
 
-  const handleClose = () => {
-    setOpen();
-  };
   return (
     <>
       {open && (

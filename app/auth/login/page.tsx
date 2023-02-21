@@ -85,7 +85,7 @@ export default function Login() {
                       value={values.email}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="例：hexabase@hexabase.com"
+                      placeholder="例：yourhost@hexabase.com"
                       className={`${
                         touched.email && errors.email
                           ? 'border-red'

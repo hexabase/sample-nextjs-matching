@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 import { HomeIcon } from '@heroicons/react/20/solid';
 
@@ -9,8 +10,9 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const handleSubmit = () => {
-    console.log('aaa');
+    router.push('/');
   };
   return (
     <div className="bg-antiFlashWhite">

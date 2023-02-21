@@ -2,11 +2,16 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import { Formik } from 'formik';
+
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
 import Button from '../../../components/button';
+import AlertsError from '../../../components/common/alertsError';
+import { TAlertTypes } from '../../../types';
+import { addUser, userInvite } from '../../../utils/apis';
 import { SchemaEmail } from '../Schema';
 
 interface FormValues {
@@ -15,11 +20,45 @@ interface FormValues {
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [open, setOpen] = useState<{
+    open: boolean;
+    type?: TAlertTypes;
+    message?: string;
+  }>({
+    open: false,
+  });
 
-  const handleRouter = () => {
-    router.push('/auth/register-confirm');
+  const setOpenAlert = () => {
+    setOpen({ open: false });
   };
 
+  const addUserHandler = async (data: FormValues) => {
+    try {
+      const res = await addUser(data.email);
+      if (res.status === 200 && !res.data.added) {
+        userInviteHandler(data);
+      } else {
+        setOpen({ open: true, type: 'error', message: '予期せぬエラーが発生しました' });
+      }
+    } catch (error) {
+      setOpen({ open: true, type: 'error', message: '予期せぬエラーが発生しました' });
+      console.log('error', error);
+    }
+  };
+
+  const userInviteHandler = async (data: FormValues) => {
+    try {
+      const res = await userInvite(data.email);
+
+      if (res.status === 200) {
+        router.push('/auth/email')
+      } else {
+        setOpen({ open: true, type: 'error', message: '予期せぬエラーが発生しました' });
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
   return (
     <div className="modal p-[1.375rem] lg:px-[10rem] xl:px-[19.5rem]">
       <Image
@@ -51,8 +90,7 @@ export default function RegisterPage() {
         }}
         validationSchema={SchemaEmail}
         onSubmit={(data: FormValues) => {
-          handleRouter();
-          alert('email: ' + data.email);
+          addUserHandler(data);
         }}
       >
         {({
@@ -82,7 +120,7 @@ export default function RegisterPage() {
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder="例：hexabase@hexabase.com"
+                  placeholder="例：yourhost@hexabase.com"
                   className={`${
                     touched.email && errors.email
                       ? 'border-red'
@@ -94,6 +132,7 @@ export default function RegisterPage() {
                 )}
               </div>
             </div>
+            <div className="w-full"></div>
             <div className="w-full">
               <Button roundedFull disabled={!isValid}>
                 送信する
@@ -102,6 +141,13 @@ export default function RegisterPage() {
           </form>
         )}
       </Formik>
+
+      <AlertsError
+        open={open.open}
+        type={open.type || 'Success'}
+        message={open.message || ''}
+        setOpen={setOpenAlert}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Formik } from 'formik';
@@ -18,6 +19,7 @@ interface FormValues {
 }
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [open, setOpen] = useState<{
     open: boolean;
     type?: TAlertTypes;
@@ -33,18 +35,13 @@ export default function RegisterPage() {
   const addUserHandler = async (data: FormValues) => {
     try {
       const res = await addUser(data.email);
-      if (res.status === 200 && res.data.exists) {
-        setOpen({
-          open: true,
-          type: 'success',
-          message: 'ユーザーの成功を追加',
-        });
+      if (res.status === 200 && !res.data.added) {
         userInviteHandler(data);
       } else {
-        setOpen({ open: true, type: 'error', message: 'ユーザーの追加エラー' });
+        setOpen({ open: true, type: 'error', message: '予期せぬエラーが発生しました' });
       }
     } catch (error) {
-      setOpen({ open: true, type: 'error', message: 'ユーザー' });
+      setOpen({ open: true, type: 'error', message: '予期せぬエラーが発生しました' });
       console.log('error', error);
     }
   };
@@ -53,7 +50,11 @@ export default function RegisterPage() {
     try {
       const res = await userInvite(data.email);
 
-      res.status = 200;
+      if (res.status === 200) {
+        router.push('/auth/email')
+      } else {
+        setOpen({ open: true, type: 'error', message: '予期せぬエラーが発生しました' });
+      }
     } catch (error) {
       console.log('error', error);
     }

@@ -56,7 +56,7 @@ export const checkHoliday = (dayCheck: string | Dayjs): TDateHoliday => {
   } else {
     return {
       ...dateHoliday,
-      dateType: dayInWeek === 6 ? 'weekend' : 'normal',
+      dateType: dayInWeek === 6 ? 'weekend' : dayInWeek === 0 ? 'holiday' : 'normal',
     };
   }
 };

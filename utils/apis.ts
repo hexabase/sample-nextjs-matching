@@ -160,11 +160,13 @@ export const createItem = async ({
     const response = await axiosInstance.post<any>(
       '/applications/hexa-job/datastores/companies/items/new',
       {
-        user_id,
-        company_name,
-        company_address,
-        business,
-        url,
+        item: {
+          user_id,
+          company_name,
+          company_address,
+          business,
+          url,
+        }
       },
       {
         headers: {

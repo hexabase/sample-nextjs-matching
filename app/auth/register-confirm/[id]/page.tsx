@@ -269,7 +269,7 @@ export default function RegisterConfirm({ params: { id } }: PageProps) {
                       value={values.url}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="https://hexabase.com"
+                      placeholder="https://www.hexabase.com"
                       className="input-field solid border-argent hover:border-aquamarine"
                     />
                   </div>

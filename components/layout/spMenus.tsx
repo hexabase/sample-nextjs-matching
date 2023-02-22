@@ -6,10 +6,7 @@ const menuLists = [
     items: [
       {
         itemTitle: '求人一覧ページ',
-      },
-      {
-        itemTitle: 'ご利用方法・注意事項',
-      },
+      }
     ],
   },
   {
@@ -41,7 +38,7 @@ const menuLists = [
 
 export default function SPMenus() {
   return (
-    <main className="mt-24">
+    <main className="mt-5">
       <div className="grid grid-cols-1 divide-y divide-chineseWhite">
         {menuLists[0] &&
           menuLists.map((menu, index) => (

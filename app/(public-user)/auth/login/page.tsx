@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { setCookie } from 'cookies-next';
 import { Formik } from 'formik';
@@ -47,6 +47,10 @@ export default function Login() {
       });
     }
   };
+
+  useEffect(() => {
+    router.refresh();
+  }, []);
 
   return (
     <>

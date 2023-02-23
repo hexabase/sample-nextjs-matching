@@ -3,20 +3,28 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import { deleteCookie } from 'cookies-next';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
+import Notification from '../../components/common/notification';
+import { EMessageError, EType, TNotification } from '../../types';
 import { getUserInfo, logout } from '../../utils/apis';
 
-export default function EmployerLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
 
+  const [notification, setNotification] = useState<TNotification>({
+    open: false,
+  });
+
   const handleLogout = () => {
+    deleteCookie('token');
     router.push('/auth/login');
   };
 
@@ -26,7 +34,11 @@ export default function EmployerLayout({
 
       res.data && handleLogout();
     } catch (error) {
-      console.log('error', error);
+      setNotification({
+        open: true,
+        type: EType.ERROR,
+        message: EMessageError.ERR_01,
+      });
     }
   };
 
@@ -136,6 +148,10 @@ export default function EmployerLayout({
           </p>
         </div>
       </footer>
+      <Notification
+        notification={notification}
+        setNotification={setNotification}
+      />
     </>
   );
 }

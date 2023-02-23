@@ -210,13 +210,16 @@ export const login = async ({
 export const logout = async () => {
   try {
     const token = getCookie('token');
-    console.log('token', token);
 
-    const response = await axiosInstance.post('/users/logout', {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : '',
-      },
-    });
+    const response = await axiosInstance.post(
+      '/users/logout',
+      {},
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : '',
+        },
+      }
+    );
 
     return {
       data: response.data,

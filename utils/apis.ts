@@ -166,7 +166,7 @@ export const createItem = async ({
           company_address,
           business,
           url,
-        }
+        },
       },
       {
         headers: {
@@ -195,6 +195,29 @@ export const login = async ({
       email,
       password,
     });
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const logout = async () => {
+  try {
+    const token = getCookie('token');
+    console.log('token', token);
+
+    const response = await axiosInstance.post('/users/logout', {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : '',
+      },
+    });
+
     return {
       data: response.data,
       status: response.status,

@@ -8,14 +8,14 @@ import { Formik } from 'formik';
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import { setCookie } from 'cookies-next';
 
-import Button from '../../../../components/button';
-import { PageProps, TUserConfirm } from '../../../../types';
+import Button from '../../../../../components/button';
+import { PageProps, TUserConfirm } from '../../../../../types';
 import {
   confirmRegistration,
   createItem,
   getUserInfo,
   registerUser,
-} from '../../../../utils/apis';
+} from '../../../../../utils/apis';
 import { SchemaRegisterCompany } from '../../Schema';
 
 interface FormValuesProps {

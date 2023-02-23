@@ -8,10 +8,10 @@ import { Formik } from 'formik';
 
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
-import Button from '../../../components/button';
-import AlertsError from '../../../components/common/notification';
-import { TNotification } from '../../../types';
-import { addUser, userInvite } from '../../../utils/apis';
+import Button from '../../../../components/button';
+import AlertsError from '../../../../components/common/notification';
+import { TNotification } from '../../../../types';
+import { addUser, userInvite } from '../../../../utils/apis';
 import { SchemaEmail } from '../Schema';
 
 interface FormValues {

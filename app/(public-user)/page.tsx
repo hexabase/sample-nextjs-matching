@@ -1,9 +1,9 @@
-import Tag from '../components/common/Tag';
-import Toggle from '../components/common/Toggle';
-import CalendarInline from '../components/serchJobs/calendarInline';
-import CardJob from '../components/serchJobs/cardJob';
-import FooterMobile from '../components/serchJobs/footerMobile';
-import { TJob } from '../types';
+import Tag from '../../components/common/Tag';
+import Toggle from '../../components/common/Toggle';
+import CalendarInline from '../../components/serchJobs/calendarInline';
+import CardJob from '../../components/serchJobs/cardJob';
+import FooterMobile from '../../components/serchJobs/footerMobile';
+import { TJob } from '../../types';
 
 export default function Home() {
   const jobs: TJob[] = [

@@ -9,10 +9,10 @@ import { Formik } from 'formik';
 
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
-import Button from '../../../components/button';
-import AlertsError from '../../../components/common/notification';
-import { TNotification } from '../../../types';
-import { login } from '../../../utils/apis';
+import Button from '../../../../components/button';
+import AlertsError from '../../../../components/common/notification';
+import { TNotification } from '../../../../types';
+import { login } from '../../../../utils/apis';
 import { SchemaLogin } from '../Schema';
 
 interface FormValuesProps {

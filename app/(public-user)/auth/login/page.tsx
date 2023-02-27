@@ -2,17 +2,17 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { setCookie } from 'cookies-next';
 import { Formik } from 'formik';
 
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
-import Button from '../../../components/button';
-import AlertsError from '../../../components/common/notification';
-import { TNotification } from '../../../types';
-import { login } from '../../../utils/apis';
+import Button from '../../../../components/button';
+import Notification from '../../../../components/common/notification';
+import { EMessageError, EType, TNotification } from '../../../../types';
+import { login } from '../../../../utils/apis';
 import { SchemaLogin } from '../Schema';
 
 interface FormValuesProps {
@@ -36,22 +36,21 @@ export default function Login() {
       });
 
       if (loginRes.data.token) {
-        setNotification({
-          open: true,
-          type: 'success',
-          message: '正常にログインしました',
-        });
         setCookie('token', loginRes.data.token);
         router.push('/jobs-employer');
       }
     } catch (error) {
       setNotification({
         open: true,
-        type: 'error',
-        message: 'ログインに失敗しました',
+        type: EType.ERROR,
+        message: EMessageError.ERR_01,
       });
     }
   };
+
+  useEffect(() => {
+    router.refresh();
+  }, []);
 
   return (
     <>
@@ -180,7 +179,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <AlertsError
+      <Notification
         notification={notification}
         setNotification={setNotification}
       />

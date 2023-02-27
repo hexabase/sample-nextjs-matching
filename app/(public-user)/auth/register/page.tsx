@@ -8,10 +8,10 @@ import { Formik } from 'formik';
 
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
-import Button from '../../../components/button';
-import AlertsError from '../../../components/common/notification';
-import { TNotification } from '../../../types';
-import { addUser, userInvite } from '../../../utils/apis';
+import Button from '../../../../components/button';
+import Notification from '../../../../components/common/notification';
+import { EMessageError, EType, TNotification } from '../../../../types';
+import { addUser, userInvite } from '../../../../utils/apis';
 import { SchemaEmail } from '../Schema';
 
 interface FormValues {
@@ -33,15 +33,15 @@ export default function RegisterPage() {
       } else {
         setNotification({
           open: true,
-          type: 'error',
-          message: '予期せぬエラーが発生しました',
+          type: EType.ERROR,
+          message: EMessageError.ERR_01,
         });
       }
     } catch (error) {
       setNotification({
         open: true,
-        type: 'error',
-        message: '予期せぬエラーが発生しました',
+        type: EType.ERROR,
+        message: EMessageError.ERR_01,
       });
     }
   };
@@ -55,8 +55,8 @@ export default function RegisterPage() {
       } else {
         setNotification({
           open: true,
-          type: 'error',
-          message: '予期せぬエラーが発生しました',
+          type: EType.ERROR,
+          message: EMessageError.ERR_01,
         });
       }
     } catch (error) {
@@ -147,7 +147,7 @@ export default function RegisterPage() {
         </Formik>
       </div>
 
-      <AlertsError
+      <Notification
         notification={notification}
         setNotification={setNotification}
       />

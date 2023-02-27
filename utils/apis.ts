@@ -3,7 +3,9 @@ import {
   TConfirmRegistration,
   TGetUserInfo,
   TInputCreateItem,
+  TInputLogin,
   TInputRegisterUser,
+  TLogin,
   TRegisterUser,
   TUserInvite,
 } from '../types';
@@ -172,6 +174,27 @@ export const createItem = async ({
         },
       }
     );
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const login = async ({
+  email,
+  password,
+}: TInputLogin): Promise<ApiResponse<TLogin>> => {
+  try {
+    const response = await axiosInstance.post<TLogin>('/login', {
+      email,
+      password,
+    });
     return {
       data: response.data,
       status: response.status,

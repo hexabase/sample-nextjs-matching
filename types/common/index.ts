@@ -120,5 +120,20 @@ export type TInputCreateItem = {
   url: string;
 };
 
-const alertTypes = ['success', 'error', 'warning'] as const;
-export type TAlertTypes = (typeof alertTypes)[number];
+const notificationTypes = ['success', 'error', 'warning'] as const;
+export type TNotificationTypes = (typeof notificationTypes)[number];
+
+export type TNotification = {
+  open: boolean;
+  type?: TNotificationTypes;
+  message?: string;
+};
+
+export type TLogin = {
+  token: string;
+};
+
+export type TInputLogin = {
+  email: string;
+  password: string;
+};

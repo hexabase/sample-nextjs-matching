@@ -120,5 +120,30 @@ export type TInputCreateItem = {
   url: string;
 };
 
-const alertTypes = ['success', 'error', 'warning'] as const;
-export type TAlertTypes = (typeof alertTypes)[number];
+export enum EType {
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+}
+
+const notificationTypes = [EType.SUCCESS, EType.ERROR, EType.WARNING] as const;
+export type TNotificationTypes = (typeof notificationTypes)[number];
+
+export type TNotification = {
+  open: boolean;
+  type?: TNotificationTypes;
+  message?: string;
+};
+
+export type TLogin = {
+  token: string;
+};
+
+export type TInputLogin = {
+  email: string;
+  password: string;
+};
+
+export enum EMessageError {
+  ERR_01 = '予期せぬエラーが発生しました',
+}

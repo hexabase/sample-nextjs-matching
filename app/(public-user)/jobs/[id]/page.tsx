@@ -6,12 +6,12 @@ import { useState } from 'react';
 import { BriefcaseIcon } from '@heroicons/react/20/solid';
 import { CurrencyYenIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
-import BackToHome from '../../../components/common/backToHome';
-import BackToJobs from '../../../components/common/backToJobs';
-import DetailCard from '../../../components/jobDetail/detailCard';
-import JobModal from '../../../components/jobDetail/jobModal';
-import { TJobDetail } from '../../../types/jobs';
-import Apply from '../../../components/jobDetail/apply';
+import BackToHome from '../../../../components/common/backToHome';
+import BackToJobs from '../../../../components/common/backToJobs';
+import DetailCard from '../../../../components/jobDetail/detailCard';
+import JobModal from '../../../../components/jobDetail/jobModal';
+import { TJobDetail } from '../../../../types/jobs';
+import Apply from '../../../../components/jobDetail/apply';
 
 const jobDetailMock: TJobDetail = {
   date: dayjs(),
@@ -101,7 +101,7 @@ function JobDetails() {
                 〒{job.workplace}
               </p>
             </div>
-      
+
             <div className="py-[1.875rem] text-center md:hidden">
               <Apply handleOpenModal={handleOpenModal} />
             </div>

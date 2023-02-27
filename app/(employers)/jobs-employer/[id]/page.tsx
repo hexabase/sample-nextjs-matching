@@ -3,12 +3,12 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { CurrencyYenIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
-import { TJobDetail } from '../../../types/jobs';
-import DetailCard from '../../../components/jobList/detaiJobCard';
-import BackToJobsList from '../../../components/common/backToJobsList';
-import { LJobDetail, LJobSeekers } from '../../../types/jobsList';
+import { TJobDetail } from '../../../../types/jobs';
+import DetailCard from '../../../../components/jobList/detaiJobCard';
+import BackToJobsList from '../../../../components/common/backToJobsList';
+import { LJobDetail, LJobSeekers } from '../../../../types/jobsList';
 import { useRouter } from 'next/navigation';
-import ListOfJobSeekers from '../../../components/jobList/listOfJobSeekers';
+import ListOfJobSeekers from '../../../../components/jobList/listOfJobSeekers';
 
 const jobDetailMock: LJobDetail = {
   price: 1250,

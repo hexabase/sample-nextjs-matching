@@ -147,7 +147,7 @@ export default function JobDetails() {
   return (
     <>
       <div className="bg-antiFlashWhite">
-        <div className="container-responsive mt-8 pb-16 pt-2.5 sm:pb-20  md:mt-0 ">
+        <div className="container-responsive pb-16 pt-2.5 sm:pb-20  md:mt-0 ">
           <div className="mb-10 mt-[30px] flex justify-end md:mb-14">
             <button
               type="button"

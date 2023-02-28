@@ -147,3 +147,12 @@ export type TInputLogin = {
 export enum EMessageError {
   ERR_01 = '予期せぬエラーが発生しました',
 }
+
+export type TUser = string | undefined;
+
+export type TImage = string | undefined;
+
+export type TInputGetItemListJobs = {
+  page: number;
+  per_page: number;
+};

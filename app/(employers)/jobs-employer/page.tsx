@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 import { PlusIcon } from '@heroicons/react/24/solid';
 
@@ -12,10 +11,6 @@ import { LJobDetail } from '../../../types/jobsList';
 
 export default function JobDetails() {
   const router = useRouter();
-
-  useEffect(() => {
-    router.refresh();
-  }, []);
 
   const handleRouter = () => {
     router.push('/jobs-employer/job-registration');

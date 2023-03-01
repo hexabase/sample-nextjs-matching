@@ -59,7 +59,7 @@ export default function RootLayout({
   return (
     <>
       <header className="bg-black">
-        <div className="container-responsive flex items-center justify-between pt-24 pb-3.5 sm:pt-4">
+        <div className="container-responsive flex items-center justify-between pt-4 pb-3.5 sm:pt-4">
           <Image
             onClick={() => router.push('/')}
             className="cursor-pointer"

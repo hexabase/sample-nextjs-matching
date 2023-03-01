@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+
 import { useEffect, useMemo, useState } from 'react';
 
 import { PlusIcon } from '@heroicons/react/24/solid';
@@ -31,10 +32,6 @@ export default function JobDetails() {
   };
 
   useEffect(() => {
-    router.refresh();
-  }, []);
-
-  useEffect(() => {
     (async function () {
       try {
         const res = await getItemListJobs({
@@ -59,7 +56,7 @@ export default function JobDetails() {
   return (
     <>
       <div className="bg-antiFlashWhite">
-        <div className="container-responsive mt-8 pb-16 pt-2.5 sm:pb-20  md:mt-0 ">
+        <div className="container-responsive pb-16 pt-2.5 sm:pb-20  md:mt-0 ">
           <div className="mb-10 mt-[30px] flex justify-end md:mb-14">
             <button
               type="button"
@@ -90,8 +87,7 @@ export default function JobDetails() {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-2.5 sm:mt-3 lg:grid-cols-2 lg:gap-x-10 lg:gap-y-8">
-            {jobs[0] &&
-              jobs.map((job) => <CardJob key={job.id} job={job} />)}
+            {jobs[0] && jobs.map((job) => <CardJob key={job.id} job={job} />)}
           </div>
 
           <div className="sm:flex sm:items-center sm:gap-2.5 md:mt-[48px]">

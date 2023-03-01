@@ -110,6 +110,10 @@ export type TInputRegisterUser = {
 
 export type TGetUserInfo = {
   u_id: string;
+  username: string;
+  email: string;
+  is_ws_admin: boolean;
+  profile_pic: string;
 };
 
 export type TInputCreateItem = {
@@ -148,11 +152,10 @@ export enum EMessageError {
   ERR_01 = '予期せぬエラーが発生しました',
 }
 
-export type TUser = string | undefined;
-
 export type TImage = string | undefined;
 
 export type TInputGetItemListJobs = {
   page: number;
   per_page: number;
+  company_id: string;
 };

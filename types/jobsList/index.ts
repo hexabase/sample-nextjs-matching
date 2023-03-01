@@ -29,7 +29,7 @@ type TItemLinks = {
   links: TLink[];
 };
 
-export type TLJobDetail = {
+export type TJobsItems = {
   i_id: string;
   address: string;
   city: string;
@@ -56,8 +56,8 @@ export type TLJobDetail = {
   work_content: string;
 };
 
-export type TGetLJobDetail = {
-  items: TLJobDetail[];
+export type TGetJobsItems = {
+  items: TJobsItems[];
   totalItems: number;
 };
 
@@ -65,4 +65,27 @@ export type LJobSeekers = {
   id?: string;
   name: string;
   mail: string;
+};
+
+export type TCompaniesItems = {
+  business: string;
+  company_address: string;
+  company_name: string;
+  created_at: string;
+  created_by: string;
+  d_id: string;
+  i_id: string;
+  id: string;
+  p_id: string;
+  rev_no: string;
+  status_id: string;
+  title: string;
+  unread: string;
+  url: string;
+  user_id: string;
+};
+
+export type TGetCompaniesItems = {
+  items: TCompaniesItems[];
+  totalItems: number;
 };

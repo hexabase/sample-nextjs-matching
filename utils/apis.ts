@@ -3,7 +3,8 @@ import { getCookie } from 'cookies-next';
 import {
   TAddUser,
   TConfirmRegistration,
-  TGetLJobDetail,
+  TGetCompaniesItems,
+  TGetJobsItems,
   TGetUserInfo,
   TInputCreateItem,
   TInputGetItemListJobs,
@@ -150,45 +151,6 @@ export const getUserInfo = async (): Promise<ApiResponse<TGetUserInfo>> => {
   }
 };
 
-export const getItemListJobs = async ({page, per_page}: TInputGetItemListJobs): Promise<
-  ApiResponse<TGetLJobDetail>
-> => {
-  try {
-    const token = getCookie('token');
-
-    const response = await axiosInstance.post<TGetLJobDetail>(
-      '/applications/hexa-job/datastores/jobs/items/search',
-      {
-        conditions: [
-          {
-            id: '000000001',
-            search_value: ['000000001'],
-            exact_match: true,
-          },
-        ],
-        include_links: true,
-        page,
-        per_page,
-        use_display_id: true,
-      },
-      {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : '',
-        },
-      }
-    );
-    return {
-      data: response.data,
-      status: response.status,
-    };
-  } catch (error) {
-    if (error instanceof ApiError) {
-      throw error;
-    }
-    throw new Error('Unknown error');
-  }
-};
-
 export const createItem = async ({
   user_id,
   company_name,
@@ -263,6 +225,109 @@ export const logout = async () => {
       }
     );
 
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const getItemListCompanies = async (
+  user_id: string
+): Promise<ApiResponse<TGetCompaniesItems>> => {
+  try {
+    const token = getCookie('token');
+    const page = 1;
+    const per_page = 6;
+
+    const response = await axiosInstance.post<TGetCompaniesItems>(
+      '/applications/hexa-job/datastores/companies/items/search',
+      {
+        conditions: [
+          {
+            id: user_id,
+            search_value: [user_id],
+            exact_match: true,
+          },
+        ],
+        include_links: true,
+        page,
+        per_page,
+        use_display_id: true,
+      },
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : '',
+        },
+      }
+    );
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const getItemListJobs = async ({
+  page,
+  per_page,
+  company_id,
+}: TInputGetItemListJobs): Promise<ApiResponse<TGetJobsItems>> => {
+  try {
+    const token = getCookie('token');
+
+    const response = await axiosInstance.post<TGetJobsItems>(
+      '/applications/hexa-job/datastores/jobs/items/search',
+      {
+        conditions: [
+          {
+            id: company_id,
+            search_value: [company_id],
+            exact_match: true,
+          },
+        ],
+        include_links: true,
+        page,
+        per_page,
+        use_display_id: true,
+      },
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : '',
+        },
+      }
+    );
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const getFile = async (file_id: string) => {
+  try {
+    const token = getCookie('token');
+
+    const response = await axiosInstance.get(`/files/${file_id}`, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : '',
+      },
+    });
     return {
       data: response.data,
       status: response.status,

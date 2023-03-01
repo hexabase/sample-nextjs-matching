@@ -3,6 +3,7 @@
 import 'dayjs/locale/ja';
 
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import dayjs from 'dayjs';
 
@@ -12,13 +13,14 @@ import {
   MapPinIcon,
 } from '@heroicons/react/24/outline';
 
-import { TLJobDetail } from '../../../types/jobsList';
+import { TJobsItems } from '../../../types';
+import { getFile } from '../../../utils/apis';
 import { getMonthDayCardJob } from '../../../utils/getDay';
 
 dayjs.locale('ja');
 dayjs().locale('ja');
 interface JobProps {
-  job: TLJobDetail;
+  job: TJobsItems;
 }
 
 export default function CardJob({ job }: JobProps) {
@@ -33,8 +35,21 @@ export default function CardJob({ job }: JobProps) {
     city,
     address,
     hourly_wage,
-    work_content
+    work_content,
+    image,
   } = job;
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const res = await getFile(image);
+
+        res.data && console.log('res.data', res.data);
+      } catch (error) {
+        console.log('error', error);
+      }
+    })();
+  }, [image]);
 
   const handleClickCard = () => {
     router.push(`jobs-employer/${id}`);

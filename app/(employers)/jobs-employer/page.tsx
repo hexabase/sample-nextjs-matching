@@ -1,22 +1,29 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { PlusIcon } from '@heroicons/react/24/solid';
 
+import Notification from '../../../components/common/notification';
 import CardJob from '../../../components/jobList/cardJob';
 import Pagination from '../../../components/pagination';
 import FooterMobile from '../../../components/serchJobs/footerMobile';
-import { TLJobDetail } from '../../../types/jobsList';
-import { getItemListJobs } from '../../../utils/apis';
+import { useUserContext } from '../../../context/UserContext';
+import { EMessageError, EType, TNotification } from '../../../types';
+import { TJobsItems } from '../../../types/jobsList';
+import { getItemListCompanies, getItemListJobs } from '../../../utils/apis';
 
 const itemsPerPage = 6;
 
 export default function JobDetails() {
   const router = useRouter();
-  const [jobs, setJobs] = useState<TLJobDetail[]>([]);
+  const { user } = useUserContext();
+
+  const [notification, setNotification] = useState<TNotification>({
+    open: false,
+  });
+  const [jobs, setJobs] = useState<TJobsItems[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -31,12 +38,13 @@ export default function JobDetails() {
     setCurrentPage(page);
   };
 
-  useEffect(() => {
-    (async function () {
+  const getDataItemListJobs = useCallback(
+    async (company_id: string) => {
       try {
         const res = await getItemListJobs({
           page: currentPage,
           per_page: itemsPerPage,
+          company_id,
         });
 
         if (res.data) {
@@ -44,10 +52,35 @@ export default function JobDetails() {
           setTotalItems(res.data.totalItems);
         }
       } catch (error) {
-        console.log('error', error);
+        setNotification({
+          open: true,
+          type: EType.ERROR,
+          message: EMessageError.ERR_01,
+        });
+      }
+    },
+    [currentPage]
+  );
+
+  useEffect(() => {
+    (async function () {
+      try {
+        if (user && user.u_id) {
+          const res = await getItemListCompanies(user.u_id);
+
+          if (res.data && res.data.items[0]) {
+            getDataItemListJobs(res.data.items[0].id);
+          }
+        }
+      } catch (error) {
+        setNotification({
+          open: true,
+          type: EType.ERROR,
+          message: EMessageError.ERR_01,
+        });
       }
     })();
-  }, [currentPage]);
+  }, [getDataItemListJobs, user]);
 
   const handleRouter = () => {
     router.push('/jobs-employer/job-registration');
@@ -104,6 +137,11 @@ export default function JobDetails() {
       <div className="sm:hidden">
         <FooterMobile />
       </div>
+
+      <Notification
+        notification={notification}
+        setNotification={setNotification}
+      />
     </>
   );
 }

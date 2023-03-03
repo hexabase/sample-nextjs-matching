@@ -147,3 +147,46 @@ export type TInputLogin = {
 export enum EMessageError {
   ERR_01 = '予期せぬエラーが発生しました',
 }
+
+export type TUploadFileImages = {
+  file_id: string;
+};
+
+export type TPrefectureItems = {
+  name: string;
+  created_at: string;
+  created_by: string;
+  d_id: string;
+  i_id: string;
+  id: string;
+  p_id: string;
+  rev_no: string;
+  title: string;
+  unread: string;
+};
+
+export type TGetPrefecturesItems = {
+  items: TPrefectureItems[];
+  totalItems: number;
+};
+
+export type TInputCreateJobItem = {
+  company_id: string;
+  job_title: string;
+  sub_title: string;
+  image: string[];
+  start_work_date: string;
+  end_work_date: string;
+  work_content: string;
+  work_details: string;
+  postal_code: string;
+  prefecture: string;
+  city: string;
+  address: string;
+  hourly_wage: string;
+};
+
+export type TCreateJobItem = {
+  history_id: string;
+  item_id: string;
+};

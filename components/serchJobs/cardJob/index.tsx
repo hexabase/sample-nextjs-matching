@@ -32,7 +32,7 @@ export default function CardJob({ job }: JobProps) {
   return (
     <div
       onClick={handleClickCard}
-      className="rounded-[5px] bg-white pb-3 hover:drop-shadow-md cursor-pointer"
+      className="cursor-pointer rounded-[5px] bg-white pb-3 hover:drop-shadow-md"
     >
       <Image
         src={job.imgUrl === '' ? '/img1.png' : job.imgUrl}

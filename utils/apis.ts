@@ -327,6 +327,7 @@ export const getFile = async (file_id: string) => {
       headers: {
         Authorization: token ? `Bearer ${token}` : '',
       },
+      responseType: 'arraybuffer',
     });
     return {
       data: response.data,

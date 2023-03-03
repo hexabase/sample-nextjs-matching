@@ -2,8 +2,9 @@
 
 import 'dayjs/locale/ja';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import dayjs from 'dayjs';
 
@@ -16,6 +17,7 @@ import {
 import { TJobsItems } from '../../../types';
 import { getFile } from '../../../utils/apis';
 import { getMonthDayCardJob } from '../../../utils/getDay';
+import { getDayOfWeek } from '../../helpers';
 
 dayjs.locale('ja');
 dayjs().locale('ja');
@@ -25,6 +27,7 @@ interface JobProps {
 
 export default function CardJob({ job }: JobProps) {
   const router = useRouter();
+  const [imageUrl, setImageUrl] = useState<string>('/images/img-default.png');
 
   const {
     id,
@@ -36,20 +39,24 @@ export default function CardJob({ job }: JobProps) {
     address,
     hourly_wage,
     work_content,
-    image,
   } = job;
 
   useEffect(() => {
-    (async function () {
+    const getImageUrl = async () => {
       try {
-        const res = await getFile(image);
-
-        res.data && console.log('res.data', res.data);
+        const res = await getFile(job.image);
+        const imageBytes = new Uint8Array(res.data);
+        const blob = new Blob([imageBytes.buffer], { type: 'image' });
+        const imageUrl = URL.createObjectURL(blob);
+        setImageUrl(imageUrl);
       } catch (error) {
         console.log('error', error);
+        setImageUrl('');
       }
-    })();
-  }, [image]);
+    };
+
+    getImageUrl();
+  }, [job.image]);
 
   const handleClickCard = () => {
     router.push(`jobs-employer/${id}`);
@@ -60,23 +67,23 @@ export default function CardJob({ job }: JobProps) {
       onClick={handleClickCard}
       className="flex h-auto justify-between bg-white p-4 pb-3 hover:drop-shadow-md md:gap-6 md:rounded-[5px] md:p-5"
     >
-      <div className="flex  w-1/2 flex-col md:gap-6">
-        <img
-          src="/maskGroup.png"
+      <div className="flex w-1/2 flex-col md:gap-6">
+        <Image
+          src={imageUrl}
           alt="image1"
           className="h-[122px] w-auto rounded-t-md object-cover md:h-52"
+          width="200"
+          height="122"
         />
         <div className="w-full ">
           <div className="mt-[23px] text-[12px] font-bold md:mt-0 md:text-[14px]">
             求職者数
           </div>
-          <div className="flex justify-center">
-            <div className="text-[20px]">
-              <span className="text-[50px] text-[#FF6666] md:ml-0 md:text-[80px]">
-                3
-              </span>
-              <span>人</span>
-            </div>
+          <div className="text-center text-[20px]">
+            <span className="text-[50px] text-[#FF6666] md:ml-0 md:text-[80px]">
+              3
+            </span>
+            <span>人</span>
           </div>
         </div>
       </div>
@@ -92,7 +99,8 @@ export default function CardJob({ job }: JobProps) {
           <div className="flex items-center">
             <ClockIcon className="h-4 w-4 text-aquamarine md:h-5 md:w-5" />
             <p className="ml-1.5 font-bold md:text-sm">
-              {getMonthDayCardJob(dayjs(start_work_date))}
+              {getMonthDayCardJob(dayjs(start_work_date))}(
+              {getDayOfWeek(start_work_date)})
             </p>
             <p className="ml-1.5 text-[10px] md:mt-0.5 md:text-sm">{`${dayjs(
               start_work_date
@@ -100,7 +108,7 @@ export default function CardJob({ job }: JobProps) {
           </div>
 
           <div className="flex items-center">
-            <MapPinIcon className="mr-3 h-4 w-4 text-aquamarine md:h-5 md:w-5 md:text-base" />
+            <MapPinIcon className="mr-3 h-4 w-5 text-aquamarine md:h-5 md:w-6 md:text-base" />
             <div className="w-full">
               <p className="w-full text-[10px] leading-3 md:text-sm">
                 {prefecture}

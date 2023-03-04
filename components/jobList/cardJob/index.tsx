@@ -1,91 +1,147 @@
 'use client';
 
 import 'dayjs/locale/ja';
+
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 import dayjs from 'dayjs';
-import { ClockIcon, MapPinIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
-import { LJobDetail } from '../../../types/jobsList';
+
+import {
+  ClockIcon,
+  CurrencyYenIcon,
+  MapPinIcon,
+} from '@heroicons/react/24/outline';
+
+import { TJobsItems } from '../../../types';
+import { getFile } from '../../../utils/apis';
+import { getMonthDayCardJob } from '../../../utils/getDay';
+import ImageSkeleton from '../../common/skeletons/imageSkeleton';
+import { getDayOfWeek } from '../../helpers';
 
 dayjs.locale('ja');
 dayjs().locale('ja');
 interface JobProps {
-  job: LJobDetail;
+  job: TJobsItems;
 }
 
 export default function CardJob({ job }: JobProps) {
   const router = useRouter();
+  const [imageUrl, setImageUrl] = useState<string>();
+
+  const {
+    id,
+    title,
+    start_work_date,
+    end_work_date,
+    prefecture,
+    city,
+    address,
+    hourly_wage,
+    work_content,
+  } = job;
+
+  useEffect(() => {
+    const getImageUrl = async () => {
+      try {
+        const res = await getFile(job.image);
+        const imageBytes = new Uint8Array(res.data);
+        const blob = new Blob([imageBytes.buffer], { type: 'image' });
+        const imageUrl = URL.createObjectURL(blob);
+        setImageUrl(imageUrl);
+      } catch (error) {
+        console.log('error', error);
+        setImageUrl('');
+      }
+    };
+
+    getImageUrl();
+  }, [job.image]);
+
   const handleClickCard = () => {
-    router.push(`jobs-employer/${job.id}`);
+    router.push(`jobs-employer/${id}`);
   };
 
   return (
     <div
       onClick={handleClickCard}
-      className="h-auto p-4 md:gap-6 flex justify-between md:rounded-[5px] bg-white md:p-5 pb-3 hover:drop-shadow-md"
+      className="flex h-auto justify-between bg-white p-4 pb-3 hover:drop-shadow-md md:gap-6 md:rounded-[5px] md:p-5"
     >
-      <div className='flex  flex-col md:gap-6 w-1/2'>
-        <img
-          src='/maskGroup.png'
-          alt="image1"
-          className="w-auto rounded-t-md md:h-52 h-[122px] object-cover"
-        />
-        <div className='w-full '>
-          <div className='mt-[23px] md:mt-0 text-[12px] md:text-[14px] font-bold'>求職者数</div>
-          <div className='flex justify-center'>
-            <div className='text-[20px]'>
-              <span className='text-[50px] md:ml-0 md:text-[80px] text-[#FF6666]'>3</span>
-              <span>人</span>
-            </div>
+      <div className="flex w-1/2 flex-col md:gap-6">
+        {!imageUrl ? (
+          <div className="h-52 w-auto">
+            <ImageSkeleton className="bg-gray opacity-10" />
+          </div>
+        ) : (
+          <Image
+            src={imageUrl}
+            alt="image1"
+            className="h-[122px] w-auto rounded-t-md object-cover md:h-52"
+            width="200"
+            height="122"
+          />
+        )}
+
+        <div className="w-full ">
+          <div className="mt-[23px] text-[12px] font-bold md:mt-0 md:text-[14px]">
+            求職者数
+          </div>
+          <div className="text-center text-[20px]">
+            <span className="text-[50px] text-[#FF6666] md:ml-0 md:text-[80px]">
+              3
+            </span>
+            <span>人</span>
           </div>
         </div>
       </div>
 
-      <div className="pl-[18px] md:pl-0 md:w-64 flex flex-col md:pb-3 text-[9px] font-normal leading-[13px] md:text-xs w-1/2">
-        <div className='w-auto sm:w-[142px]'>
-          <p className=" h-[49px] w-auto sm:w-[142px] text-overflow-multiline inline-block  md:h-20 text-[12px] font-bold  leading-4 md:w-[248px] md:text-sm lg:text-lg">
-            {job.title}
+      <div className="flex w-1/2 flex-col pl-[18px] text-[9px] font-normal leading-[13px] md:w-64 md:pl-0 md:pb-3 md:text-xs">
+        <div className="w-auto sm:w-[142px]">
+          <p className=" text-overflow-multiline inline-block h-[49px] w-auto text-[12px]  font-bold leading-4 sm:w-[142px]  md:h-20 md:w-[248px] md:text-sm lg:text-lg">
+            {title}
           </p>
         </div>
 
-        <div className='md:h-22 mt-[20px] md:h-24 flex flex-col gap-3 md:gap-2 md:pr-8 md:mt-[30px]'>
+        <div className="md:h-22 mt-[20px] flex flex-col gap-3 md:mt-[30px] md:h-24 md:gap-2 md:pr-8">
           <div className="flex items-center">
-            <ClockIcon className="h-3 w-3 text-aquamarine md:h-4 md:w-4" />
+            <ClockIcon className="h-4 w-4 text-aquamarine md:h-5 md:w-5" />
             <p className="ml-1.5 font-bold md:text-sm">
-              {job.tag}
+              {getMonthDayCardJob(dayjs(start_work_date))}(
+              {getDayOfWeek(start_work_date)})
             </p>
-            <p className="ml-1.5 text-[10px] md:mt-0.5 md:text-sm">{`${job.startTime}〜${job.endTime}`}</p>
+            <p className="ml-1.5 text-[10px] md:mt-0.5 md:text-sm">{`${dayjs(
+              start_work_date
+            ).format('hh:mm')}〜${dayjs(end_work_date).format('hh:mm')}`}</p>
           </div>
 
-          <div className=" flex  items-center">
-            <MapPinIcon className="mr-3 h-3 w-3 text-aquamarine md:h-3 md:w-3 md:text-base" />
+          <div className="flex items-center">
+            <MapPinIcon className="mr-3 h-4 w-5 text-aquamarine md:h-5 md:w-6 md:text-base" />
             <div className="w-full">
-              <p className='w-full text-[10px] leading-3 md:text-sm'>
-                {job.workplace}
+              <p className="w-full text-[10px] leading-3 md:text-sm">
+                {prefecture}
+                {city}
+                {address}
               </p>
             </div>
           </div>
 
-          <div className=" flex items-center">
+          <div className="flex items-center">
             <p className="mr-3">
-              <CurrencyYenIcon className="h-3 w-3 text-aquamarine md:h-3 md:w-3 md:text-base" />
+              <CurrencyYenIcon className="h-4 w-4 text-aquamarine md:h-5 md:w-5 md:text-base" />
             </p>
-            <div className='flex items-center gap-1'>
-              <p className="text-[10px] md:text-[14px] font-bold md:text-sm">
-                {job.price.toLocaleString()}
+            <div className="flex items-center gap-1">
+              <p className="text-[10px] font-bold md:text-[14px] md:text-sm">
+                {hourly_wage}
               </p>
-              <span className='text-[10px] md:text-sm'>
-                円/1時給
-              </span>
+              <span className="text-[10px] md:text-sm">円/1時給</span>
             </div>
           </div>
         </div>
 
-        <div className='w-auto sm:w-[141px] md:w-56 md:h-28 flex flex-col gap-2 mt-6'>
-          <p className='font-bold'>作業内容</p>
-          <p className='md:h-20 text-[8px] md:text-sm'>
-            {job.content}
-          </p>
+        <div className="mt-6 flex w-auto flex-col gap-2 sm:w-[141px] md:h-28 md:w-56">
+          <p className="font-bold">作業内容</p>
+          <p className="text-[8px] md:h-20 md:text-sm">{work_content}</p>
         </div>
       </div>
     </div>

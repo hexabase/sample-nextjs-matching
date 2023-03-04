@@ -41,7 +41,8 @@ interface FormValues {
 
 export default function RegisterPage() {
   const router = useRouter();
-
+  const [files, setFiles] = useState<File[]>([]);
+  const [openfiles, setOpenFiles] = useState(false);
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
@@ -87,7 +88,16 @@ export default function RegisterPage() {
       for (let i = 0; i < images.length; i++) {
         uploadImage(images[i]);
       }
+      if (images) {
+        const filesArray = Array.from(images);
+        setFiles(filesArray);
+        setOpenFiles(true);
+      }
     }
+  };
+
+  const displayFileNames = () => {
+    return files.map((file) => file.name).join(', ');
   };
 
   const handleRouter = () => {
@@ -227,16 +237,23 @@ export default function RegisterPage() {
                     <div className="mb-11 grid gap-2 lg:mb-9">
                       <div className=" flex h-[206px] w-full flex-row md:w-[772px]">
                         <div className="flex w-full items-center justify-center bg-[#F9F9F9]">
-                          <div className="border-blue flex w-64 flex-col items-center rounded-lg bg-[#F9F9F9] px-4 py-6 uppercase tracking-wide text-[#808080] ">
+                          <div className="border-blue flex w-64 flex-col items-center rounded-lg bg-[#F9F9F9] px-4 py-6  tracking-wide text-[#808080] ">
                             <Image
                               alt="camera"
                               src={camera}
                               width={40}
                               height={36}
                             />
-                            <span className="mt-2 text-base leading-normal text-[#808080]">
-                              メインの写真を載せる
-                            </span>
+                            {openfiles ? (
+                              <div className="flex">
+                                {files.length > 0 &&
+                                  files.map((file) => file.name).join(', ')}
+                              </div>
+                            ) : (
+                              <span className="mt-2 text-base uppercase leading-normal text-[#808080]">
+                                メインの写真を載せる
+                              </span>
+                            )}
                             <label
                               htmlFor="image"
                               className="mt-5 cursor-pointer rounded-[4px] border border-solid border-[#808080] bg-[#FFFFFF] px-[15px] py-1.5 text-[10px] text-[#808080]"

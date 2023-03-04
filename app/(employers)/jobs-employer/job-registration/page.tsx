@@ -42,7 +42,7 @@ interface FormValues {
 export default function RegisterPage() {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
-  const [openfiles, setOpenFiles] = useState(false);
+  const [openFiles, setOpenFiles] = useState(false);
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
@@ -94,10 +94,6 @@ export default function RegisterPage() {
         setOpenFiles(true);
       }
     }
-  };
-
-  const displayFileNames = () => {
-    return files.map((file) => file.name).join(', ');
   };
 
   const handleRouter = () => {
@@ -244,7 +240,7 @@ export default function RegisterPage() {
                               width={40}
                               height={36}
                             />
-                            {openfiles ? (
+                            {openFiles ? (
                               <div className="flex">
                                 {files.length > 0 &&
                                   files.map((file) => file.name).join(', ')}
@@ -516,23 +512,26 @@ export default function RegisterPage() {
                             （必須）
                           </span>
                         </div>
-                        <div className="relative flex w-full flex-row md:w-[772px]">
+                        <div className="flex w-full flex-row md:w-[772px]">
                           <div className="flex gap-2">
-                            <input
-                              name="hourly_wage"
-                              value={values.hourly_wage}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              placeholder="金額を記入してください"
-                              className={`${
-                                touched.hourly_wage && errors.hourly_wage
-                                  ? 'border-red'
-                                  : 'border-argent hover:border-aquamarine'
-                              } input-field solid mt-[11px] mb-11 bg-[#F9F9F9]  md:mt-0 lg:mb-9`}
-                            />
-                            {touched.hourly_wage && errors.hourly_wage && (
-                              <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
-                            )}
+                            <div className="relative flex">
+                              <input
+                                name="hourly_wage"
+                                value={values.hourly_wage}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                placeholder="金額を記入してください"
+                                className={`${
+                                  touched.hourly_wage && errors.hourly_wage
+                                    ? 'border-red'
+                                    : 'border-argent hover:border-aquamarine'
+                                } input-field solid mt-[11px] mb-11 bg-[#F9F9F9]  md:mt-0 lg:mb-9`}
+                              />
+                              {touched.hourly_wage && errors.hourly_wage && (
+                                <ExclamationCircleIcon className="absolute right-1 h-6 w-6 translate-y-1/2 text-red" />
+                              )}
+                            </div>
+
                             <div className="flex items-center">
                               <p className="w-[60px] text-xs font-bold">
                                 円（税込）

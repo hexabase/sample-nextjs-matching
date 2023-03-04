@@ -17,6 +17,7 @@ import {
 import { TJobsItems } from '../../../types';
 import { getFile } from '../../../utils/apis';
 import { getMonthDayCardJob } from '../../../utils/getDay';
+import ImageSkeleton from '../../common/skeletons/imageSkeleton';
 import { getDayOfWeek } from '../../helpers';
 
 dayjs.locale('ja');
@@ -27,7 +28,7 @@ interface JobProps {
 
 export default function CardJob({ job }: JobProps) {
   const router = useRouter();
-  const [imageUrl, setImageUrl] = useState<string>('/images/img-default.png');
+  const [imageUrl, setImageUrl] = useState<string>();
 
   const {
     id,
@@ -68,13 +69,20 @@ export default function CardJob({ job }: JobProps) {
       className="flex h-auto justify-between bg-white p-4 pb-3 hover:drop-shadow-md md:gap-6 md:rounded-[5px] md:p-5"
     >
       <div className="flex w-1/2 flex-col md:gap-6">
-        <Image
-          src={imageUrl}
-          alt="image1"
-          className="h-[122px] w-auto rounded-t-md object-cover md:h-52"
-          width="200"
-          height="122"
-        />
+        {!imageUrl ? (
+          <div className="h-52 w-auto">
+            <ImageSkeleton className="bg-gray opacity-10" />
+          </div>
+        ) : (
+          <Image
+            src={imageUrl}
+            alt="image1"
+            className="h-[122px] w-auto rounded-t-md object-cover md:h-52"
+            width="200"
+            height="122"
+          />
+        )}
+
         <div className="w-full ">
           <div className="mt-[23px] text-[12px] font-bold md:mt-0 md:text-[14px]">
             求職者数

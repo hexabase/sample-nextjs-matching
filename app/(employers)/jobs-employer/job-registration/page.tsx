@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import { MapPinIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -24,6 +24,7 @@ import {
   uploadFile,
 } from '../../../../utils/apis';
 import { SchemaJobRegistration } from './Schema';
+import { useCompanyContext } from '../../../../context';
 
 interface FormValues {
   job_title: string;
@@ -41,8 +42,10 @@ interface FormValues {
 
 export default function RegisterPage() {
   const router = useRouter();
+
+  const { company } = useCompanyContext();
+
   const [files, setFiles] = useState<File[]>([]);
-  const [openFiles, setOpenFiles] = useState(false);
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
@@ -91,7 +94,6 @@ export default function RegisterPage() {
       if (images) {
         const filesArray = Array.from(images);
         setFiles(filesArray);
-        setOpenFiles(true);
       }
     }
   };
@@ -100,31 +102,36 @@ export default function RegisterPage() {
     router.push('/jobs-employer');
   };
 
-  const createDataJobItems = async (data: FormValues) => {
-    try {
-      const res = await createJobItems({
-        ...data,
-        company_id: '00000007',
-        image: filesId,
-      });
+  const createDataJobItems = useCallback(
+    async (data: FormValues) => {
+      try {
+        if (company && company.id) {
+          const res = await createJobItems({
+            ...data,
+            company_id: company.id,
+            image: filesId,
+          });
 
-      if (res.data) {
+          if (res.data) {
+            setNotification({
+              open: true,
+              type: EType.SUCCESS,
+              message: 'Success',
+            });
+
+            handleRouter();
+          }
+        }
+      } catch (error) {
         setNotification({
           open: true,
-          type: EType.SUCCESS,
-          message: 'Success',
+          type: EType.ERROR,
+          message: EMessageError.ERR_01,
         });
-
-        handleRouter();
       }
-    } catch (error) {
-      setNotification({
-        open: true,
-        type: EType.ERROR,
-        message: EMessageError.ERR_01,
-      });
-    }
-  };
+    },
+    [company, filesId]
+  );
 
   useEffect(() => {
     getDataPrefecturesItems();
@@ -240,10 +247,9 @@ export default function RegisterPage() {
                               width={40}
                               height={36}
                             />
-                            {openFiles ? (
+                            {files[0] ? (
                               <div className="flex">
-                                {files.length > 0 &&
-                                  files.map((file) => file.name).join(', ')}
+                                {files.map((file) => file.name).join(', ')}
                               </div>
                             ) : (
                               <span className="mt-2 text-base uppercase leading-normal text-[#808080]">

@@ -17,6 +17,7 @@ import {
   TRegisterUser,
   TUploadFileImages,
   TUserInvite,
+  TListFieldValues,
 } from '../types';
 import { ApiError, ApiResponse, createAxiosInstance } from './axios';
 
@@ -451,6 +452,35 @@ export const getFile = async (file_id: string) => {
       },
       responseType: 'arraybuffer',
     });
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const getItemDetails = async (
+  item_id: string
+): Promise<ApiResponse<TListFieldValues>> => {
+  try {
+    const token = getCookie('token');
+
+    const response = await axiosInstance.get<TListFieldValues>(
+      `applications/hexa-job/datastores/jobs/items/details/${item_id}`,
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : '',
+        },
+        params: {
+          include_linked_items: true,
+        },
+      }
+    );
     return {
       data: response.data,
       status: response.status,

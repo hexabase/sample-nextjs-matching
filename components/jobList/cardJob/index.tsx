@@ -16,7 +16,7 @@ import {
 
 import { TJobsItems } from '../../../types';
 import { getFile } from '../../../utils/apis';
-import { getMonthDayCardJob } from '../../../utils/getDay';
+import { getMonthDayCardJob, getTimeCardJob } from '../../../utils/getDay';
 import ImageSkeleton from '../../common/skeletons/imageSkeleton';
 import { getDayOfWeek } from '../../helpers';
 
@@ -31,7 +31,7 @@ export default function CardJob({ job }: JobProps) {
   const [imageUrl, setImageUrl] = useState<string>();
 
   const {
-    id,
+    i_id,
     title,
     start_work_date,
     end_work_date,
@@ -60,7 +60,7 @@ export default function CardJob({ job }: JobProps) {
   }, [job.image]);
 
   const handleClickCard = () => {
-    router.push(`jobs-employer/${id}`);
+    router.push(`jobs-employer/${i_id}`);
   };
 
   return (
@@ -110,9 +110,9 @@ export default function CardJob({ job }: JobProps) {
               {getMonthDayCardJob(dayjs(start_work_date))}(
               {getDayOfWeek(start_work_date)})
             </p>
-            <p className="ml-1.5 text-[10px] md:mt-0.5 md:text-sm">{`${dayjs(
-              start_work_date
-            ).format('hh:mm')}〜${dayjs(end_work_date).format('hh:mm')}`}</p>
+            <p className="ml-1.5 text-[10px] md:mt-0.5 md:text-sm">{`${getTimeCardJob(
+              dayjs(start_work_date)
+            )}〜${getTimeCardJob(dayjs(end_work_date))}`}</p>
           </div>
 
           <div className="flex items-center">

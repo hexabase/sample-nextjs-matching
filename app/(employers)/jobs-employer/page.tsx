@@ -9,16 +9,16 @@ import Notification from '../../../components/common/notification';
 import CardJob from '../../../components/jobList/cardJob';
 import Pagination from '../../../components/pagination';
 import FooterMobile from '../../../components/serchJobs/footerMobile';
-import { useUserContext } from '../../../context/UserContext';
+import { useCompanyContext } from '../../../context';
 import { EMessageError, EType, TNotification } from '../../../types';
 import { TJobsItems } from '../../../types/jobsList';
-import { getItemListCompanies, getItemListJobs } from '../../../utils/apis';
+import { getItemListJobs } from '../../../utils/apis';
 
 const itemsPerPage = 6;
 
 export default function JobDetails() {
   const router = useRouter();
-  const { user } = useUserContext();
+  const { company } = useCompanyContext();
 
   const [notification, setNotification] = useState<TNotification>({
     open: false,
@@ -63,24 +63,10 @@ export default function JobDetails() {
   );
 
   useEffect(() => {
-    (async function () {
-      try {
-        if (user && user.u_id) {
-          const res = await getItemListCompanies(user.u_id);
-
-          if (res.data && res.data.items[0]) {
-            getDataItemListJobs(res.data.items[0].id);
-          }
-        }
-      } catch (error) {
-        setNotification({
-          open: true,
-          type: EType.ERROR,
-          message: EMessageError.ERR_01,
-        });
-      }
-    })();
-  }, [getDataItemListJobs, user]);
+    if (company && company.id) {
+      getDataItemListJobs(company.id);
+    }
+  }, [company, getDataItemListJobs, currentPage]);
 
   const handleRouter = () => {
     router.push('/jobs-employer/job-registration');

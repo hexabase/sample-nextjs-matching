@@ -3,13 +3,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { deleteCookie } from 'cookies-next';
+
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
 import Notification from '../../components/common/notification';
-import { EMessageError, EType, TNotification } from '../../types';
+import { UserContext } from '../../context/UserContext';
+import { EMessageError, EType, TGetUserInfo, TNotification } from '../../types';
 import { getUserInfo, logout } from '../../utils/apis';
 
 export default function RootLayout({
@@ -18,6 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const [user, setUser] = useState<TGetUserInfo>();
 
   const [notification, setNotification] = useState<TNotification>({
     open: false,
@@ -46,6 +49,8 @@ export default function RootLayout({
     (async function getDataUserInfo() {
       try {
         const res = await getUserInfo();
+
+        res.data && setUser(res.data);
       } catch (error) {
         handleLogout();
       }
@@ -79,7 +84,9 @@ export default function RootLayout({
         </div>
       </header>
 
-      <main>{children}</main>
+      <main>
+        <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
+      </main>
       <footer className="relative bg-eerieBlack pt-16 pb-6 text-white sm:pb-5 sm:pt-12">
         <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black sm:hidden">
           <ChevronUpIcon aria-hidden="true" />

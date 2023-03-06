@@ -33,13 +33,15 @@ export default function DetailCard({ file_id }: DetailCardProps) {
   }, [file_id]);
 
   return (
-    <div className="">
+    <div className={!imageUrl ? ("w-[80%] mx-auto") : ("")}>
       {!imageUrl ? (
-        <div className="h-52 w-auto md:h-72">
+        <div className="h-52 w-full md:h-72">
           <ImageSkeleton className="bg-gray opacity-10" />
         </div>
       ) : (
-        <Image src={imageUrl} alt="image1" width={550} height={300} />
+        <div className="h-52 w-full md:h-72">
+          <Image src={imageUrl} alt="image1" width={550} height={300} />
+        </div>
       )}
     </div>
   );

@@ -9,7 +9,6 @@ import { ClockIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
 
 import { TJobDetail } from '../../../types/jobs';
 import { getDay } from '../../../utils/getDay';
-import DateCard from '../../dateCard';
 import { checkHoliday } from '../../helpers';
 import DateCardDetail from '../../dateCardDetail';
 import Apply from '../apply';

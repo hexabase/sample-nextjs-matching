@@ -16,6 +16,12 @@ export const getMonthDayCardJob = (day: Dayjs) => {
   return `${monthDayFormat}`;
 };
 
+export const getYearMonthDayCardJob = (day: Dayjs) => {
+  const monthDayFormat = dayjs(day).format('YYYY/MM/DD');
+
+  return `${monthDayFormat}`;
+};
+
 export const getTimeCardJob = (day: Dayjs) => {
   const timeFormat = dayjs(day).format('hh:mm');
 

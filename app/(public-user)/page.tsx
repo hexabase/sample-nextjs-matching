@@ -5,101 +5,12 @@ import Toggle from '../../components/common/Toggle';
 import CalendarInline from '../../components/serchJobs/calendarInline';
 import CardJob from '../../components/serchJobs/cardJob';
 import FooterMobile from '../../components/serchJobs/footerMobile';
-import { TJob, TJobSearchResult } from '../../types';
+import { TJob, TJobSearchResult, TJobSearchDetail } from '../../types';
 import { useState, useCallback, useEffect } from 'react';
 import { searchJob } from '../../utils/apis';
+import dayjs from 'dayjs';
 
 export default function Home() {
-  const jobs2: TJob[] = [
-    {
-      id: '1',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '2',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '3',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '4',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '5',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '6',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '7',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '8',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-  ];
 
   const [jobs, setJobs] = useState<TJobSearchResult>();
   const tags = ['12月21日(水)', '検品'];
@@ -110,13 +21,12 @@ export default function Home() {
         conditions: [{
           search_value: []
         }],
-        sort_field_id: '2022/12/14',
+        sort_field_id: dayjs().format('YYYY/MM/DD'),
         sort_order: 'desc',
         page: 1,
         per_page: 8
       })
-      console.log(res.data);
-      // setJobs(res.data.items)
+      setJobs(res.data)
     } catch (error) {
       
     }
@@ -125,6 +35,21 @@ export default function Home() {
   useEffect(() => {
     getJobs();
   }, [getJobs])
+
+  const jobFactory = (rawJob: TJobSearchDetail): TJob => {
+    return {
+      id: rawJob.id,
+      // imgUrl: rawJob.image,
+      imgUrl: '',
+      jobName: rawJob.job_title,
+      des: rawJob.title,
+      date: dayjs(rawJob.start_work_date).format('YYYY/MM/DD'),
+      startTime: dayjs(rawJob.start_work_date).format('HH:MM'),
+      endTime: dayjs(rawJob.end_work_date).format('HH:MM'),
+      tags: [rawJob.prefecture, rawJob.city, rawJob.address],
+      hourlyWage: Number(rawJob.hourly_wage),
+    }
+  }
 
   return (
     <>
@@ -154,8 +79,8 @@ export default function Home() {
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-10 lg:gap-y-8">
-            {jobs2[0] &&
-              jobs2.map((job, jobIndex) => <CardJob key={jobIndex} job={job} />)}
+            {jobs?.items[0] &&
+              jobs.items.map((job, jobIndex) => <CardJob key={jobIndex} job={jobFactory(job)} />)}
           </div>
         </div>
       </div>

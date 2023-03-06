@@ -105,11 +105,11 @@ type TJonSearchCondition = {
 }
 
 export type TJobSearchResult = {
-  items: TJobDetail[],
+  items: TJobSearchDetail[],
   totalItems: number,
 }
 
-type TJobDetail = {
+export type TJobSearchDetail = {
   '08cc962a-c93f-4a2d-9a0d-d347710d31d1': string,
   '764eb0c2-52fd-44a6-8a14-f5d10c880686': string,
   '772920ec-df90-421d-b204-bd41e733d9a9': string,

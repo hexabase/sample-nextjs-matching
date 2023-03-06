@@ -394,7 +394,7 @@ export default function RegisterPage() {
                           )}
                           {prefectures[0] &&
                             prefectures.map((pre) => (
-                              <option key={pre.id} value={pre.id}>
+                              <option key={pre.i_id} value={pre.i_id}>
                                 {pre.title}
                               </option>
                             ))}

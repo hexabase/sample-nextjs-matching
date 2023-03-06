@@ -203,7 +203,7 @@ export default function JobDetails({ params: { id } }: JobDetailsProps) {
                         <div className="flexItemsCenter mb-4 text-xs font-normal md:text-base">
                           <MapPinIcon className="mr-2 h-[30x] w-[27px] text-aquamarine" />
                           <p className="text-base font-normal">
-                            {job?.prefecture}
+                            {job?.prefecture?.title}
                             {job?.city}
                             {job?.address}
                           </p>
@@ -244,7 +244,7 @@ export default function JobDetails({ params: { id } }: JobDetailsProps) {
                 </div>
 
                 <div className="mt-[60px] md:mt-0 md:flex md:w-1/2 md:justify-center">
-                  <DetailCard file_id={job?.image[0].file_id} />
+                  <DetailCard file_id={job?.image[0]?.file_id} />
                 </div>
               </div>
             </div>

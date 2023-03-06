@@ -1,12 +1,16 @@
+'use client'
+
 import Tag from '../../components/common/Tag';
 import Toggle from '../../components/common/Toggle';
 import CalendarInline from '../../components/serchJobs/calendarInline';
 import CardJob from '../../components/serchJobs/cardJob';
 import FooterMobile from '../../components/serchJobs/footerMobile';
-import { TJob } from '../../types';
+import { TJob, TJobSearchResult } from '../../types';
+import { useState, useCallback, useEffect } from 'react';
+import { searchJob } from '../../utils/apis';
 
 export default function Home() {
-  const jobs: TJob[] = [
+  const jobs2: TJob[] = [
     {
       id: '1',
       imgUrl: '',
@@ -96,7 +100,31 @@ export default function Home() {
       hourlyWage: 1250,
     },
   ];
+
+  const [jobs, setJobs] = useState<TJobSearchResult>();
   const tags = ['12月21日(水)', '検品'];
+
+  const getJobs = useCallback(async () => {
+    try {
+      const res = await searchJob({
+        conditions: [{
+          search_value: []
+        }],
+        sort_field_id: '2022/12/14',
+        sort_order: 'desc',
+        page: 1,
+        per_page: 8
+      })
+      console.log(res.data);
+      // setJobs(res.data.items)
+    } catch (error) {
+      
+    }
+  }, [])
+
+  useEffect(() => {
+    getJobs();
+  }, [getJobs])
 
   return (
     <>
@@ -126,8 +154,8 @@ export default function Home() {
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-10 lg:gap-y-8">
-            {jobs[0] &&
-              jobs.map((job, jobIndex) => <CardJob key={jobIndex} job={job} />)}
+            {jobs2[0] &&
+              jobs2.map((job, jobIndex) => <CardJob key={jobIndex} job={job} />)}
           </div>
         </div>
       </div>

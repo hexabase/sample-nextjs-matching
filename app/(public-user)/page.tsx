@@ -1,40 +1,44 @@
-'use client'
+'use client';
 
 import Tag from '../../components/common/Tag';
 import Toggle from '../../components/common/Toggle';
 import CalendarInline from '../../components/serchJobs/calendarInline';
 import CardJob from '../../components/serchJobs/cardJob';
 import FooterMobile from '../../components/serchJobs/footerMobile';
-import { TJob, TJobSearchResult, TJobSearchDetail } from '../../types';
+import { TJob, TJobSearchDetail } from '../../types';
 import { useState, useCallback, useEffect } from 'react';
 import { searchJob } from '../../utils/apis';
 import dayjs from 'dayjs';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function Home() {
-
-  const [jobs, setJobs] = useState<TJobSearchResult>();
+  const [jobs, setJobs] = useState<TJobSearchDetail[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [totalItems, setTotalItems] = useState<number>(0);
   const tags = ['12月21日(水)', '検品'];
 
-  const getJobs = useCallback(async () => {
+  const getJobs = useCallback(async (currentPage: number) => {
     try {
       const res = await searchJob({
-        conditions: [{
-          search_value: []
-        }],
-        sort_field_id: dayjs().format('YYYY/MM/DD'),
+        conditions: [
+          {
+            search_value: [],
+          },
+        ],
+        sort_field_id: 'start_work_date',
         sort_order: 'desc',
-        page: 1,
-        per_page: 8
-      })
-      setJobs(res.data)
-    } catch (error) {
-      
-    }
-  }, [])
+        page: currentPage,
+        per_page: 8,
+        use_display_id: true,
+      });
+      setJobs([...jobs, ...res.data.items]);
+      setTotalItems(res.data.totalItems);
+    } catch (error) {}
+  }, [page]);
 
   useEffect(() => {
-    getJobs();
-  }, [getJobs])
+    getJobs(page);
+  }, [getJobs, page]);
 
   const jobFactory = (rawJob: TJobSearchDetail): TJob => {
     return {
@@ -48,8 +52,8 @@ export default function Home() {
       endTime: dayjs(rawJob.end_work_date).format('HH:MM'),
       tags: [rawJob.prefecture, rawJob.city, rawJob.address],
       hourlyWage: Number(rawJob.hourly_wage),
-    }
-  }
+    };
+  };
 
   return (
     <>
@@ -78,10 +82,19 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-10 lg:gap-y-8">
-            {jobs?.items[0] &&
-              jobs.items.map((job, jobIndex) => <CardJob key={jobIndex} job={jobFactory(job)} />)}
-          </div>
+          <InfiniteScroll
+            dataLength={jobs.length || 0}
+            next={() => setPage(page + 1)}
+            hasMore={true}
+            loader={<h4>Loading...</h4>}
+          >
+            <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-10 lg:gap-y-8">
+              {jobs[0] &&
+                jobs.map((job, jobIndex) => (
+                  <CardJob key={jobIndex} job={jobFactory(job)} />
+                ))}
+            </div>
+          </InfiniteScroll>
         </div>
       </div>
 

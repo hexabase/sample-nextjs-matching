@@ -500,7 +500,8 @@ export const searchJob = async ({
   sort_field_id,
   sort_order,
   page,
-  per_page
+  per_page,
+  use_display_id
 }: TJobSearchPayload): Promise<ApiResponse<TJobSearchResult>> => {
   try {
     const response = await axiosInstance.post<TJobSearchResult>('/applications/hexa-job/datastores/jobs/items/search', {
@@ -508,7 +509,8 @@ export const searchJob = async ({
       sort_field_id,
       sort_order,
       page,
-      per_page
+      per_page,
+      use_display_id,
     }, {
       headers: {
         Authorization: `${process.env.NEXT_PUBLIC_TOKEN_API}`,

@@ -13,6 +13,7 @@ import { useCompanyContext } from '../../../context';
 import { EMessageError, EType, TNotification } from '../../../types';
 import { TJobsItems } from '../../../types/jobsList';
 import { getItemListJobs } from '../../../utils/apis';
+import Empty from '../../../components/empty';
 
 const itemsPerPage = 6;
 
@@ -75,6 +76,7 @@ export default function JobDetails() {
   return (
     <>
       <div className="bg-antiFlashWhite">
+      {jobs[0] ? <>
         <div className="container-responsive pb-16 pt-2.5 sm:pb-20  md:mt-0 ">
           <div className="mb-10 mt-[30px] flex justify-end md:mb-14">
             <button
@@ -119,6 +121,7 @@ export default function JobDetails() {
             </div>
           </div>
         </div>
+        </> : <Empty/>}
       </div>
       <div className="sm:hidden">
         <FooterMobile />

@@ -301,9 +301,6 @@ export default function RegisterPage() {
                               : 'border-argent hover:border-aquamarine'
                           } input-field solid mb-11 bg-[#F9F9F9]  text-[#C1C1C1] lg:mb-9`}
                         />
-                        {touched.start_work_date && errors.start_work_date && (
-                          <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
-                        )}
                       </div>
                     </div>
 
@@ -330,9 +327,6 @@ export default function RegisterPage() {
                               : 'border-argent hover:border-aquamarine'
                           } input-field solid mb-11 bg-[#F9F9F9]  text-[#C1C1C1] lg:mb-9`}
                         />
-                        {touched.end_work_date && errors.end_work_date && (
-                          <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
-                        )}
                       </div>
                     </div>
                   </div>

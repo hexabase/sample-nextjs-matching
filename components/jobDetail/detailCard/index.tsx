@@ -7,8 +7,11 @@ import localeData from 'dayjs/plugin/localeData';
 
 import { ClockIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
 
+import { useEffect, useState } from 'react';
 import { TFieldValueConvert } from '../../../types';
+import { getFile } from '../../../utils/apis';
 import { getTimeCardJob, getYearMonthDayCardJob } from '../../../utils/getDay';
+import ImageSkeleton from '../../common/skeletons/imageSkeleton';
 import DateCardDetail from '../../dateCardDetail';
 import { checkHoliday, getDayOfWeek } from '../../helpers';
 import Apply from '../apply';
@@ -23,12 +26,39 @@ type TDetailCardProps = {
 };
 
 export default function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
+  const [imageUrl, setImageUrl] = useState<string>();
+
   const dateHoliday = checkHoliday(job?.start_work_date);
+
+  useEffect(() => {
+    if (job && job.image[0]?.file_id) {
+      const getImageUrl = async () => {
+        try {
+          const res = await getFile(job.image[0].file_id);
+          const imageBytes = new Uint8Array(res.data);
+          const blob = new Blob([imageBytes.buffer], { type: 'image' });
+          const imageUrl = URL.createObjectURL(blob);
+          setImageUrl(imageUrl);
+        } catch (error) {
+          console.log('error', error);
+          setImageUrl('');
+        }
+      };
+
+      getImageUrl();
+    }
+  }, [job]);
 
   return (
     <div className="flexCol top-20 w-full md:sticky md:block md:h-[581px] md:w-96 md:rounded-[5px] md:bg-culturedF4 md:shadow-2xl lg:w-[25rem]">
       <div className="md-h-[18rem] relative h-[17.5rem] w-full">
-        <Image src="/images/img1.png" alt="image1" fill />
+        {!imageUrl ? (
+          <div className="h-full w-full md:h-72">
+            <ImageSkeleton className="bg-gray opacity-10" />
+          </div>
+        ) : (
+          <Image src={imageUrl} alt="image1" fill />
+        )}
       </div>
       <div className="container-responsive md:mx-0 md:mt-8 md:px-5">
         <div className="gap-3 pt-5 pb-12 font-bold md:hidden">

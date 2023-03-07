@@ -143,7 +143,12 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
           </div>
         </div>
         {openModal && (
-          <JobModal handleCloseModal={handleCloseModal} job={job} />
+          <JobModal
+            handleCloseModal={handleCloseModal}
+            job={job}
+            job_id={id}
+            setNotification={setNotification}
+          />
         )}
       </div>
 

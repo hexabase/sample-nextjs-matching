@@ -202,3 +202,10 @@ export type TInputGetItemListJobs = {
   per_page: number;
   company_id: string;
 };
+
+export type TInputAddJobSeekers = {
+  job_id: string;
+  name: string;
+  email: string;
+  self_promotion: string;
+};

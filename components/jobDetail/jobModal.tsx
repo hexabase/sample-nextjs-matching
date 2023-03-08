@@ -1,5 +1,4 @@
-import React from 'react';
-
+import dayjs from 'dayjs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -11,12 +10,13 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 
-import { TJobDetail } from '../../types/jobs';
-import { getDay } from '../../utils/getDay';
+import { TFieldValueConvert } from '../../types';
+import { getMonthDayCardJob, getTimeCardJob } from '../../utils/getDay';
+import { getDayOfWeek } from '../helpers';
 
 type TJobModalProps = {
   handleCloseModal: () => void;
-  job: TJobDetail;
+  job?: TFieldValueConvert;
 };
 
 function JobModal({ handleCloseModal, job }: TJobModalProps) {
@@ -54,9 +54,9 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
 
         <div className="flexCol borderModal mt-2 h-44 p-3 font-bold md:h-auto md:px-0 lg:flex-row">
           <div className="flexCol h-[4.5rem]">
-            <p className="text-[0.625rem] md:text-sm">BnA_WALL</p>
+            <p className="text-[0.625rem] md:text-sm"> {job?.job_title}</p>
             <p className="text-xs md:w-[28.875rem] md:text-sm">
-              アートホテルのフロントstaff♪→アートとオシャレが融合したホテルで、フロント業務全般をお願いします
+              {job?.sub_title}
             </p>
           </div>
 
@@ -68,16 +68,21 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
             </div>
             <div className="mr-2 flex h-[4.8rem] flex-col justify-between">
               <div className="flex text-sm">
-                <p className="mr-3 font-bold lg:text-lg">{`${job.date.format(
-                  'YYYY/MM/DD'
-                )}(${getDay(job.date)})`}</p>
-                <p className="font-normal lg:text-lg lg:font-bold">{`${job.start_time}~${job.end_time}`}</p>
+                <p className="mr-3 font-bold lg:text-lg">
+                  {getMonthDayCardJob(dayjs(job?.start_work_date))}(
+                  {getDayOfWeek(job?.start_work_date)})
+                </p>
+                <p className="font-normal lg:text-lg lg:font-bold">{`${getTimeCardJob(
+                  dayjs(job?.start_work_date)
+                )}〜${getTimeCardJob(dayjs(job?.end_work_date))}`}</p>
               </div>
               <p className="text-xs font-normal md:text-sm">
-                東京都中央区日本橋大伝馬町１−１
+                {job?.prefecture?.title}
+                {job?.city}
+                {job?.address}
               </p>
               <p className="text-sm font-normal">
-                <span className="text-base font-bold md:text-base md:font-bold">{`${job.price.toLocaleString()}`}</span>
+                <span className="text-base font-bold md:text-base md:font-bold">{`${job?.hourly_wage.toLocaleString()}`}</span>
                 円/1時間
               </p>
             </div>

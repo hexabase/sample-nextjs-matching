@@ -475,7 +475,9 @@ export const getItemDetails = async (
       `applications/hexa-job/datastores/jobs/items/details/${item_id}`,
       {
         headers: {
-          Authorization: token ? `Bearer ${token}` : '',
+          Authorization: token
+            ? `Bearer ${token}`
+            : process.env.NEXT_PUBLIC_TOKEN_API,
         },
         params: {
           include_linked_items: true,

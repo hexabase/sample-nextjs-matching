@@ -147,8 +147,7 @@ export default function Home() {
   const jobFactory = (rawJob: TJobSearchDetail): TJob => {
     return {
       id: rawJob.id,
-      // imgUrl: rawJob.image,
-      imgUrl: '',
+      imgUrl: rawJob.image,
       jobName: rawJob.job_title,
       des: rawJob.title,
       date: dayjs(rawJob.start_work_date).format('YYYY/MM/DD'),

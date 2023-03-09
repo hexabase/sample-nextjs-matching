@@ -48,7 +48,7 @@ const ForwardedCarousel = ({
 
   return (
     <div
-      className="no-scrollbar flex w-full snap-x flex-nowrap gap-2.5 overflow-x-scroll scroll-smooth"
+      className="no-scrollbar flex h-[5rem] w-full snap-x flex-nowrap gap-2.5 overflow-x-scroll scroll-smooth"
       ref={forwardedRef}
       onScroll={(event) => {
         if (

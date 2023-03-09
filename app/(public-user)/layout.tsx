@@ -14,6 +14,7 @@ import {
 
 import Search from '../../components/layout/search';
 import SPMenus from '../../components/layout/spMenus';
+import PublicContainer from '../../container/publicContainer';
 
 export default function RootLayout({
   children,
@@ -25,7 +26,7 @@ export default function RootLayout({
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <>
+    <PublicContainer>
       <header>
         <div className="container-responsive">
           <div className="flex items-center justify-between pt-5 sm:h-20 sm:pt-0">
@@ -155,6 +156,6 @@ export default function RootLayout({
           </footer>
         </>
       )}
-    </>
+    </PublicContainer>
   );
 }

@@ -15,6 +15,8 @@ import {
   TInputGetItemListJobs,
   TInputLogin,
   TInputRegisterUser,
+  TJobSearchPayload,
+  TJobSearchResult,
   TListFieldValues,
   TLogin,
   TRegisterUser,
@@ -482,6 +484,45 @@ export const getItemDetails = async (
         },
         params: {
           include_linked_items: true,
+        },
+      }
+    );
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const searchJob = async ({
+  conditions,
+  sort_field_id,
+  sort_order,
+  use_or_condition,
+  page,
+  per_page,
+  use_display_id,
+}: TJobSearchPayload): Promise<ApiResponse<TJobSearchResult>> => {
+  try {
+    const response = await axiosInstance.post<TJobSearchResult>(
+      '/applications/hexa-job/datastores/jobs/items/search',
+      {
+        conditions,
+        sort_field_id,
+        sort_order,
+        use_or_condition,
+        page,
+        per_page,
+        use_display_id,
+      },
+      {
+        headers: {
+          Authorization: `${process.env.NEXT_PUBLIC_TOKEN_API}`,
         },
       }
     );

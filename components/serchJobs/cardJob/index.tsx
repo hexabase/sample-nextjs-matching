@@ -4,12 +4,15 @@ import 'dayjs/locale/ja';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import dayjs from 'dayjs';
 
 import { ClockIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
 import { TJob } from '../../../types';
+import { getFile } from '../../../utils/apis';
+import ImageSkeleton from '../../common/skeletons/imageSkeleton';
 import Tag from '../../common/Tag';
 import { getDayOfWeek } from '../../helpers';
 
@@ -22,6 +25,7 @@ interface JobProps {
 
 export default function CardJob({ job }: JobProps) {
   const router = useRouter();
+  const [imageUrl, setImageUrl] = useState<string>();
 
   const dayOfWeek = getDayOfWeek(job.date);
 
@@ -29,18 +33,41 @@ export default function CardJob({ job }: JobProps) {
     router.push(`/jobs/${job.id}`);
   };
 
+  useEffect(() => {
+    const getImageUrl = async () => {
+      try {
+        const res = await getFile(job.imgUrl);
+        const imageBytes = new Uint8Array(res.data);
+        const blob = new Blob([imageBytes.buffer], { type: 'image' });
+        const imageUrl = URL.createObjectURL(blob);
+        setImageUrl(imageUrl);
+      } catch (error) {
+        console.log('error', error);
+        setImageUrl('');
+      }
+    };
+
+    getImageUrl();
+  }, [job.imgUrl]);
+
   return (
     <div
       onClick={handleClickCard}
       className="cursor-pointer rounded-[5px] bg-white pb-3 hover:drop-shadow-md"
     >
-      <Image
-        src={job.imgUrl === '' ? '/img1.png' : job.imgUrl}
-        alt="image1"
-        width={176}
-        height={128}
-        className="w-full rounded-t-md"
-      />
+      {!imageUrl ? (
+        <div className="h-52 w-auto">
+          <ImageSkeleton className="bg-gray opacity-10" />
+        </div>
+      ) : (
+        <Image
+          src={imageUrl}
+          alt="image1"
+          width={176}
+          height={128}
+          className="w-full rounded-t-md"
+        />
+      )}
 
       <div className="px-2.5 pb-3 pt-1.5 text-[9px] font-normal leading-[13px] md:text-xs">
         <p className="leading[10px] text-[7px] md:mt-2.5 md:text-xs">

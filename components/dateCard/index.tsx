@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
 
-import { TDateHoliday, TDateType } from '../../types/common';
+import { TDateHoliday, TDateType } from '../../types';
 
 dayjs.extend(localeData);
 

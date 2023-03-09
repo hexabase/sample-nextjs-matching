@@ -95,3 +95,60 @@ export type TGetCompaniesItems = {
   items: TCompaniesItems[];
   totalItems: number;
 };
+
+export type TJobSearchPayloadOption = {
+  conditions: TJobSearchCondition[];
+  sort_field_id?: string;
+  sort_order?: string;
+  use_or_condition?: boolean;
+};
+
+export type TJobSearchPayload = {
+  conditions: TJobSearchCondition[];
+  sort_field_id?: string;
+  sort_order?: string;
+  use_or_condition?: boolean;
+  page: number;
+  per_page: number;
+  use_display_id?: boolean;
+};
+
+export type TJobSearchCondition = {
+  id?: string;
+  search_value: string[];
+};
+
+export type TJobSearchResult = {
+  items: TJobSearchDetail[];
+  totalItems: number;
+};
+
+export type TJobSearchDetail = {
+  '08cc962a-c93f-4a2d-9a0d-d347710d31d1': string;
+  '764eb0c2-52fd-44a6-8a14-f5d10c880686': string;
+  '772920ec-df90-421d-b204-bd41e733d9a9': string;
+  address: string;
+  city: string;
+  company_id: string;
+  created_at: string;
+  created_by: string;
+  d_id: string;
+  end_work_date: string;
+  'f80fb843-30aa-40bf-a44d-5f834bf11e78': string;
+  hourly_wage: string;
+  i_id: string;
+  id: string;
+  image: string;
+  job_title: string;
+  p_id: string;
+  postal_code: string;
+  prefecture: string;
+  rev_no: string;
+  start_work_date: string;
+  sub_title: string;
+  title: string;
+  unread: string;
+  updated_at: string;
+  updated_by: string;
+  work_content: string;
+};

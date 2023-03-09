@@ -9,6 +9,7 @@ import {
   TGetJobsItems,
   TGetPrefecturesItems,
   TGetUserInfo,
+  TInputAddJobSeekers,
   TInputCreateItem,
   TInputCreateJobItem,
   TInputGetItemListJobs,
@@ -481,6 +482,41 @@ export const getItemDetails = async (
         },
         params: {
           include_linked_items: true,
+        },
+      }
+    );
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const addJobSeekers = async ({
+  job_id,
+  name,
+  email,
+  self_promotion,
+}: TInputAddJobSeekers) => {
+  try {
+    const response = await axiosInstance.post(
+      '/applications/hexa-job/datastores/job_seekers/items/new',
+      {
+        item: {
+          job_id,
+          name,
+          email,
+          self_promotion,
+        },
+      },
+      {
+        headers: {
+          Authorization: process.env.NEXT_PUBLIC_TOKEN_API,
         },
       }
     );

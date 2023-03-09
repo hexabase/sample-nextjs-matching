@@ -3,23 +3,25 @@ import { getCookie } from 'cookies-next';
 import {
   TAddUser,
   TConfirmRegistration,
-  TGetCompaniesItems,
-  TGetJobsItems,
   TCreateJobItem,
+  TGetCompaniesItems,
+  TGetJobSeekers,
+  TGetJobsItems,
   TGetPrefecturesItems,
   TGetUserInfo,
+  TInputAddJobSeekers,
   TInputCreateItem,
   TInputCreateJobItem,
   TInputGetItemListJobs,
   TInputLogin,
   TInputRegisterUser,
+  TJobSearchPayload,
+  TJobSearchResult,
+  TListFieldValues,
   TLogin,
   TRegisterUser,
   TUploadFileImages,
   TUserInvite,
-  TListFieldValues,
-  TJobSearchPayload,
-  TJobSearchResult,
 } from '../types';
 import { ApiError, ApiResponse, createAxiosInstance } from './axios';
 
@@ -476,7 +478,9 @@ export const getItemDetails = async (
       `applications/hexa-job/datastores/jobs/items/details/${item_id}`,
       {
         headers: {
-          Authorization: token ? `Bearer ${token}` : '',
+          Authorization: token
+            ? `Bearer ${token}`
+            : process.env.NEXT_PUBLIC_TOKEN_API,
         },
         params: {
           include_linked_items: true,
@@ -519,6 +523,81 @@ export const searchJob = async ({
       {
         headers: {
           Authorization: `${process.env.NEXT_PUBLIC_TOKEN_API}`,
+        },
+      }
+    );
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const addJobSeekers = async ({
+  job_id,
+  name,
+  email,
+  self_promotion,
+}: TInputAddJobSeekers) => {
+  try {
+    const response = await axiosInstance.post(
+      '/applications/hexa-job/datastores/job_seekers/items/new',
+      {
+        item: {
+          job_id,
+          name,
+          email,
+          self_promotion,
+        },
+      },
+      {
+        headers: {
+          Authorization: process.env.NEXT_PUBLIC_TOKEN_API,
+        },
+      }
+    );
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    }
+    throw new Error('Unknown error');
+  }
+};
+
+export const getJobSeekers = async (
+  page: number,
+  per_page: number,
+  job_id: string
+): Promise<ApiResponse<TGetJobSeekers>> => {
+  try {
+    const token = getCookie('token');
+
+    const response = await axiosInstance.post<TGetJobSeekers>(
+      'applications/hexa-job/datastores/job_seekers/items/search',
+      {
+        conditions: [
+          {
+            id: job_id,
+            search_value: [job_id],
+            exact_match: true,
+          },
+        ],
+        page,
+        per_page,
+        use_display_id: true,
+      },
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : '',
         },
       }
     );

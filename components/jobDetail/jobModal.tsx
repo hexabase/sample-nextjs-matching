@@ -1,5 +1,6 @@
-import React from 'react';
+import { SetStateAction, useCallback } from 'react';
 
+import dayjs from 'dayjs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -11,37 +12,78 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 
-import { TJobDetail } from '../../types/jobs';
-import { getDay } from '../../utils/getDay';
+import {
+  EMessageError,
+  EType,
+  TFieldValueConvert,
+  TNotification,
+} from '../../types';
+import { addJobSeekers } from '../../utils/apis';
+import { getMonthDayCardJob, getTimeCardJob } from '../../utils/getDay';
+import { getDayOfWeek } from '../helpers';
 
-type TJobModalProps = {
+interface TJobModalProps {
+  job_id: string;
+  setNotification: React.Dispatch<SetStateAction<TNotification>>;
   handleCloseModal: () => void;
-  job: TJobDetail;
-};
+  job?: TFieldValueConvert;
+}
 
-function JobModal({ handleCloseModal, job }: TJobModalProps) {
-  const formik = useFormik({
+interface FormValueProps {
+  email: string;
+  name: string;
+  self_promotion: string;
+}
+
+function JobModal({
+  handleCloseModal,
+  job,
+  job_id,
+  setNotification,
+}: TJobModalProps) {
+  const formik = useFormik<FormValueProps>({
     initialValues: {
       email: '',
       name: '',
-      ownPR: '',
+      self_promotion: '',
     },
     validationSchema: Yup.object({
-      name: Yup.string()
-        .required('Required')
-        .min(4, 'Must be 4 characters or more'),
-      email: Yup.string()
-        .required('Required')
-        .matches(
-          /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-          'Please enter a valid email address'
-        ),
-      ownPR: Yup.string().required('Required'),
+      name: Yup.string().required('Required'),
+      email: Yup.string().email().required('Required'),
+      self_promotion: Yup.string().required('Required'),
     }),
-    onSubmit: () => {
-      window.alert('Form submited');
+    onSubmit: (data) => {
+      dataAddJobSeekers(data);
     },
   });
+
+  const dataAddJobSeekers = useCallback(
+    async (data: FormValueProps) => {
+      try {
+        const res = await addJobSeekers({
+          job_id,
+          ...data,
+        });
+
+        if (res.data) {
+          setNotification({
+            open: true,
+            type: EType.SUCCESS,
+            message: 'Success',
+          });
+
+          handleCloseModal();
+        }
+      } catch (error) {
+        setNotification({
+          open: true,
+          type: EType.ERROR,
+          message: EMessageError.ERR_01,
+        });
+      }
+    },
+    [handleCloseModal, job_id, setNotification]
+  );
 
   return (
     <div className="fixed top-0 left-0 bottom-0 right-0 z-30 flex items-center justify-center  bg-blackRgba p-[1.0625rem] opacity-100">
@@ -54,9 +96,9 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
 
         <div className="flexCol borderModal mt-2 h-44 p-3 font-bold md:h-auto md:px-0 lg:flex-row">
           <div className="flexCol h-[4.5rem]">
-            <p className="text-[0.625rem] md:text-sm">BnA_WALL</p>
+            <p className="text-[0.625rem] md:text-sm"> {job?.job_title}</p>
             <p className="text-xs md:w-[28.875rem] md:text-sm">
-              アートホテルのフロントstaff♪→アートとオシャレが融合したホテルで、フロント業務全般をお願いします
+              {job?.sub_title}
             </p>
           </div>
 
@@ -68,16 +110,21 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
             </div>
             <div className="mr-2 flex h-[4.8rem] flex-col justify-between">
               <div className="flex text-sm">
-                <p className="mr-3 font-bold lg:text-lg">{`${job.date.format(
-                  'YYYY/MM/DD'
-                )}(${getDay(job.date)})`}</p>
-                <p className="font-normal lg:text-lg lg:font-bold">{`${job.start_time}~${job.end_time}`}</p>
+                <p className="mr-3 font-bold lg:text-lg">
+                  {getMonthDayCardJob(dayjs(job?.start_work_date))}(
+                  {getDayOfWeek(job?.start_work_date)})
+                </p>
+                <p className="font-normal lg:text-lg lg:font-bold">{`${getTimeCardJob(
+                  dayjs(job?.start_work_date)
+                )}〜${getTimeCardJob(dayjs(job?.end_work_date))}`}</p>
               </div>
               <p className="text-xs font-normal md:text-sm">
-                東京都中央区日本橋大伝馬町１−１
+                {job?.prefecture?.title}
+                {job?.city}
+                {job?.address}
               </p>
               <p className="text-sm font-normal">
-                <span className="text-base font-bold md:text-base md:font-bold">{`${job.price.toLocaleString()}`}</span>
+                <span className="text-base font-bold md:text-base md:font-bold">{`${job?.hourly_wage.toLocaleString()}`}</span>
                 円/1時間
               </p>
             </div>
@@ -140,21 +187,21 @@ function JobModal({ handleCloseModal, job }: TJobModalProps) {
             </div>
             <div className="mt-4">
               <div className="text-xs font-bold">
-                <label htmlFor="ownPR" className="lg:text-base">
+                <label htmlFor="self_promotion" className="lg:text-base">
                   自己PR
                 </label>
                 <span className="text-pastelRed ">（必須）</span>
               </div>
               <textarea
-                name="ownPR"
-                id="ownPR"
-                value={formik.values.ownPR}
+                name="self_promotion"
+                id="self_promotion"
+                value={formik.values.self_promotion}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 rows={5.5}
                 cols={20}
                 className={`${
-                  formik.touched.ownPR && formik.errors.ownPR
+                  formik.touched.self_promotion && formik.errors.self_promotion
                     ? 'border-red'
                     : 'border-argent hover:border-aquamarine'
                 } input-field solid mt-1 h-[7.7rem]`}

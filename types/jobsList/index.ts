@@ -62,9 +62,15 @@ export type TGetJobsItems = {
 };
 
 export type LJobSeekers = {
-  id?: string;
+  i_id: string;
   name: string;
-  mail: string;
+  email: string;
+  self_promotion: string;
+};
+
+export type TGetJobSeekers = {
+  items: LJobSeekers[];
+  totalItems: number;
 };
 
 export type TCompaniesItems = {

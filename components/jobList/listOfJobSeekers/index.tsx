@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { SetStateAction, useMemo, useState } from 'react';
 
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import { UserIcon } from '@heroicons/react/24/solid';
@@ -12,18 +12,22 @@ import Drawer from '../drawerJobSeeker';
 const itemsPerPage = 6;
 
 interface IListOfJobSeekers {
-  LJobSeekersMock: LJobSeekers[];
+  totalItems: number;
+  LJobSeekers: LJobSeekers[];
+  pageJobSeekers: number;
+  setPageJobSeekers: React.Dispatch<SetStateAction<number>>;
   handleRouter: () => void;
 }
 
 const ListOfJobSeekers = ({
-  LJobSeekersMock,
+  totalItems,
+  LJobSeekers,
+  pageJobSeekers,
+  setPageJobSeekers,
   handleRouter,
 }: IListOfJobSeekers) => {
   const [showDrawer, setShowDrawer] = useState(false);
   const [drawerContent, setDrawerContent] = useState<LJobSeekers>();
-  const [totalItems, setTotalItems] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = useMemo(() => {
     if (totalItems % itemsPerPage === 0) {
@@ -38,7 +42,7 @@ const ListOfJobSeekers = ({
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setPageJobSeekers(page);
   };
 
   return (
@@ -74,7 +78,7 @@ const ListOfJobSeekers = ({
         <div className="mb-10 mt-[67px] hidden sm:flex sm:items-center sm:gap-2.5 md:mb-8 md:block">
           <div className="align-center flex w-full flex-col justify-start gap-x-2.5 text-xs font-normal	 leading-[17px] md:flex-row md:items-center md:justify-end">
             <Pagination
-              currentPage={currentPage}
+              currentPage={pageJobSeekers}
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
@@ -82,10 +86,12 @@ const ListOfJobSeekers = ({
         </div>
 
         <div className=" grid h-[340px] grid-cols-1 gap-y-7 gap-x-4 overflow-y-scroll sm:mt-3 md:h-auto md:overflow-y-hidden lg:grid-cols-3 lg:gap-x-10 lg:gap-y-8">
-          {LJobSeekersMock.map((jobSeeker) => {
-            return (
-              <>
+          {LJobSeekers &&
+            LJobSeekers[0] &&
+            LJobSeekers.map((jobSeeker) => {
+              return (
                 <div
+                  key={jobSeeker.i_id}
                   className="flex h-auto justify-between bg-white p-6 hover:drop-shadow-md md:gap-6 md:rounded-[5px]"
                   onClick={() => handleDivClick(jobSeeker)}
                 >
@@ -101,30 +107,25 @@ const ListOfJobSeekers = ({
                       <div>
                         <EnvelopeIcon width={16} height={16} />
                       </div>
-                      <p className="text-xs">{jobSeeker.mail}</p>
+                      <p className="text-xs">{jobSeeker.email}</p>
                     </div>
                   </div>
                 </div>
-              </>
-            );
-          })}
+              );
+            })}
         </div>
 
         <div className=" mb-10 mt-10 hidden sm:flex sm:items-center sm:gap-2.5 md:mb-8 md:block">
           <div className="align-center flex w-full flex-col justify-start gap-x-2.5 text-xs font-normal	 leading-[17px] md:flex-row md:items-center md:justify-end">
             <Pagination
-              currentPage={currentPage}
+              currentPage={pageJobSeekers}
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
           </div>
         </div>
         {showDrawer && drawerContent && (
-          <Drawer
-            setShowDrawer={setShowDrawer}
-            drawerContent={drawerContent}
-            showDrawer={showDrawer}
-          />
+          <Drawer setShowDrawer={setShowDrawer} drawerContent={drawerContent} />
         )}
       </div>
     </>

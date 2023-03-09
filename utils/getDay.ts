@@ -27,3 +27,7 @@ export const getTimeCardJob = (day: Dayjs) => {
 
   return `${timeFormat}`;
 };
+
+export const getTimeZone0 = (day: Dayjs | string) => {
+  return dayjs(day).format('YYYY-MM-DD[T]00:00:00[Z]');
+};

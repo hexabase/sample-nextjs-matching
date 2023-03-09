@@ -1,17 +1,19 @@
 'use client';
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
 
 import { ClockIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
 
-import { TJobDetail } from '../../../types/jobs';
-import { getDay } from '../../../utils/getDay';
-import DateCard from '../../dateCard';
-import { checkHoliday } from '../../helpers';
+import { TFieldValueConvert } from '../../../types';
+import { getFile } from '../../../utils/apis';
+import { getTimeCardJob, getYearMonthDayCardJob } from '../../../utils/getDay';
+import ImageSkeleton from '../../common/skeletons/imageSkeleton';
 import DateCardDetail from '../../dateCardDetail';
+import { checkHoliday, getDayOfWeek } from '../../helpers';
 import Apply from '../apply';
 
 dayjs.extend(localeData);
@@ -20,23 +22,48 @@ dayjs().localeData();
 
 type TDetailCardProps = {
   handleOpenModal: () => void;
-  job: TJobDetail;
+  job?: TFieldValueConvert;
 };
 
 export default function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
-  const { date, start_time, end_time, price, title, des } = job;
+  const [imageUrl, setImageUrl] = useState<string>();
 
-  const dateHoliday = checkHoliday(date);
+  const dateHoliday = checkHoliday(job?.start_work_date);
+
+  useEffect(() => {
+    if (job && job.image[0]?.file_id) {
+      const getImageUrl = async () => {
+        try {
+          const res = await getFile(job.image[0].file_id);
+          const imageBytes = new Uint8Array(res.data);
+          const blob = new Blob([imageBytes.buffer], { type: 'image' });
+          const imageUrl = URL.createObjectURL(blob);
+          setImageUrl(imageUrl);
+        } catch (error) {
+          console.log('error', error);
+          setImageUrl('');
+        }
+      };
+
+      getImageUrl();
+    }
+  }, [job]);
 
   return (
     <div className="flexCol top-20 w-full md:sticky md:block md:h-[581px] md:w-96 md:rounded-[5px] md:bg-culturedF4 md:shadow-2xl lg:w-[25rem]">
       <div className="md-h-[18rem] relative h-[17.5rem] w-full">
-        <Image src="/images/img1.png" alt="image1" fill />
+        {!imageUrl ? (
+          <div className="h-full w-full md:h-72">
+            <ImageSkeleton className="bg-gray opacity-10" />
+          </div>
+        ) : (
+          <Image src={imageUrl} alt="image1" fill />
+        )}
       </div>
       <div className="container-responsive md:mx-0 md:mt-8 md:px-5">
         <div className="gap-3 pt-5 pb-12 font-bold md:hidden">
-          <p className="text-[10px]">{title}</p>
-          <p className="text-base">{des}</p>
+          <p className="text-[10px]"> {job?.job_title}</p>
+          <p className="text-base"> {job?.sub_title}</p>
         </div>
 
         <div className="flex gap-x-4 rounded-xl border-2 border-[aquamarine] bg-cultured px-4 py-3 md:mb-5 md:h-[7.25rem]">
@@ -47,15 +74,20 @@ export default function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
             <div className="flex items-stretch gap-1.5">
               <ClockIcon className="h-[18px] w-[18px] text-aquamarine md:mt-1" />
               <div className="flex md:block">
-                <p>{`${date.format('YYYY/MM/DD')}(${getDay(date)})`}</p>
-                <p className="font-normal">{`${start_time}~${end_time}`}</p>
+                <p>
+                  {getYearMonthDayCardJob(dayjs(job?.start_work_date))}(
+                  {getDayOfWeek(job?.start_work_date)})
+                </p>
+                <p className="font-normal">{`${getTimeCardJob(
+                  dayjs(job?.start_work_date)
+                )}~${getTimeCardJob(dayjs(job?.end_work_date))}`}</p>
               </div>
             </div>
 
             <div className="flexItemsCenter gap-1.5">
               <CurrencyYenIcon className="h-[18px] w-[18px] text-aquamarine" />
               <p>
-                {`${price.toLocaleString()}`}
+                {`${job?.hourly_wage.toLocaleString()}`}
                 <span className="font-normal">円/1時間</span>
               </p>
             </div>

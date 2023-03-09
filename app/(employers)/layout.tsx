@@ -3,14 +3,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { deleteCookie } from 'cookies-next';
+
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
 import Notification from '../../components/common/notification';
+import EmployerContainer from '../../container/employerContainer';
 import { EMessageError, EType, TNotification } from '../../types';
-import { getUserInfo, logout } from '../../utils/apis';
+import { logout } from '../../utils/apis';
 
 export default function RootLayout({
   children,
@@ -42,16 +44,6 @@ export default function RootLayout({
     }
   };
 
-  useEffect(() => {
-    (async function getDataUserInfo() {
-      try {
-        const res = await getUserInfo();
-      } catch (error) {
-        handleLogout();
-      }
-    })();
-  }, []);
-
   return (
     <>
       <header className="bg-black">
@@ -79,7 +71,9 @@ export default function RootLayout({
         </div>
       </header>
 
-      <main>{children}</main>
+      <main>
+        <EmployerContainer>{children}</EmployerContainer>
+      </main>
       <footer className="relative bg-eerieBlack pt-16 pb-6 text-white sm:pb-5 sm:pt-12">
         <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black sm:hidden">
           <ChevronUpIcon aria-hidden="true" />

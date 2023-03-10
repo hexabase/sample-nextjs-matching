@@ -1,34 +1,35 @@
 'use client';
 
-import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { BriefcaseIcon } from '@heroicons/react/20/solid';
 import { CurrencyYenIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
 import BackToHome from '../../../../components/common/backToHome';
 import BackToJobs from '../../../../components/common/backToJobs';
+import Notification from '../../../../components/common/notification';
+import Apply from '../../../../components/jobDetail/apply';
 import DetailCard from '../../../../components/jobDetail/detailCard';
 import JobModal from '../../../../components/jobDetail/jobModal';
-import { TJobDetail } from '../../../../types/jobs';
-import Apply from '../../../../components/jobDetail/apply';
+import {
+  EMessageError,
+  EType,
+  TFieldValueConvert,
+  TNotification,
+} from '../../../../types';
+import { getItemDetails } from '../../../../utils/apis';
 
-const jobDetailMock: TJobDetail = {
-  date: dayjs(),
-  price: 1250,
-  start_time: '9:00',
-  end_time: '18:00',
-  title: 'ＢnＡ_ＷＡＬＬのアルバイト・パート情報',
-  des: 'アートホテルのフロントstaff♪→アートとオシャレが融合したホテルで、フロント業務全般をお願いします',
-  jobDetail:
-    '日本全国からのお客様だけでなく、外国からの観光のお客様にもご利用いただく機会の多い綺麗なホテルで、フロントスタッフのお仕事♪ お客様に「また来たい！」と思ってもらえるような心に残るおもてなしを一緒に届けませんか？ ホテル業界や接客経験者はもちろんですが、未経験者も大歓迎！  実際に未経験でフロントスタッフのお仕事を始めた方も活躍している職場です☆',
-  jobContent:
-    '宿泊のお客様対応、客室チェック、荷物管理業務、お出迎え、お見送り等をおこの求人に応募するします♪丁寧に研修を行いＯＪＴ形式で仕事を教えるので未経験も安心◎定着率高い職場♪あなたの英語力も活かせる♪',
-  workplace: '103-0011 東京都中央区日本橋大伝馬町１−１',
-};
+interface JobDetailsProps {
+  params: {
+    id: string;
+  };
+}
 
-function JobDetails() {
-  const [job, setJob] = useState<TJobDetail>(jobDetailMock);
+function JobDetails({ params: { id } }: JobDetailsProps) {
+  const [notification, setNotification] = useState<TNotification>({
+    open: false,
+  });
+  const [job, setJob] = useState<TFieldValueConvert>();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleOpenModal: () => void = () => {
@@ -43,6 +44,32 @@ function JobDetails() {
     html.classList.remove('htmlHidden');
   };
 
+  const getDataItemDetail = async (item_id: string) => {
+    try {
+      const res = await getItemDetails(item_id);
+
+      if (res.data && res.data.field_values) {
+        const dataConvert: TFieldValueConvert = {};
+
+        res.data.field_values.forEach((item) => {
+          dataConvert[item.field_id] = item.value;
+        });
+
+        setJob(dataConvert);
+      }
+    } catch (error) {
+      setNotification({
+        open: true,
+        type: EType.ERROR,
+        message: EMessageError.ERR_01,
+      });
+    }
+  };
+
+  useEffect(() => {
+    getDataItemDetail(id);
+  }, [id]);
+
   return (
     <>
       <div className="container-responsive ">
@@ -56,9 +83,11 @@ function JobDetails() {
         <div className="container-responsive flex flex-col-reverse justify-between pb-20 md:mx-0 md:flex-row md:gap-10 md:px-0">
           <div className="pt-2.5">
             <div className="md:flexCol hidden h-20 md:h-[135px]">
-              <p className="text-[10px] font-normal md:text-lg">{job.title}</p>
+              <p className="text-[10px] font-normal md:text-lg">
+                {job?.job_title}
+              </p>
               <p className="h-12 text-base font-bold md:h-20 md:text-2xl">
-                {job.des}
+                {job?.sub_title}
               </p>
             </div>
             <div className="mt-4 md:mt-14">
@@ -67,7 +96,7 @@ function JobDetails() {
                 <p className="text-md font-bold md:text-lg">作業内容</p>
               </div>
               <p className="w-full pt-3 pb-7 text-justify text-xs font-normal md:text-lg">
-                【作業内容】 {job.jobContent}
+                【作業内容】 {job?.work_content}
               </p>
 
               <div className="relative mt-4 w-full">
@@ -76,7 +105,7 @@ function JobDetails() {
                 </p>
                 <div className="border-mask z-10 w-full bg-antiFlashWhite px-6 pb-7 pt-14">
                   <p className="text-xs font-normal md:text-base">
-                    【作業内容詳細】 {job.jobDetail}
+                    【作業内容詳細】 {job?.work_details}
                   </p>
                 </div>
               </div>
@@ -88,7 +117,7 @@ function JobDetails() {
                 <p className="text-md md:text-lg">時給</p>
               </div>
               <div className="flex items-baseline gap-1">
-                <p className="text-2xl md:text-3xl">{`${job.price.toLocaleString()}`}</p>
+                <p className="text-2xl md:text-3xl">{`${job?.hourly_wage.toLocaleString()}`}</p>
                 <p className="text-xs font-normal md:text-base">円</p>
               </div>
             </div>
@@ -98,7 +127,9 @@ function JobDetails() {
                 <p className="text-md font-bold md:text-lg">働く場所</p>
               </div>
               <p className="text-xs font-normal md:text-base">
-                〒{job.workplace}
+                {job?.prefecture?.title}
+                {job?.city}
+                {job?.address}
               </p>
             </div>
 
@@ -112,9 +143,19 @@ function JobDetails() {
           </div>
         </div>
         {openModal && (
-          <JobModal handleCloseModal={handleCloseModal} job={job} />
+          <JobModal
+            handleCloseModal={handleCloseModal}
+            job={job}
+            job_id={id}
+            setNotification={setNotification}
+          />
         )}
       </div>
+
+      <Notification
+        notification={notification}
+        setNotification={setNotification}
+      />
     </>
   );
 }

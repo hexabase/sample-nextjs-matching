@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import localeData from 'dayjs/plugin/localeData';
 
+import { useDateSelectedContext } from '../../../context/DateSelectedContext';
 import { TDateHoliday } from '../../../types/common';
 import DateCard from '../../dateCard';
 import { checkHoliday } from '../../helpers';
@@ -27,6 +28,8 @@ const ForwardedCarousel = ({
   setDisabledPrev: Dispatch<SetStateAction<boolean>>;
   setDisabledNext: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const { setDateSelected } = useDateSelectedContext();
+
   const lastDayOfPrevMonth = dayjs().add(-1, 'day');
   const firstDayOfNext2Month = dayjs().add(2, 'month').startOf('month');
 
@@ -45,7 +48,7 @@ const ForwardedCarousel = ({
 
   return (
     <div
-      className="no-scrollbar flex w-full snap-x flex-nowrap gap-2.5 overflow-x-scroll scroll-smooth"
+      className="no-scrollbar flex h-[5rem] w-full snap-x flex-nowrap gap-2.5 overflow-x-scroll scroll-smooth"
       ref={forwardedRef}
       onScroll={(event) => {
         if (
@@ -67,8 +70,23 @@ const ForwardedCarousel = ({
       }}
     >
       {dateArr.map((date, index) => (
-        <div key={index} className="snap-start">
-          <div className="relative h-[51px] w-[51px] sm:h-14 sm:w-14 cursor-pointer">
+        <div
+          key={index}
+          className="snap-start"
+          onClick={() => {
+            if (date.dateType === 'normal') {
+              console.log('asfsbduc');
+              setDateSelected(date);
+            }
+          }}
+        >
+          <div
+            className={`${
+              date.dateType === 'normal'
+                ? 'cursor-pointer'
+                : 'cursor-not-allowed'
+            } relative h-[51px] w-[51px]  sm:h-14 sm:w-14`}
+          >
             <DateCard date={date} />
           </div>
         </div>

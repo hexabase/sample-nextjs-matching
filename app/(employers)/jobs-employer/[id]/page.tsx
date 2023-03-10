@@ -1,8 +1,7 @@
 'use client';
 
 import dayjs from 'dayjs';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   ClockIcon,
@@ -11,91 +10,19 @@ import {
 } from '@heroicons/react/24/outline';
 
 import BackToJobsList from '../../../../components/common/backToJobsList';
+import Notification from '../../../../components/common/notification';
 import { getDayOfWeek } from '../../../../components/helpers';
 import DetailCard from '../../../../components/jobList/detaiJobCard';
 import ListOfJobSeekers from '../../../../components/jobList/listOfJobSeekers';
-import { TFieldValueConvert } from '../../../../types';
-import { LJobSeekers } from '../../../../types/jobsList';
-import { getItemDetails } from '../../../../utils/apis';
+import {
+  EMessageError,
+  EType,
+  TFieldValueConvert,
+  TNotification,
+} from '../../../../types';
+import { TGetJobSeekers } from '../../../../types/jobsList';
+import { getItemDetails, getJobSeekers } from '../../../../utils/apis';
 import { getMonthDayCardJob, getTimeCardJob } from '../../../../utils/getDay';
-
-const LJobSeekersMock: LJobSeekers[] = [
-  {
-    id: '1',
-    name: '白川　裕二',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '2',
-    name: '五木　四郎',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '3',
-    name: '三河　莉緒',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '4',
-    name: '白川　裕二',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '5',
-    name: '五木　四郎',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '6',
-    name: '三河　莉緒',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '7',
-    name: '白川　裕二',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '8',
-    name: '五木　四郎',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '9',
-    name: '三河　莉緒',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '10',
-    name: '白川　裕二',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '11',
-    name: '五木　四郎',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '12',
-    name: '三河　莉緒',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '13',
-    name: '白川　裕二',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '14',
-    name: '五木　四郎',
-    mail: 'sample@sample.jp',
-  },
-  {
-    id: '15',
-    name: '三河　莉緒',
-    mail: 'sample@sample.jp',
-  },
-];
 
 interface JobDetailsProps {
   params: {
@@ -103,39 +30,67 @@ interface JobDetailsProps {
   };
 }
 
+const PER_PAGE_JOB_SEEKERS = 16;
+
 export default function JobDetails({ params: { id } }: JobDetailsProps) {
   const [job, setJob] = useState<TFieldValueConvert>();
   const [isDetail, setIsDetail] = useState(true);
-  const router = useRouter();
+  const [jobSeekers, setJobSeekers] = useState<TGetJobSeekers>();
+  const [pageJobSeekers, setPageJobSeekers] = useState<number>(1);
+  const [notification, setNotification] = useState<TNotification>({
+    open: false,
+  });
 
   const handleRouter = () => {
     setIsDetail(!isDetail);
   };
 
-  const getDataItemDetail = useCallback(
-    async (item_id: string) => {
-      try {
-        const res = await getItemDetails(item_id);
+  const getDataItemDetail = async (item_id: string) => {
+    try {
+      const res = await getItemDetails(item_id);
 
-        if (res.data && res.data.field_values) {
-          const dataConvert: TFieldValueConvert = {};
+      if (res.data && res.data.field_values) {
+        const dataConvert: TFieldValueConvert = {};
 
-          res.data.field_values.forEach((item) => {
-            dataConvert[item.field_id] = item.value;
-          });
+        res.data.field_values.forEach((item) => {
+          dataConvert[item.field_id] = item.value;
+        });
 
-          setJob(dataConvert);
-        }
-      } catch (error) {
-        console.log('error', error);
+        setJob(dataConvert);
       }
-    },
-    [id]
-  );
+    } catch (error) {
+      setNotification({
+        open: true,
+        type: EType.ERROR,
+        message: EMessageError.ERR_01,
+      });
+    }
+  };
 
+  const getDataJobSeekers = async (
+    page: number,
+    per_page: number,
+    job_id: string
+  ) => {
+    try {
+      const res = await getJobSeekers(page, per_page, job_id);
+
+      res.data && setJobSeekers(res.data);
+    } catch (error) {
+      setNotification({
+        open: true,
+        type: EType.ERROR,
+        message: EMessageError.ERR_01,
+      });
+    }
+  };
   useEffect(() => {
     getDataItemDetail(id);
-  }, [getDataItemDetail, id]);
+  }, [id]);
+
+  useEffect(() => {
+    getDataJobSeekers(pageJobSeekers, PER_PAGE_JOB_SEEKERS, id);
+  }, [pageJobSeekers, id]);
 
   return (
     <>
@@ -166,7 +121,9 @@ export default function JobDetails({ params: { id } }: JobDetailsProps) {
                       <div className="relative">
                         求職者一覧
                         <div className="absolute top-0 -right-8 h-[17px] w-[27px] rounded-[8.5px] bg-[#FF6666] px-2 text-white md:flex md:items-center md:justify-center">
-                          <p className="text-[14px] leading-4">46</p>
+                          <p className="text-[14px] leading-4">
+                            {jobSeekers?.totalItems}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -203,7 +160,7 @@ export default function JobDetails({ params: { id } }: JobDetailsProps) {
                         <div className="flexItemsCenter mb-4 text-xs font-normal md:text-base">
                           <MapPinIcon className="mr-2 h-[30x] w-[27px] text-aquamarine" />
                           <p className="text-base font-normal">
-                            {job?.prefecture}
+                            {job?.prefecture?.title}
                             {job?.city}
                             {job?.address}
                           </p>
@@ -244,18 +201,26 @@ export default function JobDetails({ params: { id } }: JobDetailsProps) {
                 </div>
 
                 <div className="mt-[60px] md:mt-0 md:flex md:w-1/2 md:justify-center">
-                  <DetailCard file_id={job?.image[0].file_id} />
+                  <DetailCard file_id={job?.image[0]?.file_id} />
                 </div>
               </div>
             </div>
           </>
         ) : (
           <ListOfJobSeekers
-            LJobSeekersMock={LJobSeekersMock}
+            pageJobSeekers={pageJobSeekers}
+            setPageJobSeekers={setPageJobSeekers}
+            totalItems={jobSeekers?.totalItems || 0}
+            LJobSeekers={jobSeekers?.items || []}
             handleRouter={handleRouter}
           />
         )}
       </div>
+
+      <Notification
+        notification={notification}
+        setNotification={setNotification}
+      />
     </>
   );
 }

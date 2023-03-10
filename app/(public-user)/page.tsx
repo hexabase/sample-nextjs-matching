@@ -1,102 +1,162 @@
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
+
+import dayjs from 'dayjs';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 import Tag from '../../components/common/Tag';
 import Toggle from '../../components/common/Toggle';
 import CalendarInline from '../../components/serchJobs/calendarInline';
 import CardJob from '../../components/serchJobs/cardJob';
 import FooterMobile from '../../components/serchJobs/footerMobile';
-import { TJob } from '../../types';
+import { useSearchContext } from '../../context';
+import { useDateSelectedContext } from '../../context/DateSelectedContext';
+import {
+  TDateHoliday,
+  TJob,
+  TJobSearchCondition,
+  TJobSearchDetail,
+  TJobSearchPayloadOption,
+} from '../../types';
+import { searchJob } from '../../utils/apis';
+import { getTimeZone0 } from '../../utils/getDay';
+
+const getTagDate = (date: TDateHoliday) =>
+  `${date?.month}月${date?.day}日(${date?.dayOfWeek})`;
 
 export default function Home() {
-  const jobs: TJob[] = [
-    {
-      id: '1',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '2',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '3',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '4',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '5',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '6',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '7',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-    {
-      id: '8',
-      imgUrl: '',
-      jobName: 'CROSSROAD株式会社',
-      des: 'マンガ・雑誌の検品・梱包を中心とした簡単な作業です！',
-      date: '2023/01/09',
-      startTime: '14:00',
-      endTime: '21:00',
-      tags: ['12月21日(水)', '検品'],
-      hourlyWage: 1250,
-    },
-  ];
-  const tags = ['12月21日(水)', '検品'];
+  const { search, setSearch } = useSearchContext();
+  const { dateSelected, setDateSelected } = useDateSelectedContext();
+
+  const [jobs, setJobs] = useState<TJobSearchDetail[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [tagsSearch, setTagsSearch] = useState<string[]>([]);
+  const [tagsDate, setTagsDate] = useState<TDateHoliday[]>([]);
+  const [hourlyWageDesc, setHourlyWageDesc] = useState<boolean>(false);
+
+  const handleClickCloseTag = (tagRemove: string) => {
+    const tagsFilter = tagsSearch.filter((tag) => tag !== tagRemove);
+    const tagsDateFilter = tagsDate.filter(
+      (tag) => getTagDate(tag) !== tagRemove
+    );
+
+    setTagsSearch(tagsFilter);
+    setTagsDate(tagsDateFilter);
+  };
+
+  const payloadJobs: TJobSearchPayloadOption = useMemo(() => {
+    const conditions: TJobSearchCondition[] = [];
+    let use_or_condition = false;
+    let sort_field_id: string | undefined;
+    let sort_order: 'asc' | 'desc' | undefined;
+
+    if (tagsSearch.length > 0) {
+      const searchValues = [...tagsSearch];
+      conditions.push(
+        { id: 'job_title', search_value: searchValues },
+        { id: 'sub_title', search_value: searchValues },
+        { id: 'work_content', search_value: searchValues },
+        { id: 'work_details', search_value: searchValues }
+      );
+      use_or_condition = true;
+    }
+
+    if (tagsDate.length > 0) {
+      const tagDateFormat = tagsDate.map((tag) => getTimeZone0(tag.date));
+      conditions.push({ id: 'start_work_date', search_value: tagDateFormat });
+    }
+
+    if (hourlyWageDesc) {
+      sort_field_id = 'hourly_wage';
+      sort_order = 'desc';
+    }
+
+    if (conditions.length === 0 && !hourlyWageDesc) {
+      sort_field_id = 'start_work_date';
+      sort_order = 'desc';
+    }
+
+    conditions.length === 0 && conditions.push({ search_value: [] });
+
+    return {
+      conditions,
+      use_or_condition,
+      sort_field_id,
+      sort_order,
+    };
+  }, [tagsSearch, tagsDate, hourlyWageDesc]);
+
+  useEffect(() => {
+    const getJobsData = async () => {
+      try {
+        const res = await searchJob({
+          ...payloadJobs,
+          page: 1,
+          per_page: 8,
+          use_display_id: true,
+        });
+        setJobs(res.data.items);
+      } catch (error) {
+      } finally {
+        setPage(1);
+      }
+    };
+    getJobsData();
+  }, [payloadJobs]);
+
+  useEffect(() => {
+    const getJobs = async () => {
+      try {
+        const res = await searchJob({
+          ...payloadJobs,
+          page,
+          per_page: 8,
+          use_display_id: true,
+        });
+        setJobs([...jobs, ...res.data.items]);
+      } catch (error) {}
+    };
+
+    page > 1 && getJobs();
+  }, [page]);
+
+  useEffect(() => {
+    if (
+      dateSelected &&
+      !tagsDate.some(
+        (tag) =>
+          tag.date.format('YYYY-MM-DD') ===
+          dateSelected.date.format('YYYY-MM-DD')
+      )
+    ) {
+      setTagsDate((prevDate) => [...prevDate, dateSelected]);
+    }
+
+    setDateSelected(undefined);
+  }, [dateSelected, setDateSelected, tagsDate]);
+
+  useEffect(() => {
+    if (tagsSearch.indexOf(search) === -1 && search !== '') {
+      setTagsSearch((prevSearch) => [...prevSearch, search]);
+    }
+
+    setSearch('');
+  }, [search, setSearch, tagsSearch]);
+
+  const jobFactory = (rawJob: TJobSearchDetail): TJob => {
+    return {
+      id: rawJob.id,
+      imgUrl: rawJob.image,
+      jobName: rawJob.job_title,
+      des: rawJob.title,
+      date: dayjs(rawJob.start_work_date).format('YYYY/MM/DD'),
+      startTime: dayjs(rawJob.start_work_date).format('HH:MM'),
+      endTime: dayjs(rawJob.end_work_date).format('HH:MM'),
+      tags: [rawJob.prefecture, rawJob.city, rawJob.address],
+      hourlyWage: Number(rawJob.hourly_wage),
+    };
+  };
 
   return (
     <>
@@ -109,26 +169,49 @@ export default function Home() {
           <div className="sm:flex sm:items-center sm:gap-2.5">
             <div className="flex justify-end gap-x-2.5 text-xs font-normal leading-[17px]">
               <p>時給の高い順</p>
-              <Toggle />
+              <Toggle toggle={hourlyWageDesc} setToggle={setHourlyWageDesc} />
             </div>
 
             <div className="mt-4 flex flex-wrap gap-2.5 sm:mt-0">
-              {tags[0] &&
-                tags.map((tag, index) => (
-                  <Tag
-                    key={index}
-                    tagName={tag}
-                    closeTag={true}
-                    className="bg-white text-xs font-normal leading-4"
-                  />
-                ))}
+              <>
+                {tagsDate[0] &&
+                  tagsDate.map((tag, indexDate) => (
+                    <Tag
+                      key={indexDate}
+                      tagName={getTagDate(tag)}
+                      closeTag={true}
+                      handleClickCloseTag={handleClickCloseTag}
+                      className="bg-white text-xs font-normal leading-4"
+                    />
+                  ))}
+                {tagsSearch[0] &&
+                  tagsSearch.map((tag, index) => (
+                    <Tag
+                      key={index}
+                      tagName={tag}
+                      closeTag={true}
+                      handleClickCloseTag={handleClickCloseTag}
+                      className="bg-white text-xs font-normal leading-4"
+                    />
+                  ))}
+              </>
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-10 lg:gap-y-8">
-            {jobs[0] &&
-              jobs.map((job, jobIndex) => <CardJob key={jobIndex} job={job} />)}
-          </div>
+          <InfiniteScroll
+            dataLength={jobs.length || 0}
+            next={() => setPage(page + 1)}
+            hasMore={true}
+            loader={<h4>Loading...</h4>}
+            endMessage={<h4>done...</h4>}
+          >
+            <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-10 lg:gap-y-8">
+              {jobs[0] &&
+                jobs.map((job, jobIndex) => (
+                  <CardJob key={jobIndex} job={jobFactory(job)} />
+                ))}
+            </div>
+          </InfiniteScroll>
         </div>
       </div>
 

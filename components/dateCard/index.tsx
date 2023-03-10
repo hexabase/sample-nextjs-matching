@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
 
-import { TDateHoliday, TDateType } from '../../types/common';
+import { TDateHoliday, TDateType } from '../../types';
 
 dayjs.extend(localeData);
 
@@ -25,7 +25,7 @@ export default function DateCard({ date }: DateCardProps) {
 
   return (
     <div
-      className={`relative flex h-full w-full overflow-hidden rounded-[5px] border-[1px] border-antiFlashWhite text-center hover:shadow-md ${classNameOffDay}`}
+      className={`relative flex h-full w-full overflow-hidden rounded-[5px] border-[1px] border-antiFlashWhite text-center duration-100 ease-linear hover:shadow-lg ${classNameOffDay}`}
     >
       <div className="relative h-[21.75px] w-[21.75px]  border-t-[21.75px] border-r-[21.75px] border-t-aquamarine border-r-transparent ">
         <p className="absolute left-[2px] top-[2px] w-[0.5rem] translate-y-[-1.5rem] text-[8px]">

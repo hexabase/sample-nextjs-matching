@@ -147,6 +147,7 @@ export default function Home() {
   const jobFactory = (rawJob: TJobSearchDetail): TJob => {
     return {
       id: rawJob.id,
+      i_id: rawJob.i_id,
       imgUrl: rawJob.image,
       jobName: rawJob.job_title,
       des: rawJob.title,

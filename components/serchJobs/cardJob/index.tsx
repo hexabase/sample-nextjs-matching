@@ -30,7 +30,7 @@ export default function CardJob({ job }: JobProps) {
   const dayOfWeek = getDayOfWeek(job.date);
 
   const handleClickCard = () => {
-    router.push(`/jobs/${job.id}`);
+    router.push(`/jobs/${job.i_id}`);
   };
 
   useEffect(() => {

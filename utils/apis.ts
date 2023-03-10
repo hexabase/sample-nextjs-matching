@@ -370,14 +370,14 @@ export const getItemListCompanies = async (
   try {
     const token = getCookie('token');
     const page = 1;
-    const per_page = 6;
+    const per_page = 1;
 
     const response = await axiosInstance.post<TGetCompaniesItems>(
       '/applications/hexa-job/datastores/companies/items/search',
       {
         conditions: [
           {
-            id: user_id,
+            id: 'user_id',
             search_value: [user_id],
             exact_match: true,
           },
@@ -418,7 +418,7 @@ export const getItemListJobs = async ({
       {
         conditions: [
           {
-            id: company_id,
+            id: 'company_id',
             search_value: [company_id],
             exact_match: true,
           },
@@ -586,7 +586,7 @@ export const getJobSeekers = async (
       {
         conditions: [
           {
-            id: job_id,
+            id: 'job_id',
             search_value: [job_id],
             exact_match: true,
           },

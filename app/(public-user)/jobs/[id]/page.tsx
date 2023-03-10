@@ -146,7 +146,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
           <JobModal
             handleCloseModal={handleCloseModal}
             job={job}
-            job_id={id}
+            job_id={job?.id}
             setNotification={setNotification}
           />
         )}

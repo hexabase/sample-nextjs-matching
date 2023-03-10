@@ -19,6 +19,7 @@ export type TDateHoliday = {
 
 export type TJob = {
   id: string;
+  i_id: string;
   imgUrl: string;
   jobName: string;
   des: string;

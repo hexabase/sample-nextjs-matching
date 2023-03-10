@@ -67,7 +67,7 @@ const ListOfJobSeekers = ({
                   <div className="relative">
                     求職者一覧
                     <div className="absolute top-0 -right-8 h-[17px] w-[27px] rounded-[8.5px] bg-[#FF6666] px-2 text-white md:flex md:items-center md:justify-center">
-                      <p className="text-[14px] leading-4">46</p>
+                      <p className="text-[14px] leading-4">{totalItems}</p>
                     </div>
                   </div>
                 </div>

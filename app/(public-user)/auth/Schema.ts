@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 
 export const SchemaEmail = Yup.object().shape({
   email: Yup.string()
-    .email('無効なメールアドレスがありま')
+    .email('無効なメールアドレスがあります')
     .required('メールアドレスを入力してください'),
 });
 
@@ -20,7 +20,7 @@ export const SchemaRegisterCompany = Yup.object().shape({
 
 export const SchemaLogin = Yup.object().shape({
   email: Yup.string()
-    .email('無効なメールアドレスがありま')
+    .email('無効なメールアドレスがあります')
     .required('メールアドレスを入力してください'),
   password: Yup.string()
     .min(8, 'パスワードが短すぎます')

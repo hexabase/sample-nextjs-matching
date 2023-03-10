@@ -586,7 +586,7 @@ export const getJobSeekers = async (
       {
         conditions: [
           {
-            id: job_id,
+            id: 'job_id',
             search_value: [job_id],
             exact_match: true,
           },

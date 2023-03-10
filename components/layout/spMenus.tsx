@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 
 const menuLists = [
@@ -6,6 +7,7 @@ const menuLists = [
     items: [
       {
         itemTitle: '求人一覧ページ',
+        link: '/',
       }
     ],
   },
@@ -14,9 +16,11 @@ const menuLists = [
     items: [
       {
         itemTitle: 'ログイン / 求人を出す企業様',
+        link: '/auth/login',
       },
       {
         itemTitle: '求人企業に登録する',
+        link: '/auth/register',
       },
     ],
   },
@@ -25,18 +29,24 @@ const menuLists = [
     items: [
       {
         itemTitle: '運営会社',
+        link: 'https://www.hexabase.com/',
       },
       {
         itemTitle: 'プライバシーポリシー',
+        link: 'https://www.hexabase.com/privacy-policy/',
       },
       {
         itemTitle: 'お問合せ',
+        link: 'https://www.hexabase.com/contact-us/',
       },
     ],
   },
 ];
 
 export default function SPMenus() {
+  const router = useRouter();
+  const regex = new RegExp('https://', 'gi');
+
   return (
     <main className="mt-5">
       <div className="grid grid-cols-1 divide-y divide-chineseWhite">
@@ -51,7 +61,13 @@ export default function SPMenus() {
                   <div
                     key={indexItem}
                     className="flex h-10 items-center justify-between"
-                    onClick={() => console.log('click items', item)}
+                    onClick={() => {
+                      if (item.link.match(regex)) {
+                        window.open(item.link, '_blank', 'noopener,noreferrer');
+                      } else {
+                        router.push(item.link);
+                      }
+                    }}
                   >
                     <p>{item.itemTitle}</p>
                     <ChevronRightIcon className="h-5 w-5" />

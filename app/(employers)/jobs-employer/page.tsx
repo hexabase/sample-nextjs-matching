@@ -97,7 +97,7 @@ export default function JobDetails() {
               <div className="mb-10 sm:flex sm:items-center sm:gap-2.5 md:mb-16">
                 <div className="align-center flex w-full flex-col justify-center gap-x-2.5 text-xs font-normal leading-[17px] md:flex-row md:items-center md:justify-between">
                   <p className="text-sm ">
-                    <span className="text-lg font-bold">４</span>
+                    <span className="text-lg font-bold">{totalPages}</span>
                     件の求人が登録されています
                   </p>
                   <Pagination

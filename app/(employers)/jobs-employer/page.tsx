@@ -24,7 +24,7 @@ export default function JobDetails() {
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
-  const jobs: TJobsItems[] = [];
+  const [jobs, setJobs] = useState<TJobsItems[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -49,7 +49,7 @@ export default function JobDetails() {
         });
 
         if (res.data) {
-          // setJobs(res.data.items);
+          setJobs(res.data.items);
           setTotalItems(res.data.totalItems);
         }
       } catch (error) {

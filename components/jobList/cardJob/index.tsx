@@ -14,7 +14,8 @@ import {
   MapPinIcon,
 } from '@heroicons/react/24/outline';
 
-import { TJobsItems } from '../../../types';
+import { TJobsItems} from '../../../types';
+import { TItemLinks} from '../../../types/jobsList';
 import { getFile } from '../../../utils/apis';
 import { getMonthDayCardJob, getTimeCardJob } from '../../../utils/getDay';
 import ImageSkeleton from '../../common/skeletons/imageSkeleton';
@@ -40,6 +41,7 @@ export default function CardJob({ job }: JobProps) {
     address,
     hourly_wage,
     work_content,
+    item_links,
   } = job;
 
   useEffect(() => {
@@ -60,13 +62,22 @@ export default function CardJob({ job }: JobProps) {
   }, [job.image]);
 
   const handleClickCard = () => {
-    router.push(`jobs-employer/${i_id}`);
+    router.push(`jobs-employer/${i_id}/${job.id}`);
+  };
+
+  const countJobSeekers = (itemLinks: TItemLinks) => {
+    let count = 0;
+    if (itemLinks.db_count > 0) {
+      const link = itemLinks.links.find(l => l.d_id === process.env.NEXT_PUBLIC_JOB_SEEKERS_DATASTORE_ID);
+      count = link?.item_count || 0;
+    }
+    return count;
   };
 
   return (
     <div
       onClick={handleClickCard}
-      className="flex h-auto justify-between bg-white p-4 pb-3 hover:drop-shadow-md md:gap-6 md:rounded-[5px] md:p-5"
+      className="flex h-auto justify-between cursor-pointer bg-white p-4 pb-3 hover:drop-shadow-md md:gap-6 md:rounded-[5px] md:p-5"
     >
       <div className="flex w-1/2 flex-col md:gap-6">
         {!imageUrl ? (
@@ -89,7 +100,7 @@ export default function CardJob({ job }: JobProps) {
           </div>
           <div className="text-center text-[20px]">
             <span className="text-[50px] text-[#FF6666] md:ml-0 md:text-[80px]">
-              3
+            {countJobSeekers(item_links)}
             </span>
             <span>人</span>
           </div>
@@ -134,7 +145,7 @@ export default function CardJob({ job }: JobProps) {
               <p className="text-[10px] font-bold md:text-[14px] md:text-sm">
                 {hourly_wage}
               </p>
-              <span className="text-[10px] md:text-sm">円/1時給</span>
+              <span className="text-[10px] md:text-sm">円/1時間</span>
             </div>
           </div>
         </div>

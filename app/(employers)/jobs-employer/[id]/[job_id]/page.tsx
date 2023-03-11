@@ -9,30 +9,31 @@ import {
   MapPinIcon,
 } from '@heroicons/react/24/outline';
 
-import BackToJobsList from '../../../../components/common/backToJobsList';
-import Notification from '../../../../components/common/notification';
-import { getDayOfWeek } from '../../../../components/helpers';
-import DetailCard from '../../../../components/jobList/detaiJobCard';
-import ListOfJobSeekers from '../../../../components/jobList/listOfJobSeekers';
+import BackToJobsList from '../../../../../components/common/backToJobsList';
+import Notification from '../../../../../components/common/notification';
+import { getDayOfWeek } from '../../../../../components/helpers';
+import DetailCard from '../../../../../components/jobList/detaiJobCard';
+import ListOfJobSeekers from '../../../../../components/jobList/listOfJobSeekers';
 import {
   EMessageError,
   EType,
   TFieldValueConvert,
   TNotification,
-} from '../../../../types';
-import { TGetJobSeekers } from '../../../../types/jobsList';
-import { getItemDetails, getJobSeekers } from '../../../../utils/apis';
-import { getMonthDayCardJob, getTimeCardJob } from '../../../../utils/getDay';
+} from '../../../../../types';
+import { TGetJobSeekers } from '../../../../../types/jobsList';
+import { getItemDetails, getJobSeekers } from '../../../../../utils/apis';
+import { getMonthDayCardJob, getTimeCardJob } from '../../../../../utils/getDay';
 
 interface JobDetailsProps {
   params: {
     id: string;
+    job_id: string;
   };
 }
 
 const PER_PAGE_JOB_SEEKERS = 16;
 
-export default function JobDetails({ params: { id } }: JobDetailsProps) {
+export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) {
   const [job, setJob] = useState<TFieldValueConvert>();
   const [isDetail, setIsDetail] = useState(true);
   const [jobSeekers, setJobSeekers] = useState<TGetJobSeekers>();
@@ -40,7 +41,8 @@ export default function JobDetails({ params: { id } }: JobDetailsProps) {
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
-
+console.log(id);
+console.log(job_id);
   const handleRouter = () => {
     setIsDetail(!isDetail);
   };
@@ -89,8 +91,8 @@ export default function JobDetails({ params: { id } }: JobDetailsProps) {
   }, [id]);
 
   useEffect(() => {
-    getDataJobSeekers(pageJobSeekers, PER_PAGE_JOB_SEEKERS, id);
-  }, [pageJobSeekers, id]);
+    getDataJobSeekers(pageJobSeekers, PER_PAGE_JOB_SEEKERS, job_id);
+  }, [pageJobSeekers, job_id]);
 
   return (
     <>

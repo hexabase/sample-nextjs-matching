@@ -23,7 +23,7 @@ type TLink = {
   items: TItem[];
 };
 
-type TItemLinks = {
+export type TItemLinks = {
   db_count: number;
   item_count: number;
   links: TLink[];

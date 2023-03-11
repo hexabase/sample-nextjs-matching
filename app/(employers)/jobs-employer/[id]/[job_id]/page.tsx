@@ -41,8 +41,7 @@ export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) 
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
-console.log(id);
-console.log(job_id);
+
   const handleRouter = () => {
     setIsDetail(!isDetail);
   };

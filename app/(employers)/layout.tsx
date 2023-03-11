@@ -138,7 +138,7 @@ export default function RootLayout({
             </div>
           </div>
           <p className="py-2 text-center text-xs font-normal sm:text-left">
-            ©️2022 Hexabase
+            ©️ Hexabase
           </p>
         </div>
       </footer>

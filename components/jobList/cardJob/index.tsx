@@ -77,7 +77,7 @@ export default function CardJob({ job }: JobProps) {
   return (
     <div
       onClick={handleClickCard}
-      className="flex h-auto justify-between bg-white p-4 pb-3 hover:drop-shadow-md md:gap-6 md:rounded-[5px] md:p-5"
+      className="flex h-auto justify-between cursor-pointer bg-white p-4 pb-3 hover:drop-shadow-md md:gap-6 md:rounded-[5px] md:p-5"
     >
       <div className="flex w-1/2 flex-col md:gap-6">
         {!imageUrl ? (

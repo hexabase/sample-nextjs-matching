@@ -317,7 +317,15 @@ export default function RegisterConfirm({ params: { id } }: PageProps) {
                 <div className="py-11 text-left text-sm font-normal md:mx-auto">
                   <p>「ログイン」ボタンを押すことで、</p>
                   <p>
-                    利用規約及びプライバシーポリシーに同意したものとみなします。
+                    利用規約及び
+                    <a
+                      className='text-red'
+                      href="https://www.hexabase.com/privacy-policy/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      プライバシーポリシー
+                    </a>に同意したものとみなします。
                   </p>
                 </div>
                 <div className="w-full">

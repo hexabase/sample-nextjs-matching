@@ -78,7 +78,7 @@ export default function JobDetails() {
       <div className="bg-antiFlashWhite">
         {jobs[0] ? (
           <>
-            <div className="container-responsive pb-16 pt-2.5 sm:pb-20  md:mt-0 ">
+            <div className="container-responsive pb-16 pt-2.5 sm:pb-20 md:mt-0">
               <div className="mb-10 mt-[30px] flex justify-end md:mb-14">
                 <button
                   type="button"

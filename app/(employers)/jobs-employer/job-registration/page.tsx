@@ -191,7 +191,8 @@ export default function RegisterPage() {
                           </span>
                         </div>
                         <div className="relative w-full md:w-[772px] ">
-                          <textarea
+                          <input
+                            type="text"
                             name="job_title"
                             value={values.job_title}
                             onChange={handleChange}
@@ -201,7 +202,7 @@ export default function RegisterPage() {
                               touched.job_title && errors.job_title
                                 ? 'border-red'
                                 : 'border-argent hover:border-aquamarine'
-                            } input-field solid mb-11 h-[124px] resize-none bg-[#F9F9F9]	lg:mb-9`}
+                            } input-field solid mb-11 resize-none bg-[#F9F9F9] lg:mb-9`}
                           />
                           {touched.job_title && errors.job_title && (
                             <ExclamationCircleIcon className="absolute top-0 right-3 h-6 w-6 translate-y-1/2 text-red" />
@@ -219,7 +220,8 @@ export default function RegisterPage() {
                         </span>
                       </div>
                       <div className="relative flex w-full flex-row md:w-[772px]">
-                        <textarea
+                        <input
+                          type="text"
                           name="sub_title"
                           value={values.sub_title}
                           onChange={handleChange}
@@ -229,7 +231,7 @@ export default function RegisterPage() {
                             touched.sub_title && errors.sub_title
                               ? 'border-red'
                               : 'border-argent hover:border-aquamarine'
-                          } input-field solid mb-11 h-[124px] resize-none bg-[#F9F9F9] lg:mb-9`}
+                          } input-field solid mb-11 resize-none bg-[#F9F9F9] lg:mb-9`}
                         />
                         {touched.sub_title && errors.sub_title && (
                           <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />
@@ -459,7 +461,8 @@ export default function RegisterPage() {
                           </span>
                         </div>
                         <div className="relative flex w-full flex-row md:w-[772px]">
-                          <textarea
+                          <input
+                            type="text"
                             name="work_content"
                             value={values.work_content}
                             onChange={handleChange}
@@ -469,7 +472,7 @@ export default function RegisterPage() {
                               touched.work_content && errors.work_content
                                 ? 'border-red'
                                 : 'border-argent hover:border-aquamarine'
-                            } input-field solid mb-11  h-[124px] resize-none bg-[#F9F9F9] lg:mb-9`}
+                            } input-field solid mb-11 resize-none bg-[#F9F9F9] lg:mb-9`}
                           />
                           {touched.work_content && errors.work_content && (
                             <ExclamationCircleIcon className="absolute right-3 h-6 w-6 translate-y-1/2 text-red" />

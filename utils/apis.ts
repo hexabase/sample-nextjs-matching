@@ -279,8 +279,6 @@ export const getPrefecturesItems = async (): Promise<
   ApiResponse<TGetPrefecturesItems>
 > => {
   try {
-    const token = getCookie('token');
-
     const response = await axiosInstance.post<TGetPrefecturesItems>(
       '/applications/hexa-job/datastores/prefectures/items/search',
       {
@@ -292,7 +290,7 @@ export const getPrefecturesItems = async (): Promise<
       },
       {
         headers: {
-          Authorization: token ? `Bearer ${token}` : '',
+          Authorization: process.env.NEXT_PUBLIC_TOKEN_API,
         },
       }
     );

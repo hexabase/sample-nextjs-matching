@@ -96,7 +96,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
                 <p className="text-md font-bold md:text-lg">作業内容</p>
               </div>
               <p className="w-full pt-3 pb-7 text-justify text-xs font-normal md:text-lg">
-                【作業内容】 {job?.work_content}
+                {job?.work_content}
               </p>
 
               <div className="relative mt-4 w-full">
@@ -105,7 +105,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
                 </p>
                 <div className="border-mask z-10 w-full bg-antiFlashWhite px-6 pb-7 pt-14">
                   <p className="text-xs font-normal md:text-base">
-                    【作業内容詳細】 {job?.work_details}
+                    {job?.work_details}
                   </p>
                 </div>
               </div>

@@ -150,7 +150,16 @@ export default function Login() {
                 <div className="pt-14 pb-11 text-left text-sm font-normal md:mx-auto lg:py-10">
                   <p>「ログイン」ボタンを押すことで、</p>
                   <p>
-                    利用規約及びプライバシーポリシーに同意したものとみなします。
+                    利用規約及び
+                    <a
+                      className='text-red'
+                      href="https://www.hexabase.com/privacy-policy/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      プライバシーポリシー
+                    </a>
+                  に同意したものとみなします。
                   </p>
                 </div>
 

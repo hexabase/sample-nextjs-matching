@@ -14,7 +14,7 @@ export const SchemaRegisterCompany = Yup.object().shape({
   password: Yup.string()
     .min(8, 'パスワードが短すぎます')
     .required('パスワードを入力してください'),
-  business: Yup.string().required('事業内容を入力してください。'),
+  business: Yup.string().required('事業内容を入力してください'),
   url: Yup.string(),
 });
 

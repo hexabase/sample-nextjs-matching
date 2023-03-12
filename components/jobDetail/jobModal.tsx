@@ -211,7 +211,14 @@ function JobModal({
           <div className="flexCol h-[10.25rem] md:h-[7.8rem]">
             <p className="text-[0.625rem] font-normal md:m-auto md:w-[419px] md:pb-1 md:text-sm">
               「応募する」ボタンを押すことで、
-              利用規約及びプライバシーポリシーに同意したものとみなします。
+              利用規約及び
+              <a
+                className='text-red'
+                href="https://www.hexabase.com/privacy-policy/"
+                target="_blank"
+                rel="noreferrer"
+              >プライバシーポリシー</a>
+              に同意したものとみなします。
             </p>
             <div className="md:flex md:h-14 md:flex-row-reverse md:gap-10 md:px-10">
               <button

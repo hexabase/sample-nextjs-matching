@@ -81,7 +81,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
 
       <div className="md:container-responsive md:flex md:flex-row-reverse md:py-11">
         <div className="container-responsive flex flex-col-reverse justify-between pb-20 md:mx-0 md:flex-row md:gap-10 md:px-0">
-          <div className="pt-2.5">
+          <div className="w-full pt-2.5">
             <div className="md:flexCol hidden h-20 md:h-[135px]">
               <p className="text-[10px] font-normal md:text-lg">
                 {job?.job_title}
@@ -100,7 +100,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
               </p>
 
               <div className="relative mt-4 w-full">
-                <p className="absolute top-[-15px] left-[-7px] z-10 rotate-[-9deg] font-segoe text-2xl font-bold text-aquamarine md:top-0 md:left-3">
+                <p className="absolute top-[-15px] left-[-7px] z-10 rotate-[-9deg] select-none font-segoe text-2xl font-bold text-aquamarine md:top-0 md:left-3">
                   Enjoy work
                 </p>
                 <div className="border-mask z-10 w-full bg-antiFlashWhite px-6 pb-7 pt-14">

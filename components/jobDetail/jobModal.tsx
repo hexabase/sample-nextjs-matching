@@ -86,11 +86,11 @@ function JobModal({
   );
 
   return (
-    <div className="fixed top-0 left-0 bottom-0 right-0 z-30 flex items-center justify-center  bg-blackRgba p-[1.0625rem] opacity-100">
-      <div className="relative h-auto rounded-[1.875rem] bg-white px-8 pt-9 pb-10 md:max-w-[60.9375rem] md:px-[6.56rem]">
+    <div className="fixed top-0 left-0 bottom-0 right-0 z-30 h-auto overflow-y-auto bg-blackRgba p-4 pb-10 opacity-100">
+      <div className="relative mx-auto mt-10 rounded-3xl bg-white px-8 pt-9 pb-10 md:max-w-[60.9375rem] md:px-[6.56rem]">
         <XMarkIcon
           onClick={handleCloseModal}
-          className="absolute top-0 right-0 mt-3 mr-3 h-7 w-7"
+          className="absolute top-3 right-3 h-7 w-7"
         />
         <p className="text-xs	font-bold md:text-lg">働くところの情報</p>
 
@@ -204,20 +204,21 @@ function JobModal({
                   formik.touched.self_promotion && formik.errors.self_promotion
                     ? 'border-red'
                     : 'border-argent hover:border-aquamarine'
-                } input-field solid mt-1 h-[7.7rem]`}
+                } input-field solid mt-1 h-[7.7rem] resize-none`}
               />
             </div>
           </div>
           <div className="flexCol h-[10.25rem] md:h-[7.8rem]">
             <p className="text-[0.625rem] font-normal md:m-auto md:w-[419px] md:pb-1 md:text-sm">
-              「応募する」ボタンを押すことで、
-              利用規約及び
+              「応募する」ボタンを押すことで、 利用規約及び
               <a
-                className='text-red'
+                className="text-red"
                 href="https://www.hexabase.com/privacy-policy/"
                 target="_blank"
                 rel="noreferrer"
-              >プライバシーポリシー</a>
+              >
+                プライバシーポリシー
+              </a>
               に同意したものとみなします。
             </p>
             <div className="md:flex md:h-14 md:flex-row-reverse md:gap-10 md:px-10">

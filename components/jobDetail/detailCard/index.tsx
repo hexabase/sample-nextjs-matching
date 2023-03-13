@@ -59,7 +59,7 @@ export default function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
           <Image src={imageUrl} alt="image1" fill />
         )}
       </div>
-      <div className="container-responsive md:mx-0 md:mt-8 md:px-5">
+      <div className="container mx-auto md:mx-0 md:mt-8 xl:px-4">
         <div className="gap-3 pt-5 pb-12 font-bold md:hidden">
           <p className="text-[10px]"> {job?.job_title}</p>
           <p className="text-base"> {job?.sub_title}</p>
@@ -69,15 +69,15 @@ export default function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
           <div className="h-[51px] w-[51px] sm:h-20 sm:w-20">
             <DateCardDetail date={dateHoliday} />
           </div>
-          <div className="flexCol text-md font-bold md:text-lg">
+          <div className="flexCol text-md w-auto font-bold md:text-lg">
             <div className="flex items-stretch gap-1.5">
-              <ClockIcon className="h-[18px] w-[18px] text-aquamarine md:mt-1" />
-              <div className="flex md:block">
-                <p>
+              <ClockIcon className="h-[15px] w-[15px] text-aquamarine md:mt-1" />
+              <div className="flex sm:block">
+                <p className="text-sm">
                   {getYearMonthDayCardJob(dayjs(job?.start_work_date))}(
                   {getDayOfWeek(job?.start_work_date)})
                 </p>
-                <p className="font-normal">{`${getTimeCardJob(
+                <p className="text-sm font-normal">{`${getTimeCardJob(
                   dayjs(job?.start_work_date)
                 )}~${getTimeCardJob(dayjs(job?.end_work_date))}`}</p>
               </div>

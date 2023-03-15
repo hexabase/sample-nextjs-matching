@@ -73,20 +73,9 @@ const ForwardedCarousel = ({
         <div
           key={index}
           className="snap-start"
-          onClick={() => {
-            if (date.dateType === 'normal') {
-              console.log('asfsbduc');
-              setDateSelected(date);
-            }
-          }}
+          onClick={() => setDateSelected(date)}
         >
-          <div
-            className={`${
-              date.dateType === 'normal'
-                ? 'cursor-pointer'
-                : 'cursor-not-allowed'
-            } relative h-[51px] w-[51px]  sm:h-14 sm:w-14`}
-          >
+          <div className="cursor-pointer relative h-[51px] w-[51px]  sm:h-14 sm:w-14">
             <DateCard date={date} />
           </div>
         </div>

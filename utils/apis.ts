@@ -450,7 +450,7 @@ export const getFile = async (file_id: string) => {
 
     const response = await axiosInstance.get(`/files/${file_id}`, {
       headers: {
-        Authorization: token ? `Bearer ${token}` : '',
+        Authorization: process.env.NEXT_PUBLIC_TOKEN_API,
       },
       responseType: 'arraybuffer',
     });

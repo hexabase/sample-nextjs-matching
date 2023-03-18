@@ -12,6 +12,7 @@
     "@heroicons/react": "^2.0.13",
     "@holiday-jp/holiday_jp": "^2.4.0",
     "@next/font": "^13.1.1",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",

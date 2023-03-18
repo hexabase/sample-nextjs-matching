@@ -85,7 +85,7 @@ export default function RootLayout({
         <>
           <main>{children}</main>
           <footer className="relative bg-eerieBlack pt-16 pb-32 text-white sm:pb-1 sm:pt-12">
-            <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black sm:hidden">
+            <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black md:hidden">
               <ChevronUpIcon aria-hidden="true" onClick={scrollToTop}/>
             </div>
 

@@ -78,17 +78,17 @@ export default function CardJob({ job }: JobProps) {
           {job.des}
         </p>
 
-        <div className="mt-2 flex max-w-[162px] md:mt-6 ">
-          <ClockIcon className="mt-0.5 h-3 w-3 text-aquamarine md:h-4 md:w-4" />
-          <p className="ml-1.5 font-bold md:text-sm">
-            {`${dayjs(job.date).format('MM/DD')} ${dayOfWeek}`}
+        <div className="mt-2 flex w-full md:mt-6">
+          <ClockIcon className="mt-0.5 h-3 w-3 flex-none text-aquamarine md:h-6 md:w-6" />
+          <p className="ml-1.5 pt-0.5 font-bold md:text-sm md:pt-1">
+            {`${dayjs(job.date).format('MM/DD')}(${dayOfWeek})`}
           </p>
-          <p className="ml-1.5 md:mt-0.5">{`${job.startTime}〜${job.endTime}`}</p>
+          <p className="ml-1.5 pt-0.5 md:mt-0.5  md:pt-1">{`${job.startTime}〜${job.endTime}`}</p>
         </div>
 
-        <div className="mt-4 flex max-w-[162px] items-center">
-          <MapPinIcon className="h-3 w-3 text-aquamarine md:h-3 md:w-3 md:text-xs" />
-          <div className="flex flex-wrap gap-1 md:text-xs">
+        <div className="mt-4 flex w-full items-center">
+          <MapPinIcon className="h-3 w-3 text-aquamarine md:h-7 md:w-7 md:text-xs" />
+          <div className="flex gap-1 md:text-xs">
             {job.tags[0] &&
               job.tags.map((tag, indexTag) => (
                 <Tag

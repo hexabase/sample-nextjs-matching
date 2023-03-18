@@ -154,7 +154,7 @@ export default function Home() {
       date: dayjs(rawJob.start_work_date).format('YYYY/MM/DD'),
       startTime: dayjs(rawJob.start_work_date).format('HH:MM'),
       endTime: dayjs(rawJob.end_work_date).format('HH:MM'),
-      tags: [rawJob.prefecture, rawJob.city, rawJob.address],
+      tags: [rawJob.prefecture, rawJob.city],
       hourlyWage: Number(rawJob.hourly_wage),
     };
   };

@@ -14,6 +14,10 @@ import EmployerContainer from '../../container/employerContainer';
 import { EMessageError, EType, TNotification } from '../../types';
 import { logout } from '../../utils/apis';
 
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -75,8 +79,8 @@ export default function RootLayout({
         <EmployerContainer>{children}</EmployerContainer>
       </main>
       <footer className="relative bg-eerieBlack pt-16 pb-6 text-white sm:pb-5 sm:pt-12">
-        <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black sm:hidden">
-          <ChevronUpIcon aria-hidden="true" />
+        <div className="absolute inset-x-1/2 top-[-26px] flex h-[52px] w-[52px] translate-x-[-50%] items-center justify-center rounded-full bg-pastelRed text-black md:hidden">
+          <ChevronUpIcon aria-hidden="true" onClick={scrollToTop}/>
         </div>
 
         <div className="container-responsive">

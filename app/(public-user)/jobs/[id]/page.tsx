@@ -84,10 +84,10 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
           <div className="w-full pt-2.5">
             <div className="md:flexCol hidden h-20 md:h-[135px]">
               <p className="text-[10px] font-normal md:text-lg">
-                {job?.job_title}
+                {job?.sub_title}
               </p>
               <p className="h-12 text-base font-bold md:h-20 md:text-2xl">
-                {job?.sub_title}
+                {job?.job_title}
               </p>
             </div>
             <div className="mt-4 md:mt-14">

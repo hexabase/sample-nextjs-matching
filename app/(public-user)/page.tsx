@@ -167,9 +167,9 @@ export default function Home() {
 
       <div className="bg-antiFlashWhite">
         <div className="container-responsive pb-16 pt-2.5 sm:pt-6 sm:pb-20">
-          <div className="sm:flex sm:items-center sm:gap-2.5">
+          <div className="pb-[10px] sm:flex sm:items-center sm:gap-2.5">
             <div className="flex justify-end gap-x-2.5 text-xs font-normal leading-[17px]">
-              <p>時給の高い順</p>
+              <p className="whitespace-nowrap">時給の高い順</p>
               <Toggle toggle={hourlyWageDesc} setToggle={setHourlyWageDesc} />
             </div>
 
@@ -206,7 +206,7 @@ export default function Home() {
             loader={<h4>Loading...</h4>}
             endMessage={<h4>done...</h4>}
           >
-            <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-10 lg:gap-y-8">
+            <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-7">
               {jobs[0] &&
                 jobs.map((job, jobIndex) => (
                   <CardJob key={jobIndex} job={jobFactory(job)} />

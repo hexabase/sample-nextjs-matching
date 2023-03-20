@@ -73,11 +73,11 @@ export default function CardJob({ job }: JobProps) {
 
       <div className="px-3 py-3 leading-[13px] md:px-5">
         <p className="leading[10px] w-full truncate text-xs md:mt-2.5">
-          {job.jobName}
+          {job.des}
         </p>
 
         <p className="mt-2 inline-block h-auto h-10 min-h-[50px] w-full pb-0 text-xs font-bold line-clamp-3 md:min-h-[60px] md:text-sm">
-          {job.des}
+          {job.jobName}
         </p>
 
         <div className="mt-4 flex w-full items-center justify-start md:mt-6 md:mt-2 md:items-center">

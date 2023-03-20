@@ -150,7 +150,7 @@ export default function Home() {
       i_id: rawJob.i_id,
       imgUrl: rawJob.image,
       jobName: rawJob.job_title,
-      des: rawJob.title,
+      des: rawJob.sub_title,
       date: dayjs(rawJob.start_work_date).format('YYYY/MM/DD'),
       startTime: dayjs(rawJob.start_work_date).format('HH:MM'),
       endTime: dayjs(rawJob.end_work_date).format('HH:MM'),

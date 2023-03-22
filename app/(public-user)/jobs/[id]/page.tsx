@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { BriefcaseIcon } from '@heroicons/react/20/solid';
 import { CurrencyYenIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { nl2br } from 'react-js-nl2br';
 
 import BackToHome from '../../../../components/common/backToHome';
 import BackToJobs from '../../../../components/common/backToJobs';
@@ -87,7 +88,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
                 {job?.sub_title}
               </p>
               <p className="h-12 text-base font-bold md:h-20 md:text-2xl">
-                {job?.job_title}
+                
               </p>
             </div>
             <div className="mt-4 md:mt-14">
@@ -105,7 +106,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
                 </p>
                 <div className="border-mask z-10 w-full bg-antiFlashWhite px-6 pb-7 pt-14">
                   <p className="text-xs font-normal md:text-base">
-                    {job?.work_details}
+                    {nl2br(job?.work_details)}
                   </p>
                 </div>
               </div>

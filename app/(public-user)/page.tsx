@@ -7,6 +7,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import Tag from '../../components/common/Tag';
 import Toggle from '../../components/common/Toggle';
+import Loader from '../../components/common/loader';
 import CalendarInline from '../../components/serchJobs/calendarInline';
 import CardJob from '../../components/serchJobs/cardJob';
 import FooterMobile from '../../components/serchJobs/footerMobile';
@@ -31,6 +32,7 @@ export default function Home() {
 
   const [jobs, setJobs] = useState<TJobSearchDetail[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState(true);
   const [tagsSearch, setTagsSearch] = useState<string[]>([]);
   const [tagsDate, setTagsDate] = useState<TDateHoliday[]>([]);
   const [hourlyWageDesc, setHourlyWageDesc] = useState<boolean>(false);
@@ -115,6 +117,9 @@ export default function Home() {
           use_display_id: true,
         });
         setJobs([...jobs, ...res.data.items]);
+        if (res.data.items.length == 0) {
+          setHasMore(false);
+        }
       } catch (error) {}
     };
 
@@ -202,9 +207,8 @@ export default function Home() {
           <InfiniteScroll
             dataLength={jobs.length || 0}
             next={() => setPage(page + 1)}
-            hasMore={true}
-            loader={<h4>Loading...</h4>}
-            endMessage={<h4>done...</h4>}
+            hasMore={hasMore}
+            loader={<Loader />}
           >
             <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-7">
               {jobs[0] &&

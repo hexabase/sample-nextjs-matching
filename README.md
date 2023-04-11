@@ -40,8 +40,7 @@ Download and install or execute cmd to install
 - copy .env.sample and paste .env
 ### Example
 - `NEXT_PUBLIC_LINKER_API="https://api.hexabase.com/api/v0"`
-- `NEXT_PUBLIC_TOKEN_API="Bearer xxxxx"` # Set persistence token. See https://bit.ly/3G6cQYj
-- `NEXT_PUBLIC_TOKEN_API: "Bearer xxxxx"`
+- `NEXT_PUBLIC_TOKEN_API="Bearer xxxxx"` # Set login token or persistence token. See https://bit.ly/3G6cQYj
 - `NEXT_PUBLIC_DOMAIN="hexajob.hexabase.app"` # Set service domain.
 - `NEXT_PUBLIC_SENDER_ADDRESS="noreply@hexabase.com"` # Set automail sender.
 - `NEXT_PUBLIC_JOB_SEEKERS_DATASTORE_ID="63e0ce87407d1d80eca6cc70"` # Set job_seekers database ID.

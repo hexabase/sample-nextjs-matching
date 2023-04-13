@@ -48,3 +48,5 @@ Download and install or execute cmd to install
 ## Launch the front application on localhost
 - Run `yarn install` at the path where you placed the source
 - Run `yarn dev` application starts at localhost:3000
+## License
+This repo is licenced under MIT.

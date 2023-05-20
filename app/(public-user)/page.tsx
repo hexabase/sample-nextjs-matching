@@ -99,6 +99,9 @@ export default function Home() {
           use_display_id: true,
         });
         setJobs(res.data.items);
+        if (res.data.items.length == 0) {
+          setHasMore(false);
+        }
       } catch (error) {
       } finally {
         setPage(1);

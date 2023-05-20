@@ -5,7 +5,7 @@ This is a sample application for Hexabase.
 
 [https://hexajob.hexabase.app/](https://hexajob.hexabase.app)
 
-![https://hexajob.hexabase.app/](https://hexajob.hexabase.app/site-image.png) 
+![https://hexajob.hexabase.app/](./public/site-image.png) 
 
 ## Prerequisites 
 Download and install or execute cmd to install

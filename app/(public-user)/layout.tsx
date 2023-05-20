@@ -54,9 +54,11 @@ export default function RootLayout({
               <div className="hidden lg:block">
                 <Search />
               </div>
-              <div className="h-7 w-7">
-                <QuestionMarkCircleIcon />
-              </div>
+              <a href="https://hexabase.com/sampleapps/hexajob/" target='_blank' rel='noreferrer'>
+                <div className="h-7 w-7">
+                  <QuestionMarkCircleIcon />
+                </div>
+              </a>
               <button
                 className="button-header"
                 onClick={() => router.push('/auth/register')}

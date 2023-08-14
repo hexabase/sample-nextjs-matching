@@ -11,20 +11,15 @@ import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
 import Notification from '../../components/common/notification';
 import EmployerContainer from '../../container/employerContainer';
-import { EMessageError, EType, TNotification } from '../../types';
+import { TNotification } from '../../types';
 import { logout } from '../../utils/apis';
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
@@ -36,16 +31,10 @@ export default function RootLayout({
 
   const logoutHandler = async () => {
     try {
-      const res = await logout();
-
-      res.data && handleLogout();
+      await logout();
     } catch (error) {
-      setNotification({
-        open: true,
-        type: EType.ERROR,
-        message: EMessageError.ERR_01,
-      });
     }
+    handleLogout();
   };
 
   return (

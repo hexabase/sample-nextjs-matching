@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
-import dayjs from 'dayjs';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import Tag from '../../components/common/Tag';
@@ -15,13 +14,12 @@ import { useSearchContext } from '../../context';
 import { useDateSelectedContext } from '../../context/DateSelectedContext';
 import {
   TDateHoliday,
-  TJob,
   TJobSearchCondition,
-  TJobSearchDetail,
   TJobSearchPayloadOption,
 } from '../../types';
 import { searchJob } from '../../utils/apis';
 import { getTimeZone0 } from '../../utils/getDay';
+import { Item } from '@hexabase/hexabase-js';
 
 const getTagDate = (date: TDateHoliday) =>
   `${date?.month}月${date?.day}日(${date?.dayOfWeek})`;
@@ -29,8 +27,7 @@ const getTagDate = (date: TDateHoliday) =>
 export default function Home() {
   const { search, setSearch } = useSearchContext();
   const { dateSelected, setDateSelected } = useDateSelectedContext();
-
-  const [jobs, setJobs] = useState<TJobSearchDetail[]>([]);
+  const [jobs, setJobs] = useState<Item[]>([]);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState(true);
   const [tagsSearch, setTagsSearch] = useState<string[]>([]);
@@ -42,7 +39,6 @@ export default function Home() {
     const tagsDateFilter = tagsDate.filter(
       (tag) => getTagDate(tag) !== tagRemove
     );
-
     setTagsSearch(tagsFilter);
     setTagsDate(tagsDateFilter);
   };
@@ -92,17 +88,18 @@ export default function Home() {
   useEffect(() => {
     const getJobsData = async () => {
       try {
-        const res = await searchJob({
+        const items = await searchJob({
           ...payloadJobs,
           page: 1,
           per_page: 8,
           use_display_id: true,
         });
-        setJobs(res.data.items);
-        if (res.data.items.length == 0) {
+        setJobs(items);
+        if (items.length == 0) {
           setHasMore(false);
         }
       } catch (error) {
+        console.log(error);
       } finally {
         setPage(1);
       }
@@ -113,19 +110,19 @@ export default function Home() {
   useEffect(() => {
     const getJobs = async () => {
       try {
-        const res = await searchJob({
+        const items = await searchJob({
           ...payloadJobs,
           page,
           per_page: 8,
           use_display_id: true,
         });
-        setJobs([...jobs, ...res.data.items]);
-        if (res.data.items.length == 0) {
+        setJobs([...jobs, ...items]);
+        if (items.length == 0) {
           setHasMore(false);
         }
-      } catch (error) {}
+      } catch (error) {
+      }
     };
-
     page > 1 && getJobs();
   }, [page]);
 
@@ -151,22 +148,6 @@ export default function Home() {
 
     setSearch('');
   }, [search, setSearch, tagsSearch]);
-
-  const jobFactory = (rawJob: TJobSearchDetail): TJob => {
-    return {
-      id: rawJob.id,
-      i_id: rawJob.i_id,
-      imgUrl: rawJob.image,
-      jobName: rawJob.job_title,
-      des: rawJob.sub_title,
-      date: dayjs(rawJob.start_work_date).format('YYYY/MM/DD'),
-      startTime: dayjs(rawJob.start_work_date).format('HH:MM'),
-      endTime: dayjs(rawJob.end_work_date).format('HH:MM'),
-      tags: [rawJob.prefecture, rawJob.city],
-      hourlyWage: Number(rawJob.hourly_wage),
-    };
-  };
-
   return (
     <>
       <div className="container-responsive h-[100px] py-[22px]">
@@ -216,7 +197,7 @@ export default function Home() {
             <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 sm:mt-3 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-7">
               {jobs[0] &&
                 jobs.map((job, jobIndex) => (
-                  <CardJob key={jobIndex} job={jobFactory(job)} />
+                  <CardJob key={jobIndex} job={job} />
                 ))}
             </div>
           </InfiniteScroll>

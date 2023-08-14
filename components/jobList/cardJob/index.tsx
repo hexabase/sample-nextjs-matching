@@ -14,66 +14,51 @@ import {
   MapPinIcon,
 } from '@heroicons/react/24/outline';
 
-import { TJobsItems} from '../../../types';
-import { TItemLinks} from '../../../types/jobsList';
-import { getFile } from '../../../utils/apis';
 import { getMonthDayCardJob, getTimeCardJob } from '../../../utils/getDay';
 import ImageSkeleton from '../../common/skeletons/imageSkeleton';
 import { getDayOfWeek } from '../../helpers';
+import { FileObject, Item } from '@hexabase/hexabase-js';
+import { getJobSeekersCount } from '../../../utils/apis';
 
 dayjs.locale('ja');
 dayjs().locale('ja');
 interface JobProps {
-  job: TJobsItems;
+  job: Item;
 }
 
 export default function CardJob({ job }: JobProps) {
   const router = useRouter();
   const [imageUrl, setImageUrl] = useState<string>();
-
-  const {
-    i_id,
-    title,
-    start_work_date,
-    end_work_date,
-    prefecture,
-    city,
-    address,
-    hourly_wage,
-    work_content,
-    item_links,
-  } = job;
-
+  const [jobSeekersCount, setJobSeekersCount] = useState<number>(0);
   useEffect(() => {
     const getImageUrl = async () => {
+      const images = job.get<FileObject[]>('image');
+      if (!images) return;
+      if (images.length === 0) return;
       try {
-        const res = await getFile(job.image);
-        const imageBytes = new Uint8Array(res.data);
-        const blob = new Blob([imageBytes.buffer], { type: 'image' });
-        const imageUrl = URL.createObjectURL(blob);
+        const blob = await images[0].download() as unknown;
+        const imageUrl = URL.createObjectURL(blob as Blob);
         setImageUrl(imageUrl);
       } catch (error) {
         console.log('error', error);
         setImageUrl('');
       }
     };
-
     getImageUrl();
-  }, [job.image]);
+  }, [job?.get<FileObject[]>('image')]);
+
+  useEffect(() => {
+    const updateJobSeekersCount = async () => {
+      const num = await getJobSeekersCount(job);
+      setJobSeekersCount(num);
+    };
+    updateJobSeekersCount();
+  }, []);
 
   const handleClickCard = () => {
-    router.push(`jobs-employer/${i_id}/${job.id}`);
+    router.push(`jobs-employer/${job?.id}/${job?.get('id')}`);
   };
-
-  const countJobSeekers = (itemLinks: TItemLinks) => {
-    let count = 0;
-    if (itemLinks.db_count > 0) {
-      const link = itemLinks.links.find(l => l.d_id === process.env.NEXT_PUBLIC_JOB_SEEKERS_DATASTORE_ID);
-      count = link?.item_count || 0;
-    }
-    return count;
-  };
-
+  
   return (
     <div
       onClick={handleClickCard}
@@ -100,7 +85,7 @@ export default function CardJob({ job }: JobProps) {
           </div>
           <div className="text-center text-[20px]">
             <span className="text-[50px] text-[#FF6666] md:ml-0 md:text-[80px]">
-            {countJobSeekers(item_links)}
+            {jobSeekersCount}
             </span>
             <span>人</span>
           </div>
@@ -110,7 +95,7 @@ export default function CardJob({ job }: JobProps) {
       <div className="flex w-1/2 flex-col pl-[18px] text-[9px] font-normal leading-[13px] md:w-64 md:pl-0 md:pb-3 md:text-xs">
         <div className="w-auto sm:w-[142px]">
           <p className=" text-overflow-multiline inline-block h-[49px] w-auto text-[12px]  font-bold leading-4 sm:w-[142px]  md:h-20 md:w-[248px] md:text-sm lg:text-lg">
-            {title}
+            {job.get<string>('title')}
           </p>
         </div>
 
@@ -118,21 +103,21 @@ export default function CardJob({ job }: JobProps) {
           <div className="flex items-center">
             <ClockIcon className="h-4 w-4 text-aquamarine md:h-5 md:w-5" />
             <p className="ml-1.5 font-bold md:text-sm">
-              {getMonthDayCardJob(dayjs(start_work_date))}(
-              {getDayOfWeek(start_work_date)})
+              {getMonthDayCardJob(dayjs(job.get<Date>('start_work_date')))}(
+              {getDayOfWeek(job.get<Date>('start_work_date')!)})
             </p>
             <p className="ml-1.5 text-[10px] md:mt-0.5 md:text-sm">{`${getTimeCardJob(
-              dayjs(start_work_date)
-            )}〜${getTimeCardJob(dayjs(end_work_date))}`}</p>
+              dayjs(job?.get<Date>('start_work_date'))
+            )}〜${getTimeCardJob(dayjs(job.get<Date>('end_work_date')))}`}</p>
           </div>
 
           <div className="flex items-center">
             <MapPinIcon className="mr-3 h-4 w-5 text-aquamarine md:h-5 md:w-6 md:text-base" />
             <div className="w-full">
               <p className="w-full text-[10px] leading-3 md:text-sm">
-                {prefecture}
-                {city}
-                {address}
+                {job.get<string>('prefecture')}
+                {job.get<string>('city')}
+                {job.get<string>('address')}
               </p>
             </div>
           </div>
@@ -143,7 +128,7 @@ export default function CardJob({ job }: JobProps) {
             </p>
             <div className="flex items-center gap-1">
               <p className="text-[10px] font-bold md:text-[14px] md:text-sm">
-                {hourly_wage}
+                {job.get<string>('hourly_wage')}
               </p>
               <span className="text-[10px] md:text-sm">円/1時間</span>
             </div>
@@ -152,7 +137,7 @@ export default function CardJob({ job }: JobProps) {
 
         <div className="mt-6 flex w-auto flex-col gap-2 sm:w-[141px] md:h-28 md:w-56">
           <p className="font-bold">作業内容</p>
-          <p className="text-[8px] md:h-20 md:text-sm">{work_content}</p>
+          <p className="text-[8px] md:h-20 md:text-sm">{job.get<string>('work_content')}</p>
         </div>
       </div>
     </div>

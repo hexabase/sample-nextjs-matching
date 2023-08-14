@@ -3,34 +3,30 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-import { getFile } from '../../../utils/apis';
 import ImageSkeleton from '../../common/skeletons/imageSkeleton';
+import { FileObject } from '@hexabase/hexabase-js';
 
 interface DetailCardProps {
-  file_id?: string;
+  file?: FileObject;
 }
 
-export default function DetailCard({ file_id }: DetailCardProps) {
+export default function DetailCard({ file }: DetailCardProps) {
   const [imageUrl, setImageUrl] = useState<string>();
 
   useEffect(() => {
-    if (file_id) {
-      const getImageUrl = async () => {
-        try {
-          const res = await getFile(file_id);
-          const imageBytes = new Uint8Array(res.data);
-          const blob = new Blob([imageBytes.buffer], { type: 'image' });
-          const imageUrl = URL.createObjectURL(blob);
-          setImageUrl(imageUrl);
-        } catch (error) {
-          console.log('error', error);
-          setImageUrl('');
-        }
-      };
-
-      getImageUrl();
-    }
-  }, [file_id]);
+    if (!file) return;
+    const getImageUrl = async () => {
+      try {
+        const blob = await file.download() as unknown;
+        const imageUrl = URL.createObjectURL(blob as Blob);
+        setImageUrl(imageUrl);
+      } catch (error) {
+        console.log('error', error);
+        setImageUrl('');
+      }
+    };
+    getImageUrl();
+  }, [file]);
 
   return (
     <div className={!imageUrl ? ("w-[80%] mx-auto") : ("")}>

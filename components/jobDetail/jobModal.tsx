@@ -13,20 +13,19 @@ import {
 } from '@heroicons/react/24/outline';
 
 import {
-  EMessageError,
   EType,
-  TFieldValueConvert,
   TNotification,
 } from '../../types';
 import { addJobSeekers } from '../../utils/apis';
 import { getMonthDayCardJob, getTimeCardJob } from '../../utils/getDay';
 import { getDayOfWeek } from '../helpers';
+import { Item } from '@hexabase/hexabase-js';
 
 interface TJobModalProps {
   job_id: string;
   setNotification: React.Dispatch<SetStateAction<TNotification>>;
   handleCloseModal: () => void;
-  job?: TFieldValueConvert;
+  job?: Item;
 }
 
 interface FormValueProps {
@@ -60,25 +59,21 @@ function JobModal({
   const dataAddJobSeekers = useCallback(
     async (data: FormValueProps) => {
       try {
-        const res = await addJobSeekers({
+        await addJobSeekers({
           job_id,
           ...data,
         });
-
-        if (res.data) {
-          setNotification({
-            open: true,
-            type: EType.SUCCESS,
-            message: 'Success',
-          });
-
-          handleCloseModal();
-        }
+        setNotification({
+          open: true,
+          type: EType.SUCCESS,
+          message: 'Success',
+        });
+        handleCloseModal();
       } catch (error) {
         setNotification({
           open: true,
           type: EType.ERROR,
-          message: EMessageError.ERR_01,
+          message: (error as Error).message,
         });
       }
     },
@@ -96,9 +91,9 @@ function JobModal({
 
         <div className="flexCol borderModal mt-2 h-44 p-3 font-bold md:h-auto md:px-0 lg:flex-row">
           <div className="flexCol h-[4.5rem]">
-            <p className="text-[0.625rem] md:text-sm"> {job?.job_title}</p>
+            <p className="text-[0.625rem] md:text-sm"> {job?.get<string>('job_title')}</p>
             <p className="text-xs md:w-[28.875rem] md:text-sm">
-              {job?.sub_title}
+              {job?.get<string>('sub_title')}
             </p>
           </div>
 
@@ -111,20 +106,20 @@ function JobModal({
             <div className="mr-2 flex h-[4.8rem] flex-col justify-between">
               <div className="flex text-sm">
                 <p className="mr-3 font-bold lg:text-lg">
-                  {getMonthDayCardJob(dayjs(job?.start_work_date))}(
-                  {getDayOfWeek(job?.start_work_date)})
+                  {getMonthDayCardJob(dayjs(job?.get<Date>('start_work_date')))}(
+                  {getDayOfWeek(job?.get<Date>('start_work_date') || new Date)})
                 </p>
                 <p className="font-normal lg:text-lg lg:font-bold">{`${getTimeCardJob(
-                  dayjs(job?.start_work_date)
-                )}〜${getTimeCardJob(dayjs(job?.end_work_date))}`}</p>
+                  dayjs(job?.get<Date>('start_work_date'))
+                )}〜${getTimeCardJob(dayjs(job?.get<Date>('end_work_date')))}`}</p>
               </div>
               <p className="text-xs font-normal md:text-sm">
-                {job?.prefecture?.title}
-                {job?.city}
-                {job?.address}
+                {job?.get<Item>('prefecture')?.get<string>(' name')}
+                {job?.get<string>('city')}
+                {job?.get<string>('address')}
               </p>
               <p className="text-sm font-normal">
-                <span className="text-base font-bold md:text-base md:font-bold">{`${job?.hourly_wage.toLocaleString()}`}</span>
+                <span className="text-base font-bold md:text-base md:font-bold">{`${job?.get<number>('hourly_wage')}`}</span>
                 円/1時間
               </p>
             </div>

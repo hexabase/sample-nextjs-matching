@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.13",
+    "@hexabase/hexabase-js": "file:../hexabase-js",
     "@holiday-jp/holiday_jp": "^2.4.0",
     "@next/font": "^13.1.1",
     "@tailwindcss/line-clamp": "^0.4.2",
@@ -21,10 +22,10 @@
     "cookies-next": "^2.1.1",
     "cross-fetch": "^3.1.5",
     "dayjs": "^1.11.7",
+    "encoding": "^0.1.13",
     "eslint": "^8.31.0",
     "eslint-config-next": "^13.1.6",
     "formik": "^2.2.9",
-    "hexabase-sdk": "^0.0.22",
     "http-proxy-middleware": "^2.0.6",
     "next": "^13.1.6",
     "react": "^18.2.0",

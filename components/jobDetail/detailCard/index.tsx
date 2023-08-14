@@ -8,12 +8,12 @@ import { useEffect, useState } from 'react';
 import { ClockIcon, CurrencyYenIcon } from '@heroicons/react/24/outline';
 
 import { TFieldValueConvert } from '../../../types';
-import { getFile } from '../../../utils/apis';
 import { getTimeCardJob, getYearMonthDayCardJob } from '../../../utils/getDay';
 import ImageSkeleton from '../../common/skeletons/imageSkeleton';
 import DateCardDetail from '../../dateCardDetail';
 import { checkHoliday, getDayOfWeek } from '../../helpers';
 import Apply from '../apply';
+import { FileObject } from '@hexabase/hexabase-js';
 
 dayjs.extend(localeData);
 
@@ -27,16 +27,16 @@ type TDetailCardProps = {
 export default function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
   const [imageUrl, setImageUrl] = useState<string>();
 
-  const dateHoliday = checkHoliday(job?.start_work_date);
+  const dateHoliday = checkHoliday(job?.get('start_work_date'));
 
   useEffect(() => {
-    if (job && job.image[0]?.file_id) {
+    if (job && job.get('image')[0]) {
       const getImageUrl = async () => {
         try {
-          const res = await getFile(job.image[0].file_id);
-          const imageBytes = new Uint8Array(res.data);
-          const blob = new Blob([imageBytes.buffer], { type: 'image' });
-          const imageUrl = URL.createObjectURL(blob);
+          const file = job.get('image')[0] as FileObject;
+          await file.download();
+          const blob = file.data as unknown;
+          const imageUrl = URL.createObjectURL(blob as Blob);
           setImageUrl(imageUrl);
         } catch (error) {
           console.log('error', error);
@@ -61,8 +61,8 @@ export default function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
       </div>
       <div className="container mx-auto md:mx-0 md:mt-8 xl:px-4">
         <div className="gap-3 pt-5 pb-12 font-bold md:hidden">
-          <p className="text-[10px]"> {job?.job_title}</p>
-          <p className="text-base"> {job?.sub_title}</p>
+          <p className="text-[10px]"> {job?.get('job_title')}</p>
+          <p className="text-base"> {job?.get('sub_title')}</p>
         </div>
 
         <div className="flex gap-x-4 rounded-xl border-2 border-[aquamarine] bg-cultured px-4 py-3 md:mb-5 md:h-[7.25rem]">
@@ -74,19 +74,19 @@ export default function DetailCard({ handleOpenModal, job }: TDetailCardProps) {
               <ClockIcon className="h-[15px] w-[15px] text-aquamarine md:mt-1" />
               <div className="flex sm:block">
                 <p className="text-sm">
-                  {getYearMonthDayCardJob(dayjs(job?.start_work_date))}(
-                  {getDayOfWeek(job?.start_work_date)})
+                  {getYearMonthDayCardJob(dayjs(job?.get('start_work_date')))}(
+                  {getDayOfWeek(job?.get('start_work_date'))})
                 </p>
                 <p className="text-sm font-normal">{`${getTimeCardJob(
-                  dayjs(job?.start_work_date)
-                )}~${getTimeCardJob(dayjs(job?.end_work_date))}`}</p>
+                  dayjs(job?.get('start_work_date'))
+                )}~${getTimeCardJob(dayjs(job?.get('end_work_date')))}`}</p>
               </div>
             </div>
 
             <div className="flexItemsCenter gap-1.5">
               <CurrencyYenIcon className="h-[18px] w-[18px] text-aquamarine" />
               <p>
-                {`${job?.hourly_wage.toLocaleString()}`}
+                {`${job?.get('hourly_wage').toLocaleString()}`}
                 <span className="font-normal">円/1時間</span>
               </p>
             </div>

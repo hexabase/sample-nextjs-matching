@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { BriefcaseIcon } from '@heroicons/react/20/solid';
 import { CurrencyYenIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import { nl2br } from 'react-js-nl2br';
+import { Item } from '@hexabase/hexabase-js';
 
 import BackToHome from '../../../../components/common/backToHome';
 import BackToJobs from '../../../../components/common/backToJobs';
@@ -15,7 +16,6 @@ import JobModal from '../../../../components/jobDetail/jobModal';
 import {
   EMessageError,
   EType,
-  TFieldValueConvert,
   TNotification,
 } from '../../../../types';
 import { getItemDetails } from '../../../../utils/apis';
@@ -30,7 +30,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
-  const [job, setJob] = useState<TFieldValueConvert>();
+  const [job, setJob] = useState<Item>();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleOpenModal: () => void = () => {
@@ -47,22 +47,13 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
 
   const getDataItemDetail = async (item_id: string) => {
     try {
-      const res = await getItemDetails(item_id);
-
-      if (res.data && res.data.field_values) {
-        const dataConvert: TFieldValueConvert = {};
-
-        res.data.field_values.forEach((item) => {
-          dataConvert[item.field_id] = item.value;
-        });
-
-        setJob(dataConvert);
-      }
+      const item = await getItemDetails(item_id);
+      setJob(item);
     } catch (error) {
       setNotification({
         open: true,
         type: EType.ERROR,
-        message: EMessageError.ERR_01,
+        message: (error as Error).message,
       });
     }
   };
@@ -85,10 +76,10 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
           <div className="w-full pt-2.5">
             <div className="md:flexCol hidden h-20 md:h-[135px]">
               <p className="text-[10px] font-normal md:text-lg">
-                {job?.sub_title}
+                {job?.get<string>('sub_title')}
               </p>
               <p className="h-12 text-base font-bold md:h-20 md:text-2xl">
-                {job?.job_title}
+                {job?.get<string>('job_title')}
               </p>
             </div>
             <div className="mt-4 md:mt-14">
@@ -97,7 +88,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
                 <p className="text-md font-bold md:text-lg">作業内容</p>
               </div>
               <p className="w-full pt-3 pb-7 text-justify text-xs font-normal md:text-lg">
-                {job?.work_content}
+                {job?.get<string>('work_content')}
               </p>
 
               <div className="relative mt-4 w-full">
@@ -106,7 +97,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
                 </p>
                 <div className="border-mask z-10 w-full bg-antiFlashWhite px-6 pb-7 pt-14">
                   <p className="text-xs font-normal md:text-base">
-                    {nl2br(job?.work_details)}
+                    {nl2br(job?.get<string>('work_details'))}
                   </p>
                 </div>
               </div>
@@ -118,7 +109,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
                 <p className="text-md md:text-lg">時給</p>
               </div>
               <div className="flex items-baseline gap-1">
-                <p className="text-2xl md:text-3xl">{`${job?.hourly_wage.toLocaleString()}`}</p>
+                <p className="text-2xl md:text-3xl">{`${job?.get<number>('hourly_wage')}`}</p>
                 <p className="text-xs font-normal md:text-base">円</p>
               </div>
             </div>
@@ -128,9 +119,9 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
                 <p className="text-md font-bold md:text-lg">働く場所</p>
               </div>
               <p className="text-xs font-normal md:text-base">
-                {job?.prefecture?.title}
-                {job?.city}
-                {job?.address}
+                {job?.get<Item>('prefecture')?.get<string>(' name')}
+                {job?.get<string>('city')}
+                {job?.get<string>('address')}
               </p>
             </div>
 
@@ -147,7 +138,7 @@ function JobDetails({ params: { id } }: JobDetailsProps) {
           <JobModal
             handleCloseModal={handleCloseModal}
             job={job}
-            job_id={job?.id}
+            job_id={job?.get<string>('id') || ''}
             setNotification={setNotification}
           />
         )}

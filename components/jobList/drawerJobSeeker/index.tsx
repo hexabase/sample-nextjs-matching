@@ -2,11 +2,11 @@ import { SetStateAction } from 'react';
 
 import { EnvelopeIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/solid';
 
-import { LJobSeekers } from '../../../types/jobsList';
+import { Item } from '@hexabase/hexabase-js';
 
 interface IDrawer {
   setShowDrawer: React.Dispatch<SetStateAction<boolean>>;
-  drawerContent: LJobSeekers;
+  drawerContent: Item;
 }
 const Drawer = ({ setShowDrawer, drawerContent }: IDrawer) => {
   return (
@@ -19,14 +19,14 @@ const Drawer = ({ setShowDrawer, drawerContent }: IDrawer) => {
           <div>
             <UserIcon width={16} height={16} />
           </div>
-          <p className="text-2xl font-bold">{drawerContent.name}</p>
+          <p className="text-2xl font-bold">{drawerContent.get<string>('name')}</p>
         </div>
 
         <div className="flex items-center">
           <div>
             <EnvelopeIcon width={16} height={16} />
           </div>
-          <p className="text-xl">{drawerContent.email}</p>
+          <p className="text-xl">{drawerContent.get<string>('email')}</p>
         </div>
         <div className="border-b border-b-[#E1E1E1] pb-4">
           <p className="font-base font-bold md:mt-[50px]">自己PR</p>
@@ -34,7 +34,7 @@ const Drawer = ({ setShowDrawer, drawerContent }: IDrawer) => {
 
         <div className="mt-[22px]">
           <div className="text-xs">
-            {drawerContent.self_promotion.split('\n').map((line, index) => (
+            {drawerContent.get<string>('self_promotion')?.split('\n').map((line, index) => (
               <p key={index}>{line}</p>
             ))}
           </div>

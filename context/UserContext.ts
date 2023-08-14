@@ -1,9 +1,9 @@
 import { createContext, useContext } from 'react';
 
-import { TGetUserInfo } from '../types';
+import { User } from '@hexabase/hexabase-js';
 
 interface IUserContext {
-  user?: TGetUserInfo;
+  user?: User;
 }
 
 export const UserContext = createContext<IUserContext>({

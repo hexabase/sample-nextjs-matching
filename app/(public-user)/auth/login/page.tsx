@@ -11,8 +11,8 @@ import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
 import Button from '../../../../components/button';
 import Notification from '../../../../components/common/notification';
-import { EMessageError, EType, TNotification } from '../../../../types';
-import { login } from '../../../../utils/apis';
+import { EType, TNotification } from '../../../../types';
+import { login, setToken } from '../../../../utils/apis';
 import { SchemaLogin } from '../Schema';
 
 interface FormValuesProps {
@@ -22,7 +22,6 @@ interface FormValuesProps {
 
 export default function Login() {
   const router = useRouter();
-
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
@@ -30,20 +29,19 @@ export default function Login() {
   const loginHandler = async (formValues: FormValuesProps) => {
     try {
       const { email, password } = formValues;
-      const loginRes = await login({
+      const token = await login({
         email,
         password,
       });
-
-      if (loginRes.data.token) {
-        setCookie('token', loginRes.data.token);
-        router.push('/jobs-employer');
-      }
+      if (!token) throw new Error('Login failed');
+      await setToken(token);
+      setCookie('token', token);
+      router.push('/jobs-employer');
     } catch (error) {
       setNotification({
         open: true,
         type: EType.ERROR,
-        message: EMessageError.ERR_01,
+        message: (error as Error).message,
       });
     }
   };

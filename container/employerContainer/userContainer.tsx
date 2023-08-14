@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { UserContext } from '../../context';
-import { TGetUserInfo } from '../../types';
 import { getUserInfo } from '../../utils/apis';
+import { User } from '@hexabase/hexabase-js';
 
 export default function UserContainer({
   children,
@@ -15,7 +15,7 @@ export default function UserContainer({
 }) {
   const router = useRouter();
 
-  const [user, setUser] = useState<TGetUserInfo>();
+  const [user, setUser] = useState<User>();
 
   const handleLogout = () => {
     deleteCookie('token');
@@ -25,9 +25,8 @@ export default function UserContainer({
   useEffect(() => {
     (async function getDataUserInfo() {
       try {
-        const res = await getUserInfo();
-
-        res.data && setUser(res.data);
+        const user = await getUserInfo();
+        setUser(user);
       } catch (error) {
         handleLogout();
       }

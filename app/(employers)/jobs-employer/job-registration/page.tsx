@@ -13,10 +13,8 @@ import BackToJobsList from '../../../../components/common/backToJobsList';
 import Notification from '../../../../components/common/notification';
 import camera from '../../../../public/camera.svg';
 import {
-  EMessageError,
   EType,
   TNotification,
-  TPrefectureItems,
 } from '../../../../types';
 import {
   createJobItems,
@@ -25,6 +23,7 @@ import {
 } from '../../../../utils/apis';
 import { SchemaJobRegistration } from './Schema';
 import { useCompanyContext } from '../../../../context';
+import { FileObject, Item } from '@hexabase/hexabase-js';
 
 interface FormValues {
   job_title: string;
@@ -35,6 +34,7 @@ interface FormValues {
   prefecture: string;
   city: string;
   address: string;
+  image: File[];
   work_content: string;
   work_details: string;
   hourly_wage: string;
@@ -49,19 +49,18 @@ export default function RegisterPage() {
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
-  const [filesId, setFilesId] = useState<string[]>([]);
-  const [prefectures, setPrefectures] = useState<TPrefectureItems[]>([]);
+  const [fileObjects, setFileObjects] = useState<FileObject[]>([]);
+  const [prefectures, setPrefectures] = useState<Item[]>([]);
 
   const getDataPrefecturesItems = async () => {
     try {
-      const res = await getPrefecturesItems();
-
-      res.data.items[0] && setPrefectures(res.data.items);
+      const items = await getPrefecturesItems();
+      setPrefectures(items);
     } catch (error) {
       setNotification({
         open: true,
         type: EType.ERROR,
-        message: EMessageError.ERR_01,
+        message: (error as Error).message,
       });
       setPrefectures([]);
     }
@@ -69,23 +68,17 @@ export default function RegisterPage() {
 
   const uploadImage = async (data: File) => {
     try {
-      const formData = new FormData();
-      formData.append('file', data);
-      formData.append('filename', data.name);
-
-      const res = await uploadFile(formData);
-
-      res.data &&
-        setFilesId((prevFilesId) => [...prevFilesId, res.data.file_id]);
+      const file = await uploadFile(data);
+      setFileObjects((prevFiles) => [...prevFiles, file]);
     } catch (error) {
       setNotification({
         open: true,
         type: EType.ERROR,
-        message: EMessageError.ERR_01,
+        message: (error as Error).message,
       });
     }
   };
-
+  
   const uploadImageHandler = (images: FileList | null) => {
     if (images && images[0]) {
       for (let i = 0; i < images.length; i++) {
@@ -104,33 +97,20 @@ export default function RegisterPage() {
 
   const createDataJobItems = useCallback(
     async (data: FormValues) => {
-      try {
-        if (company && company.id) {
-          const res = await createJobItems({
-            ...data,
-            company_id: company.id,
-            image: filesId,
-          });
-
-          if (res.data) {
-            setNotification({
-              open: true,
-              type: EType.SUCCESS,
-              message: 'Success',
-            });
-
-            handleRouter();
-          }
-        }
-      } catch (error) {
-        setNotification({
-          open: true,
-          type: EType.ERROR,
-          message: EMessageError.ERR_01,
-        });
-      }
+      if (!company) throw new Error('Company is not found');
+      await createJobItems({
+        ...data,
+        image: fileObjects,
+        company_id: company!.get<string>('id')!,
+      });
+      setNotification({
+        open: true,
+        type: EType.SUCCESS,
+        message: 'Success',
+      });
+      handleRouter();
     },
-    [company, filesId]
+    [company, fileObjects]
   );
 
   useEffect(() => {
@@ -156,6 +136,7 @@ export default function RegisterPage() {
                 prefecture: '',
                 city: '',
                 address: '',
+                image: [],
                 work_content: '',
                 work_details: '',
                 hourly_wage: '',
@@ -249,15 +230,9 @@ export default function RegisterPage() {
                               width={40}
                               height={36}
                             />
-                            {files[0] ? (
-                              <div className="flex">
-                                {files.map((file) => file.name).join(', ')}
-                              </div>
-                            ) : (
-                              <span className="mt-2 text-base uppercase leading-normal text-[#808080]">
-                                メインの写真を載せる
-                              </span>
-                            )}
+                            <span className="mt-2 text-base uppercase leading-normal text-[#808080]">
+                              メインの写真を載せる
+                            </span>
                             <label
                               htmlFor="image"
                               className="mt-5 cursor-pointer rounded-[4px] border border-solid border-[#808080] bg-[#FFFFFF] px-[15px] py-1.5 text-[10px] text-[#808080]"
@@ -390,7 +365,7 @@ export default function RegisterPage() {
                           )}
                           {prefectures[0] &&
                             prefectures.map((pre) => (
-                              <option key={pre.i_id} value={pre.i_id}>
+                              <option key={pre.id} value={pre.id}>
                                 {pre.title}
                               </option>
                             ))}
@@ -558,6 +533,7 @@ export default function RegisterPage() {
                       </button>
                     </div>
                     <div className="w-full md:w-auto">
+                      { Object.keys(errors).length > 0 && JSON.stringify(errors) }
                       <Button roundedFull disabled={!isValid}>
                         <p className="text-lg">登録する</p>
                       </Button>

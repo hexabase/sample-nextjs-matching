@@ -15,14 +15,12 @@ import { getDayOfWeek } from '../../../../../components/helpers';
 import DetailCard from '../../../../../components/jobList/detaiJobCard';
 import ListOfJobSeekers from '../../../../../components/jobList/listOfJobSeekers';
 import {
-  EMessageError,
   EType,
-  TFieldValueConvert,
   TNotification,
 } from '../../../../../types';
-import { TGetJobSeekers } from '../../../../../types/jobsList';
 import { getItemDetails, getJobSeekers } from '../../../../../utils/apis';
 import { getMonthDayCardJob, getTimeCardJob } from '../../../../../utils/getDay';
+import { FileObject, Item } from '@hexabase/hexabase-js';
 
 interface JobDetailsProps {
   params: {
@@ -34,9 +32,10 @@ interface JobDetailsProps {
 const PER_PAGE_JOB_SEEKERS = 16;
 
 export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) {
-  const [job, setJob] = useState<TFieldValueConvert>();
+  const [job, setJob] = useState<Item>();
   const [isDetail, setIsDetail] = useState(true);
-  const [jobSeekers, setJobSeekers] = useState<TGetJobSeekers>();
+  const [jobSeekers, setJobSeekers] = useState<Item[]>();
+  const [jobCount, setJobCount] = useState<number>(0);
   const [pageJobSeekers, setPageJobSeekers] = useState<number>(1);
   const [notification, setNotification] = useState<TNotification>({
     open: false,
@@ -48,22 +47,15 @@ export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) 
 
   const getDataItemDetail = async (item_id: string) => {
     try {
-      const res = await getItemDetails(item_id);
-
-      if (res.data && res.data.field_values) {
-        const dataConvert: TFieldValueConvert = {};
-
-        res.data.field_values.forEach((item) => {
-          dataConvert[item.field_id] = item.value;
-        });
-
-        setJob(dataConvert);
+      const item = await getItemDetails(item_id);
+      if (item) {
+        setJob(item);
       }
     } catch (error) {
       setNotification({
         open: true,
         type: EType.ERROR,
-        message: EMessageError.ERR_01,
+        message: (error as Error).message,
       });
     }
   };
@@ -75,13 +67,13 @@ export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) 
   ) => {
     try {
       const res = await getJobSeekers(page, per_page, job_id);
-
-      res.data && setJobSeekers(res.data);
+      setJobSeekers(res.items);
+      setJobCount(res.totalCount);
     } catch (error) {
       setNotification({
         open: true,
         type: EType.ERROR,
-        message: EMessageError.ERR_01,
+        message: (error as Error).message,
       });
     }
   };
@@ -123,7 +115,7 @@ export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) 
                         求職者一覧
                         <div className="absolute top-0 -right-8 h-[17px] w-[27px] rounded-[8.5px] bg-[#FF6666] px-2 text-white md:flex md:items-center md:justify-center">
                           <p className="text-[14px] leading-4">
-                            {jobSeekers?.totalItems}
+                            {jobCount}
                           </p>
                         </div>
                       </div>
@@ -138,39 +130,39 @@ export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) 
                   <div className="pt-2.5 md:pt-0 md:pl-2 lg:pr-16">
                     <div className="md:flexCol h-20 pt-1 ">
                       <p className="h-12 text-base font-bold md:h-20 md:text-xl xl:text-2xl">
-                        {job?.job_title}
+                        {job?.get('job_title')}
                       </p>
                     </div>
                     <div className="md:pl-3 md:pr-4 lg:mt-4 xl:mt-0">
                       <div className="mt-[10px] md:mt-8 lg:mt-0">
                         <p className="text-base font-normal">
-                          {job?.sub_title}
+                          {job?.get('sub_title')}
                         </p>
                       </div>
                       <div className="mt-7 md:mt-4">
                         <div className="flexItemsCenter mb-4">
                           <ClockIcon className="mr-2 h-[30px] w-[27px] text-aquamarine" />
                           <p className="pr-2.5 font-bold">
-                            {getMonthDayCardJob(dayjs(job?.start_work_date))}(
-                            {getDayOfWeek(job?.start_work_date)})
+                            {getMonthDayCardJob(dayjs(job?.get('start_work_date')))}(
+                            {getDayOfWeek(job?.get<Date>('start_work_date', new Date()) as Date)})
                           </p>
                           <p className="text-base font-normal md:mt-0.5">{`${getTimeCardJob(
-                            dayjs(job?.start_work_date)
-                          )}〜${getTimeCardJob(dayjs(job?.end_work_date))}`}</p>
+                            dayjs(job?.get('start_work_date'))
+                          )}〜${getTimeCardJob(dayjs(job?.get('end_work_date')))}`}</p>
                         </div>
                         <div className="flexItemsCenter mb-4 text-xs font-normal md:text-base">
                           <MapPinIcon className="mr-2 h-[30x] w-[27px] text-aquamarine" />
                           <p className="text-base font-normal">
-                            {job?.prefecture?.title}
-                            {job?.city}
-                            {job?.address}
+                            {job?.get<Item>('prefecture')?.get<string>(' name')}
+                            {job?.get('city')}
+                            {job?.get('address')}
                           </p>
                         </div>
 
                         <div className="flexItemsCenter mb-4">
                           <CurrencyYenIcon className="mr-2 h-[30px] w-[27px] text-aquamarine" />
                           <p className="text-base font-normal">
-                            <span className="font-bold">{`${job?.hourly_wage.toLocaleString()}`}</span>
+                            <span className="font-bold">{`${job?.get<number>('hourly_wage')!.toLocaleString()}`}</span>
                             円/1時給
                           </p>
                         </div>
@@ -183,7 +175,7 @@ export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) 
                           </p>
                         </div>
                         <p className="mt-2 w-full pb-1.5 text-justify text-xs font-normal md:text-base">
-                          {job?.work_content}
+                          {job?.get('work_content')}
                         </p>
 
                         <div className="mt-4 flex items-center gap-2  border-b border-b-lightSilver md:border-hidden">
@@ -193,7 +185,7 @@ export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) 
                         </div>
                         <div className="mt-[8px] h-[auto] w-full max-w-[532px] md:mt-0 md:h-[621px]">
                           <p className="text-xs font-normal md:text-base">
-                            {job?.work_details}
+                            {job?.get('work_details')}
                           </p>
                         </div>
                       </div>
@@ -202,7 +194,7 @@ export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) 
                 </div>
 
                 <div className="mt-[60px] md:mt-0 md:flex md:w-1/2 md:justify-center">
-                  <DetailCard file_id={job?.image[0]?.file_id} />
+                  <DetailCard file={job?.get<FileObject[]>('image')![0]} />
                 </div>
               </div>
             </div>
@@ -211,8 +203,8 @@ export default function JobDetails({ params: { id, job_id } }: JobDetailsProps) 
           <ListOfJobSeekers
             pageJobSeekers={pageJobSeekers}
             setPageJobSeekers={setPageJobSeekers}
-            totalItems={jobSeekers?.totalItems || 0}
-            LJobSeekers={jobSeekers?.items || []}
+            totalItems={jobCount}
+            LJobSeekers={jobSeekers || []}
             handleRouter={handleRouter}
           />
         )}

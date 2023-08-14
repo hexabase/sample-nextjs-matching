@@ -5,15 +5,15 @@ import { SetStateAction, useMemo, useState } from 'react';
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import { UserIcon } from '@heroicons/react/24/solid';
 
-import { LJobSeekers } from '../../../types/jobsList';
 import Pagination from '../../pagination';
 import Drawer from '../drawerJobSeeker';
+import { Item } from '@hexabase/hexabase-js';
 
 const itemsPerPage = 6;
 
 interface IListOfJobSeekers {
   totalItems: number;
-  LJobSeekers: LJobSeekers[];
+  LJobSeekers: Item[];
   pageJobSeekers: number;
   setPageJobSeekers: React.Dispatch<SetStateAction<number>>;
   handleRouter: () => void;
@@ -27,7 +27,7 @@ const ListOfJobSeekers = ({
   handleRouter,
 }: IListOfJobSeekers) => {
   const [showDrawer, setShowDrawer] = useState(false);
-  const [drawerContent, setDrawerContent] = useState<LJobSeekers>();
+  const [drawerContent, setDrawerContent] = useState<Item>();
 
   const totalPages = useMemo(() => {
     if (totalItems % itemsPerPage === 0) {
@@ -36,7 +36,7 @@ const ListOfJobSeekers = ({
     return Math.round(totalItems / itemsPerPage + 0.5);
   }, [totalItems]);
 
-  const handleDivClick = (content: LJobSeekers) => {
+  const handleDivClick = (content: Item) => {
     setDrawerContent(content);
     setShowDrawer(true);
   };
@@ -91,7 +91,7 @@ const ListOfJobSeekers = ({
             LJobSeekers.map((jobSeeker) => {
               return (
                 <div
-                  key={jobSeeker.i_id}
+                  key={jobSeeker.id}
                   className="flex h-auto justify-between bg-white p-6 hover:drop-shadow-md md:gap-6 md:rounded-[5px]"
                   onClick={() => handleDivClick(jobSeeker)}
                 >
@@ -100,14 +100,14 @@ const ListOfJobSeekers = ({
                       <div>
                         <UserIcon width={16} height={16} />
                       </div>
-                      <p className="text-base font-bold">{jobSeeker.name}</p>
+                      <p className="text-base font-bold">{jobSeeker.get<string>('name')}</p>
                     </div>
 
                     <div className="flex items-center gap-x-1 ">
                       <div>
                         <EnvelopeIcon width={16} height={16} />
                       </div>
-                      <p className="text-xs">{jobSeeker.email}</p>
+                      <p className="text-xs">{jobSeeker.get<string>('email')}</p>
                     </div>
                   </div>
                 </div>

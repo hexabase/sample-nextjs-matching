@@ -1,3 +1,4 @@
+import { FileObject, Item } from '@hexabase/hexabase-js';
 import { Dayjs } from 'dayjs';
 
 export type PageProps = {
@@ -104,9 +105,9 @@ export type TRegisterUser = {
 export type TInputRegisterUser = {
   confirmation_id: string;
   email: string;
-  username: string;
+  username?: string;
   password: string;
-  workspace: string;
+  workspace?: string;
 };
 
 export type TGetUserInfo = {
@@ -118,7 +119,6 @@ export type TGetUserInfo = {
 };
 
 export type TInputCreateItem = {
-  user_id: string;
   company_name: string;
   company_address: string;
   business: string;
@@ -179,16 +179,16 @@ export type TInputCreateJobItem = {
   company_id: string;
   job_title: string;
   sub_title: string;
-  image: string[];
-  start_work_date: string;
-  end_work_date: string;
+  image: FileObject[],
+  start_work_date: string | Date;
+  end_work_date: string | Date;
   work_content: string;
   work_details: string;
   postal_code: string;
-  prefecture: string;
+  prefecture: string | Item;
   city: string;
   address: string;
-  hourly_wage: string;
+  hourly_wage: string | number;
 };
 
 export type TCreateJobItem = {

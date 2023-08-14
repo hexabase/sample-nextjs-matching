@@ -1,9 +1,9 @@
 import { createContext, useContext } from 'react';
 
-import { TCompaniesItems } from '../types';
+import { Item } from '@hexabase/hexabase-js';
 
 interface ICompanyContext {
-  company?: TCompaniesItems;
+  company?: Item;
 }
 
 export const CompanyContext = createContext<ICompanyContext>({

@@ -23,8 +23,7 @@ export const getYearMonthDayCardJob = (day: Dayjs) => {
 };
 
 export const getTimeCardJob = (day: Dayjs) => {
-  const timeFormat = dayjs(day).format('hh:mm');
-
+  const timeFormat = day.format('hh:mm');
   return `${timeFormat}`;
 };
 

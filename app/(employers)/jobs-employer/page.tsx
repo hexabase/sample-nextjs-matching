@@ -10,10 +10,10 @@ import CardJob from '../../../components/jobList/cardJob';
 import Pagination from '../../../components/pagination';
 import FooterMobile from '../../../components/serchJobs/footerMobile';
 import { useCompanyContext } from '../../../context';
-import { EMessageError, EType, TNotification } from '../../../types';
-import { TJobsItems } from '../../../types/jobsList';
+import { EType, TNotification } from '../../../types';
 import { getItemListJobs } from '../../../utils/apis';
 import EmptyJobsEmployer from '../../../components/emptyJobsEmployer';
+import { Item } from '@hexabase/hexabase-js';
 
 const itemsPerPage = 6;
 
@@ -24,7 +24,7 @@ export default function JobDetails() {
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
-  const [jobs, setJobs] = useState<TJobsItems[]>([]);
+  const [jobs, setJobs] = useState<Item[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -47,16 +47,13 @@ export default function JobDetails() {
           per_page: itemsPerPage,
           company_id,
         });
-
-        if (res.data) {
-          setJobs(res.data.items);
-          setTotalItems(res.data.totalItems);
-        }
+        setJobs(res.items);
+        setTotalItems(res.totalCount);
       } catch (error) {
         setNotification({
           open: true,
           type: EType.ERROR,
-          message: EMessageError.ERR_01,
+          message: (error as Error).message,
         });
       }
     },
@@ -64,8 +61,8 @@ export default function JobDetails() {
   );
 
   useEffect(() => {
-    if (company && company.id) {
-      getDataItemListJobs(company.id);
+    if (company && company.get<string>('id')) {
+      getDataItemListJobs(company.get<string>('id')!);
     }
   }, [company, getDataItemListJobs, currentPage]);
 
@@ -97,7 +94,7 @@ export default function JobDetails() {
               <div className="mb-10 sm:flex sm:items-center sm:gap-2.5 md:mb-16">
                 <div className="align-center flex w-full flex-col justify-center gap-x-2.5 text-xs font-normal leading-[17px] md:flex-row md:items-center md:justify-between">
                   <p className="text-sm ">
-                    <span className="text-lg font-bold">{totalPages}</span>
+                    <span className="text-lg font-bold">{totalItems}</span>
                     件の求人が登録されています
                   </p>
                   <Pagination

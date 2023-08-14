@@ -5,7 +5,8 @@ import { deleteCookie } from 'cookies-next';
 
 import { CompanyContext, useUserContext } from '../../context';
 import { TCompaniesItems } from '../../types';
-import { getItemListCompanies } from '../../utils/apis';
+import { getItemListCompany } from '../../utils/apis';
+import { Item } from '@hexabase/hexabase-js';
 
 export default function CompanyContainer({
   children,
@@ -14,9 +15,7 @@ export default function CompanyContainer({
 }) {
   const router = useRouter();
 
-  const { user } = useUserContext();
-
-  const [company, setCompany] = useState<TCompaniesItems>();
+  const [company, setCompany] = useState<Item>();
 
   const handleLogout = () => {
     deleteCookie('token');
@@ -26,16 +25,14 @@ export default function CompanyContainer({
   useEffect(() => {
     (async function () {
       try {
-        if (user && user.u_id) {
-          const res = await getItemListCompanies(user.u_id);
-
-          res.data && res.data.items[0] && setCompany(res.data.items[0]);
-        }
+        const company = await getItemListCompany();
+        setCompany(company);
       } catch (error) {
-        handleLogout();
+        console.log({ error });
+        // handleLogout();
       }
     })();
-  }, [user]);
+  }, []);
 
   return (
     <CompanyContext.Provider value={{ company }}>

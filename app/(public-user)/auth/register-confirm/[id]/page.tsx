@@ -11,11 +11,9 @@ import { Formik } from 'formik';
 import Button from '../../../../../components/button';
 import Notification from '../../../../../components/common/notification';
 import {
-  EMessageError,
   EType,
   PageProps,
   TNotification,
-  TUserConfirm,
 } from '../../../../../types';
 
 import {
@@ -25,6 +23,7 @@ import {
   registerUser,
 } from '../../../../../utils/apis';
 import { SchemaRegisterCompany } from '../../Schema';
+import { ConfirmationsFullInfo } from '@hexabase/hexabase-js';
 
 interface FormValuesProps {
   company_name: string;
@@ -36,25 +35,16 @@ interface FormValuesProps {
 
 export default function RegisterConfirm({ params: { id } }: PageProps) {
   const router = useRouter();
-  const [dataConfirm, setDataConfirm] = useState<TUserConfirm>();
-
+  const [dataConfirm, setDataConfirm] = useState<ConfirmationsFullInfo>();
   const [notification, setNotification] = useState<TNotification>({
     open: false,
   });
 
-  const dataCreateItem = useCallback(
-    async (formValues: FormValuesProps, user_id: string) => {
+  const dataCreateItem = useCallback(async (formValues: FormValuesProps) => {
       try {
         const { company_name, company_address, business, url } = formValues;
-        const res = await createItem({
-          user_id,
-          company_name,
-          company_address,
-          business,
-          url,
-        });
-
-        res.data && router.push('/auth/register-success');
+        await createItem({ company_name, company_address, business, url });
+        router.push('/auth/register-success');
       } catch (error) {
         console.log('error', error);
         router.push('/auth/register-success');
@@ -65,54 +55,40 @@ export default function RegisterConfirm({ params: { id } }: PageProps) {
 
   const dataGetUserInfo = useCallback(async (formValues: FormValuesProps) => {
     try {
-      const res = await getUserInfo();
-
-      res.data.u_id && dataCreateItem(formValues, res.data.u_id);
+      const user = await getUserInfo();
+      if (!user) throw new Error('You are not logged in');
+      await dataCreateItem(formValues);
     } catch (error) {
       setNotification({
         open: true,
         type: EType.ERROR,
-        message: EMessageError.ERR_01,
+        message: (error as Error).message,
       });
-      console.log('error', error);
     }
   }, []);
 
   const dataRegisterUser = useCallback(
     async (formValues: FormValuesProps) => {
       const { password } = formValues;
-      const email = dataConfirm?.email || '';
-      const workspace = dataConfirm?.workspace.id || '';
-      const confirmation_id = dataConfirm?.confirmation_id || '';
-      const username = dataConfirm?.email.split('@')[0] || '';
-
       try {
-        const res = await registerUser({
-          email,
+        if (!dataConfirm) throw new Error('Confirm data is undefined');
+        const params = {
+          email: dataConfirm.email!,
           password,
-          username,
-          workspace,
-          confirmation_id,
-        });
-
-        if (res.data.token) {
-          setCookie('token', res.data.token);
-          dataGetUserInfo(formValues);
-        } else {
-          setNotification({
-            open: true,
-            type: EType.ERROR,
-            message: EMessageError.ERR_01,
-          });
-        }
-        console.log('res', res);
+          workspace: dataConfirm.workspace?.id,
+          confirmation_id: dataConfirm.confirmation_id!,
+          username: dataConfirm.email!.split('@')[0]!,
+        };
+        const token = await registerUser(params);
+        if (!token) throw new Error('Token is undefined');
+        setCookie('token', token);
+        await dataGetUserInfo(formValues);
       } catch (error) {
         setNotification({
           open: true,
           type: EType.ERROR,
-          message: EMessageError.ERR_01,
+          message: (error as Error).message,
         });
-        console.log('error', error);
       }
     },
     [dataConfirm, dataGetUserInfo]
@@ -122,10 +98,8 @@ export default function RegisterConfirm({ params: { id } }: PageProps) {
     (async function dataConfirmRegistration() {
       try {
         const res = await confirmRegistration(id);
-
-        res.data.user && setDataConfirm(res.data.user);
+        setDataConfirm(res);
       } catch (error) {
-        console.log('error', error);
         router.push('/auth/login');
       }
     })();

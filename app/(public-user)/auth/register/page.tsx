@@ -10,7 +10,7 @@ import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
 import Button from '../../../../components/button';
 import Notification from '../../../../components/common/notification';
-import { EMessageError, EType, TNotification } from '../../../../types';
+import { EType, TNotification } from '../../../../types';
 import { addUser, userInvite } from '../../../../utils/apis';
 import { SchemaEmail } from '../Schema';
 
@@ -25,44 +25,34 @@ export default function RegisterPage() {
     open: false,
   });
 
-  const addUserHandler = async (data: FormValues) => {
+  const addUserHandler = async ({ email }: FormValues) => {
     try {
-      const res = await addUser(data.email);
-      if (res.status === 200 && !res.data.added) {
-        userInviteHandler(data);
-      } else {
-        setNotification({
-          open: true,
-          type: EType.ERROR,
-          message: EMessageError.ERR_01,
-        });
-      }
+      const added = await addUser(email);
+      if (!added) throw new Error('User already exists');
+      userInviteHandler(email);
     } catch (error) {
       setNotification({
         open: true,
         type: EType.ERROR,
-        message: EMessageError.ERR_01,
+        message: (error as Error).message,
       });
     }
   };
 
-  const userInviteHandler = async (data: FormValues) => {
+  const userInviteHandler = async (email: string) => {
     try {
-      const res = await userInvite(data.email);
-
-      if (res.status === 200) {
-        router.push('/auth/email');
-      } else {
-        setNotification({
-          open: true,
-          type: EType.ERROR,
-          message: EMessageError.ERR_01,
-        });
-      }
+      const res = await userInvite(email);
+      if (res.stats !== 200) throw new Error('User invite failed');
+      router.push('/auth/email');
     } catch (error) {
-      console.log('error', error);
+      setNotification({
+        open: true,
+        type: EType.ERROR,
+        message: (error as Error).message,
+      });
     }
   };
+
   return (
     <>
       <div className="modal p-[1.375rem] lg:px-[10rem] xl:px-[19.5rem]">

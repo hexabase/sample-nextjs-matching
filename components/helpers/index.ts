@@ -9,7 +9,7 @@ import { TDateHoliday } from '../../types/common';
 dayjs.extend(localeData);
 dayjs.extend(isBetween);
 
-export const getDayOfWeek = (date: string) => {
+export const getDayOfWeek = (date: Date) => {
   const weekDays = dayjs.weekdaysShort();
 
   const dayInWeek = dayjs(date, 'yyyy-mm-dd').day();

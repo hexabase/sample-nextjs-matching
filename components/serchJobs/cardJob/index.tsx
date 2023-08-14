@@ -10,36 +10,35 @@ import dayjs from 'dayjs';
 
 import { ClockIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
-import { TJob } from '../../../types';
-import { getFile } from '../../../utils/apis';
 import ImageSkeleton from '../../common/skeletons/imageSkeleton';
 import Tag from '../../common/Tag';
 import { getDayOfWeek } from '../../helpers';
+import { FileObject, Item } from '@hexabase/hexabase-js';
 
 dayjs.locale('ja');
 dayjs().locale('ja');
 
 interface JobProps {
-  job: TJob;
+  job: Item;
 }
 
 export default function CardJob({ job }: JobProps) {
   const router = useRouter();
   const [imageUrl, setImageUrl] = useState<string>();
-
-  const dayOfWeek = getDayOfWeek(job.date);
+  const dayOfWeek = getDayOfWeek(job.get<Date>('start_work_date')!);
 
   const handleClickCard = () => {
-    router.push(`/jobs/${job.i_id}`);
+    router.push(`/jobs/${job.id}`);
   };
 
   useEffect(() => {
     const getImageUrl = async () => {
       try {
-        const res = await getFile(job.imgUrl);
-        const imageBytes = new Uint8Array(res.data);
-        const blob = new Blob([imageBytes.buffer], { type: 'image' });
-        const imageUrl = URL.createObjectURL(blob);
+        const images = job.get<FileObject[] | undefined>('image');
+        if (!images) return;
+        await images[0].download();
+        const blob = images[0].data as unknown;
+        const imageUrl = URL.createObjectURL(blob as Blob);
         setImageUrl(imageUrl);
       } catch (error) {
         console.log('error', error);
@@ -48,7 +47,7 @@ export default function CardJob({ job }: JobProps) {
     };
 
     getImageUrl();
-  }, [job.imgUrl]);
+  }, [job.get('image')]);
 
   return (
     <div
@@ -73,28 +72,28 @@ export default function CardJob({ job }: JobProps) {
 
       <div className="px-3 py-3 leading-[13px] md:px-5">
         <p className="leading[10px] w-full truncate text-xs md:mt-2.5">
-          {job.des}
+          {job.get<string>('sub_title')}
         </p>
 
         <p className="mt-2 inline-block h-auto h-10 min-h-[50px] w-full pb-0 text-xs font-bold line-clamp-3 md:min-h-[60px] md:text-sm">
-          {job.jobName}
+          {job.get<string>('job_title')}
         </p>
 
         <div className="mt-4 flex w-full items-center justify-start md:mt-6 md:mt-2 md:items-center">
           <ClockIcon className="mr-1 hidden h-5 w-5 flex-none text-aquamarine md:block md:h-5 md:w-5" />
           <div className="flex w-full flex-col items-start justify-start md:flex-row md:items-center">
             <p className="mr-1 text-sm font-bold">
-              {`${dayjs(job.date).format('MM/DD')}(${dayOfWeek})`}
+              {`${dayjs(job.get<Date>('start_work_date')).format('MM/DD')}(${dayOfWeek})`}
             </p>
-            <p className="text-sm md:mt-0.5">{`${job.startTime}〜${job.endTime}`}</p>
+            <p className="text-sm md:mt-0.5">{`${dayjs(job.get<Date>('start_work_date')).format('HH:MM')}〜${dayjs(job.get<Date>('end_work_date')).format('HH:MM')}`}</p>
           </div>
         </div>
 
         <div className="mt-4 flex w-full items-center">
           <MapPinIcon className="mr-1 hidden h-4 w-4 text-aquamarine md:block md:h-5 md:w-5 md:text-xs" />
           <div className="flex gap-1 md:text-xs">
-            {job.tags[0] &&
-              job.tags.map((tag, indexTag) => (
+            {job.get<string>('prefecture') &&
+              ([job.get<string>('prefecture'), job.get<string>('city')] as (string[])).map((tag, indexTag) => (
                 <Tag
                   key={indexTag}
                   tagName={tag}
@@ -107,7 +106,7 @@ export default function CardJob({ job }: JobProps) {
         <div className="mt-6 flex items-center justify-end">
           <p className="mr-1 pt-2 text-sm">時給</p>
           <p className="text-2xl md:font-bold">
-            {job.hourlyWage.toLocaleString()}
+            {job.get<number>('hourly_wage', 0)!.toLocaleString()}
           </p>
           <p className="ml-0.5 pt-1.5 text-sm">円</p>
         </div>

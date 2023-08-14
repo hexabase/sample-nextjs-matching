@@ -1,8 +1,6 @@
-import { getCookie } from 'cookies-next';
 import { Blob } from 'buffer';
 
 import {
-  TCreateJobItem,
   TInputAddJobSeekers,
   TInputCreateItem,
   TInputCreateJobItem,
@@ -11,11 +9,8 @@ import {
   TInputRegisterUser,
   TJobSearchPayload,
 } from '../types';
-import { ApiError, ApiResponse, createAxiosInstance } from './axios';
-
 import { AddUserResponse, ConfirmationsFullInfo, FileObject, HexabaseClient, Item, User, UserInviteResponse } from '@hexabase/hexabase-js';
 
-const axiosInstance = createAxiosInstance();
 const client = new HexabaseClient('dev', process.env.NEXT_PUBLIC_TOKEN_API);
 
 export const setToken = async (token: string) => {
@@ -175,7 +170,7 @@ export const addJobSeekers = async (params: TInputAddJobSeekers): Promise<boolea
 
 export const getJobSeekersCount = async (job: Item): Promise<number> => {
   await client.setWorkspace(process.env.NEXT_PUBLIC_WORKSPACE_ID!);
-  const items = await job.links(process.env.NEXT_PUBLIC_JOB_SEEKERS_DATASTORE_ID);
+  const items = await job.links(process.env.NEXT_PUBLIC_JOB_SEEKERS_DATASTORE_ID!);
   return items.length;
 }
 
